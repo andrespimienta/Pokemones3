@@ -1,43 +1,55 @@
-# Qué hay configurado en esta plantilla
+# Proyecto Pokemones - Parte I
 
-1. Un proyecto de biblioteca (creado con [`dotnet new classlib --name Library`](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new?tabs=netcore22)) en la carpeta `src\Library`
-2. Un proyecto de aplicación de consola (creado con [`dotnet new console --name Program`](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new?tabs=netcore22)) en la carpeta `src\Program`
-3. Un proyecto de prueba en [NUnit](https://nunit.org/) (creado con [`dotnet new nunit --name LibraryTests`](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new?tabs=netcore22)) en la carpeta `test\LibraryTests`
-4. Un proyecto de [Doxygen](https://www.doxygen.nl/index.html) para generación de sitio web de documentación en la carpeta `docs`
-5. Análisis estático con [Roslyn analyzers](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview) en los proyectos de biblioteca y de aplicación
-6. Análisis de estilo con [StyleCop](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/README.md) en los proyectos de biblioteca y de aplicación
-7. Una solución `ProjectTemplate.sln` que referencia todos los proyectos de C# y facilita la compilación con [`dotnet build`](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build).
-8. Tareas preconfiguradas para compilar y ejecutar los proyectos, ejecutar las pruebas, y generar documentación desde VSCode en la carpeta `.vscode`
-9. Análisis de cobertura de los casos de prueba mediante []() que aparece en los márgenes con el complemento de VS Code [Coverage Gutters](https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters).
-10. Ejecución automática de compilación y prueba mediante [GitHub Actions](https://docs.github.com/en/actions) configuradas en el repositorio al hacer [push](https://github.com/git-guides/git-push) o [pull request](https://docs.github.com/en/github/collaborating-with-pull-requests).
+## Introducción al formato elegido
+La organización detrás de nuestro código para esta parte del proyecto
+gira alrededor de la idea de que los datos necesarios principales se
+encuentren en un archivo txt.
+El archivo "Catalogo.txt" contiene toda la información acerca de los
+Pokemones que pueden ser elegidos, sus atributos y sus ataques.
 
-Vean este 🎥 [video](https://web.microsoftstream.com/video/55c6a06c-07dc-4f95-a96d-768f198c9044) que explica el funcionamiento de la plantilla.
+Elegir este formato permite una gran flexibilidad, puesto que facilita quitar,
+agregar, o modificar los datos de Pokemones nuevos o ya existentes sin
+alterar de ninguna manera el funcionamiento del resto de las clases.
 
-## Convenciones
+## Principios y ventajas aplicadas
+Además, intentamos compartimentar las clases lo más posible, de modo que
+los métodos y responsabilidades de cada una tengan sentido, acorde con
+la información a la que pueden acceder. Por ejemplo, los pokemones y los
+ataques son instanciados por métodos de "LeerArchivo", que es la única
+clase que cuenta directamente con los datos necesarios para llevar a
+cabo esta función (aplicamos "Creator" y "Expert").
 
-[Convenciones de código en C#](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
+También aplicamos "Expert" en algunas situaciones, como a la hora de
+decidir que los métodos "UsarPokemon()" y "GuardarPokemon()" deberían
+ser responsabilidad de la clase Jugador y no de la propia clase "Pokemon",
+puesto que no le corresponde al Pokemon seleccionarse a sí mismo, sino
+a la clase que tenga una colección de Pokemones, permitiéndole decidir
+cuál utiliza y cuáles deja guardados en su selección.
 
-[Convenciones de nombres en C#](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines)
+Como este hay varios otros ejemplos en los que se ve como cada clase se
+asegura de cumplir únicamente con lo que tiene sentido que le corresponda,
+a la vez que facilitan métodos específicos para determinar bajo qué
+circunstancias pueden ser modificados sus atributos, cumpliendo de esta
+forma también con "SRP".
 
-## Dónde encontrar información sobre los errores/avisos al compilar
+## Lógica y funcionamiento
+El programa inicia pidiendo los datos para crear dos objetos de la clase Jugador
+que corresponderán a los jugadores que se enfrentarán. Luego imprime el catálgo
+de Pokemones posibles utilizando, a través de la fachada, un método de LeerArchivo
+que se encarga de imprimir los datos de "Catalogo.txt" de manera más procesada,
+con más detalle.
 
-[C# Compiler Errors (CS*)](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/)
+Durante la mayor parte del código de Program, veremos que
+interactúa principalmente con los métodos de la clase Fachada, y es esta clase
+la que se encarga de llamar a los métodos que correspondan del resto de las
+clases existentes.
 
-[Roslyn Analyzer Warnings (CA*)](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/categories)
+Luego de mostrar el catálogo, por ejemplo, se le pide al jugador que elija
+los seis Pokemones de su selección, para lo cual se llama a "Fachada.ElegirPokemon()"
+que a su vez interactúa con LeerArchivo para encontrar e instaciar el Pokemon
+elegido, luego agregarlo a la lista de Pokemones de la clase Jugador. Es decir,
+con un simple método de Fachada, conectamos de una manera u otra con todas
+las demás clases. Este tipo de funcionamiento aplica para todas las demás
+acciones que se llevarían a cabo en el contexto de una batalla de Pokemones.
 
-[StyleCop Analyzer Warnings (SA*)](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md)
-
-# Cómo deshabilitar temporalmente los avisos al compilar
-
-## Roslyn Analyzer
-
-Comentar las siguientes líneas en los archivos de proyecto (`*.csproj`)
-```
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-```
-
-## StyleCop Analyzer
-
-Comentar la línea `<PackageReference Include="StyleCop.Analyzers" Version="1.1.118"/>` en los archivos de proyecto (`*.csproj`)
+Link a diagramas UML: https://drive.google.com/file/d/1Bj022eGMNfHM8U-DYtGgH-5fZGOtxviK/view?usp=sharing
