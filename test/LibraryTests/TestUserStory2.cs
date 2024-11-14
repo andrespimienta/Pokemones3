@@ -11,42 +11,42 @@ public class TestUserStory2
     public void VerAtaquesDePokemonesProgram()
     {
         DiccionarioTipos.GetInstancia(); // Instancia el Singleton y define el contenido de todos sus diccionarios
-        Fachada fachada = Fachada.GetInstancia();
-        fachada.LimpiarListaDeJugadores();
+        Fachada1 fachada1 = Fachada1.GetInstancia();
+        fachada1.LimpiarListaDeJugadores();
 
-        fachada.AgregarJugadorALista("A");
-        fachada.AgregarJugadorALista("B");
-        fachada.entrenadorConTurno = fachada.Jugadores[0];
+        fachada1.AgregarJugadorALista("A");
+        fachada1.AgregarJugadorALista("B");
+        fachada1.entrenadorConTurno = fachada1.Jugadores[0];
         
 
         for (int j = 0; j <= 1; j++)
         {
             // lo repite para los dos jugadores
-            fachada.ElegirPokemon("PIKACHU");
-            fachada.ElegirPokemon("CHARMANDER");
-            fachada.ElegirPokemon("BULBASAUR");
-            fachada.ElegirPokemon("SQUIRTLE");
-            fachada.ElegirPokemon("EEVEE");
-            fachada.ElegirPokemon("JIGGLYPUFF");
-            fachada.CambiarTurno();
+            fachada1.ElegirPokemon("PIKACHU");
+            fachada1.ElegirPokemon("CHARMANDER");
+            fachada1.ElegirPokemon("BULBASAUR");
+            fachada1.ElegirPokemon("SQUIRTLE");
+            fachada1.ElegirPokemon("EEVEE");
+            fachada1.ElegirPokemon("JIGGLYPUFF");
+            fachada1.CambiarTurno();
         }
 
-        fachada.entrenadorConTurno = fachada.GetJugadorConTurno(); // para manejar mas facil la variable
+        fachada1.entrenadorConTurno = fachada1.GetJugadorConTurno(); // para manejar mas facil la variable
         for (int i = 0; i <= 1; i++)
         {
-            fachada.CambiarPokemonPor("PIKACHU");
-            fachada.CambiarTurno();
-            fachada.entrenadorConTurno = fachada.GetJugadorConTurno();
+            fachada1.CambiarPokemonPor("PIKACHU");
+            fachada1.CambiarTurno();
+            fachada1.entrenadorConTurno = fachada1.GetJugadorConTurno();
         }
 
-        fachada.ChequearQuienEmpieza();
-        Console.WriteLine($"{fachada.GetJugadorConTurno().GetNombre()} tiene al Pokemon más rápido");
-        fachada.InformeDeSituacion();
+        fachada1.ChequearQuienEmpieza();
+        Console.WriteLine($"{fachada1.GetJugadorConTurno().GetNombre()} tiene al Pokemon más rápido");
+        fachada1.InformeDeSituacion();
         bool operacionExitosa = false; // chequea si se realizó alguna operación con éxito
         // de lo contrario muestra el menu principal de nuevo 
 
         // Verificar que los ataques se muestren al jugador en el turno actual
-        Assert.That(fachada.ListaAtaques(), Is.EqualTo("IMPACTRUENO RAYO PUÑO TRUENO ATAQUE RÁPIDO"));
+        Assert.That(fachada1.ListaAtaques(), Is.EqualTo("IMPACTRUENO RAYO PUÑO TRUENO ATAQUE RÁPIDO"));
         
     }
 }

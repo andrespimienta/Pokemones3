@@ -3,6 +3,8 @@ using System.Net.Http.Headers;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 using Discord.Commands;
+using Proyecto_Pokemones_I;
+using Ucu.Poo.DiscordBot.Domain;
 
 namespace Ucu.Poo.DiscordBot.Commands;
 
@@ -13,77 +15,101 @@ namespace Ucu.Poo.DiscordBot.Commands;
 // ReSharper disable once UnusedType.Global
 public class PokemonNameCommand : ModuleBase<SocketCommandContext>
 {
-    private readonly ILogger<PokemonNameCommand> logger;
-    private readonly HttpClient httpClient;
-
-    /// <summary>
-    /// Inicializa una nueva instancia de la clase
-    /// <see cref="PokemonNameCommand"/> con los valores recibidos como
-    /// argumento.
-    /// </summary>
-    /// <param name="logger">El servicio de logging a utilizar.</param>
-    public PokemonNameCommand(ILogger<PokemonNameCommand> logger)
+   [Command("agregarPokemon")]
+    public async Task AgregarPokemonAsync(string pokemonNombre)
     {
-        this.logger = logger;
+        // Obtener el entrenador del usuario actual, asegurándonos de obtener el entrenador correspondiente
+        Entrenador? entrenador = BattlesList.ObtenerEntrenadorPorUsuario(Context.User.Id); 
 
-        httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        httpClient.DefaultRequestHeaders.Add("User-Agent", "DiscordBot");
-    }
-
-    /// <summary>
-    /// Implementa el comando 'name'. Este comando retorna el nombre de un
-    /// Pokémon dado su identificador.
-    /// </summary>
-    /// <param name="id">El identificador del Pokémon a buscar.</param>
-    [Command("name")]
-    [Summary("Busca el nombre de un Pokémon por identificador usando la PokéAPI")]
-    // ReSharper disable once UnusedMember.Global
-    public async Task ExecuteAsync([Remainder][Summary("ID")] int id = 0)
-    {
-        if (id <= 0)
+        if (entrenador == null)
         {
-            await ReplyAsync("Uso: !name <id>");
+            await ReplyAsync("No se ha encontrado un entrenador asociado a tu cuenta. ¿Estás en medio de una batalla?");
             return;
         }
 
-        try
-        {
-            var response = await httpClient.GetStringAsync($"https://pokeapi.co/api/v2/pokemon/{id}");
+        // Buscar el Pokémon en el catálogo
+        Pokemon? pokemon = LeerArchivo.EncontrarPokemon(pokemonNombre);
 
-            if (string.IsNullOrEmpty(response))
-            {
-                await ReplyAsync($"No encontré nada para {id}");
-                return;
-            }
-            
-            JsonNode? pokemonNode = JsonNode.Parse(response);
-            JsonNode? nameNode = pokemonNode?["name"];
+        if (pokemon != null)
+        {
+            // Si el Pokémon fue encontrado, añadirlo a la selección del entrenador
+            entrenador.AñadirASeleccion(pokemon);
 
-            if (pokemonNode == null || nameNode == null)
-            {
-                await ReplyAsync($"No encontré el nombre de {id}");
-            }
-            else
-            {
-                await ReplyAsync(nameNode.GetValue<string>());
-            }
+            // Enviar mensaje de confirmación
+            await ReplyAsync($"¡El Pokémon {pokemon.GetNombre()} ha sido añadido a tu selección!");
         }
-        catch (HttpRequestException exception)
+        else
         {
-            if (exception.StatusCode == HttpStatusCode.NotFound)
-            {
-                await ReplyAsync("No lo encontré");
-            }
-            else
-            {
-                logger.LogError("HTTP error: {Message}", exception.Message);
-            }
-           
-        }
-        catch (Exception exception)
-        {
-            logger.LogError("Exception: {Message}", exception.Message);    
+            // Si no se encontró el Pokémon, mostrar un mensaje de error
+            await ReplyAsync($"No se encontró un Pokémon llamado {pokemonNombre} en el catálogo.");
         }
     }
+    
+    [Command("catalogo")]
+    public async Task MostrarCatalogoAsync()
+    {
+        // Obtener el catálogo procesado como un string
+        string catalogo = LeerArchivo.ObtenerCatalogoProcesado();
+
+        // Verificar si el catálogo está vacío
+        if (string.IsNullOrEmpty(catalogo))
+        {
+            await ReplyAsync("No se pudo obtener el catálogo. Está vacío o hubo un error.");
+        }
+        else
+        {
+            // Verificar si el catálogo es demasiado largo para enviarlo de una vez
+            const int maxMessageLength = 2000; // Límite de caracteres en un mensaje de Discord
+            if (catalogo.Length > maxMessageLength)
+            {
+                // Si el catálogo es muy largo, dividirlo en partes
+                int startIndex = 0;
+                while (startIndex < catalogo.Length)
+                {
+                    // Enviar la parte del catálogo que no exceda el límite
+                    var messagePart = catalogo.Substring(startIndex, Math.Min(maxMessageLength, catalogo.Length - startIndex));
+                    await ReplyAsync(messagePart);
+                    startIndex += maxMessageLength;
+                }
+            }
+            else
+            {
+                // Si el catálogo cabe en un solo mensaje, enviarlo directamente
+                await ReplyAsync($"**Estos son los pokemones disponibles:**\n{catalogo}");
+            }
+        }
+    }
+    [Command("elegirPokemon")]
+    public async Task ElegirPokemonAsync(string pokemonNombre)
+    {
+        // Obtener al entrenador del usuario actual
+        Entrenador entrenador = BattlesList.ObtenerEntrenadorPorUsuario(Context.User.Id);
+
+        if (entrenador != null && entrenador.EstaListo)
+        {
+            // Verificar si el nombre del Pokémon ingresado está en la selección del jugador
+            Pokemon pokemonSeleccionado = entrenador.UsarPokemon(pokemonNombre);
+            if (pokemonSeleccionado != null)
+            {
+                // Se seleccionó el Pokémon correctamente
+                await ReplyAsync($"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!");
+            
+                // Si ambos jugadores han elegido su Pokémon, puedes iniciar la batalla
+                // Verificar si ambos jugadores han elegido un Pokémon
+                // Si es necesario, puedes establecer la lógica aquí para iniciar la batalla
+            }
+            else
+            {
+                // El Pokémon no está en la selección
+                await ReplyAsync($"No tienes un Pokémon llamado {pokemonNombre} en tu selección.");
+            }
+        }
+        else
+        {
+            await ReplyAsync("Aún no has elegido todos tus Pokémon o no estás listo para la batalla.");
+        }
+    }
+
+
+
 }

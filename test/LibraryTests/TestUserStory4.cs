@@ -9,15 +9,15 @@ using NUnit.Framework;
 
 public class TestUserStory4
 {
-    private Fachada fachada;
+    private Fachada1 fachada1;
 
     // Este método se ejecutará antes de cada prueba, garantizando que se crea una nueva instancia de Fachada.
     [SetUp]
     public void SetUp()
     {
         DiccionarioTipos.GetInstancia(); // Inicializa el Singleton
-        fachada = Fachada.GetInstancia(); // Crea una nueva instancia de Fachada para cada test
-        fachada.LimpiarListaDeJugadores();
+        fachada1 = Fachada1.GetInstancia(); // Crea una nueva instancia de Fachada para cada test
+        fachada1.LimpiarListaDeJugadores();
     }
 
     [Test]

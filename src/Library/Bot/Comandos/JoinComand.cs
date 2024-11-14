@@ -19,8 +19,9 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync()
     {
+        ulong userId = Context.User.Id;  // Obtener el ID del usuario
         string displayName = CommandHelper.GetDisplayName(Context);
-        string result = Fachada.Instance.AddTrainerToWaitingList(displayName);
+        string result = Fachada.Instance.AddTrainerToWaitingList(userId,displayName);
         await ReplyAsync(result);
     }
 }

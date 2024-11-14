@@ -35,7 +35,7 @@ public class ListaDeEspera
     /// </param>
     /// <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool AgregarEntrenador(string displayName)
+    public bool AgregarEntrenador(ulong userId ,string displayName)
     {
         if (string.IsNullOrEmpty(displayName))
         {
@@ -43,7 +43,7 @@ public class ListaDeEspera
         }
         
         if (EncontrarEntrenador(displayName) != null) return false;
-        entrenadores.Add(new Entrenador(displayName));
+        entrenadores.Add(new Entrenador(displayName,userId));
         return true;
 
     }

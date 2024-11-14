@@ -5,21 +5,34 @@ namespace Proyecto_Pokemones_I;
 public static class LeerArchivo
 {
 
-    public static string RutaCatalogo = "/Users/andrespimienta/Desktop/Facultad/Programación 2/Proyecto/Pokemones3/src/Program/Catalogo";
+    public static string RutaCatalogo = "C:\\Repositorios\\Pokemones3\\src\\Program\\Catalogo";
 
-
-    public static void ImprimirCatalogoProcesado()
+    public static string ObtenerCatalogoProcesado()
     {
+        string catalogo = "";  // Variable para almacenar el catálogo formateado
+
+        if (!File.Exists(RutaCatalogo))
+        {
+            Console.WriteLine("Error: El archivo no existe en la ruta especificada.");
+            return "No se pudo encontrar el catálogo.";
+        }
+
         string[] lineas = File.ReadAllLines(RutaCatalogo);
         for (int indice = 2; indice < lineas.Length; indice++)
         {
             string[] datos = lineas[indice].Split(',');
-            Console.WriteLine("----------------------------------------------------------------------" +
-                              $"\nNombre: {datos[0]}, Tipo: {datos[1]}," +
-                              $"\nVida: {datos[2]}, Velocidad de Ataque: {datos[3]}");
+
+            // Construir el mensaje del catálogo, agregando los datos de cada Pokémon
+            catalogo += "----------------------------------------------------------------------\n" +
+                        $"Nombre: {datos[0]}, Tipo: {datos[1]},\n" +
+                        $"Vida: {datos[2]}, Velocidad de Ataque: {datos[3]}\n";
         }
-        Console.WriteLine("----------------------------------------------------------------------");
+        catalogo += "----------------------------------------------------------------------";  // Añadir línea final
+
+        return catalogo;  // Devolver el catálogo como un string
     }
+
+
     
     public static Pokemon? EncontrarPokemon(string nombrePokemon)
     {

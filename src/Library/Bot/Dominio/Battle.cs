@@ -28,4 +28,10 @@ public class Battle
         this.Player1 = player1;
         this.Player2 = player2;
     }
+    // Método que verifica si ambos entrenadores están listos
+    public bool EstanListos()
+    {
+        return Player1.EstaListo && Player2.EstaListo;
+    }
+
 }

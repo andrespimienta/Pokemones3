@@ -10,6 +10,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
+    public ulong UserId { get; set; }
     private ListaDeEspera ListaDeEspera { get; }
     
     private BattlesList BattlesList { get; }
@@ -55,11 +56,13 @@ public class Fachada
     /// </summary>
     /// <param name="displayName">El nombre del jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string AddTrainerToWaitingList(string displayName)
+    public string AddTrainerToWaitingList(ulong userId, string displayName)
     {
-        if (this.ListaDeEspera.AgregarEntrenador(displayName))
+        if (this.ListaDeEspera.AgregarEntrenador(userId,displayName))
         {
+            this.UserId = userId;
             return $"{displayName} agregado a la lista de espera";
+            
         }
         
         return $"{displayName} ya está en la lista de espera";
@@ -188,4 +191,5 @@ public class Fachada
             return opponent != null;
         }
     }
+    
 }

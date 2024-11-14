@@ -46,44 +46,44 @@ public class TestUserStory1
     public void Elige6pokemonesProgram()
     {
         DiccionarioTipos.GetInstancia(); // Instancia el Singleton y define el contenido de todos sus diccionarios
-        Fachada fachada = Fachada.GetInstancia();
-        fachada.LimpiarListaDeJugadores();
+        Fachada1 fachada1 = Fachada1.GetInstancia();
+        fachada1.LimpiarListaDeJugadores();
         
-        fachada.AgregarJugadorALista("A");
-        fachada.AgregarJugadorALista("B");
-        fachada.entrenadorConTurno = fachada.Jugadores[0];
+        fachada1.AgregarJugadorALista("A");
+        fachada1.AgregarJugadorALista("B");
+        fachada1.entrenadorConTurno = fachada1.Jugadores[0];
         
         for (int j = 0; j <= 1; j++)
         {
             // lo repite para los dos jugadores
-            fachada.ElegirPokemon("Pikachu");
-            fachada.ElegirPokemon("CHARMANDER");
-            fachada.ElegirPokemon("BULBASAUR");
-            fachada.ElegirPokemon("SQUIRTLE");
-            fachada.ElegirPokemon("EEVEE");
-            fachada.ElegirPokemon("JIGGLYPUFF");
-            fachada.CambiarTurno();
+            fachada1.ElegirPokemon("Pikachu");
+            fachada1.ElegirPokemon("CHARMANDER");
+            fachada1.ElegirPokemon("BULBASAUR");
+            fachada1.ElegirPokemon("SQUIRTLE");
+            fachada1.ElegirPokemon("EEVEE");
+            fachada1.ElegirPokemon("JIGGLYPUFF");
+            fachada1.CambiarTurno();
         }
         
         // Asegúrate de que hay exactamente 2 jugadores en la lista antes de contar
-        Assert.That(fachada.Jugadores.Count, Is.EqualTo(2));
+        Assert.That(fachada1.Jugadores.Count, Is.EqualTo(2));
 
         // Contador para el primer jugador
         int contadorPokemonesJugador1 = 0;
-        foreach (var pokemon in fachada.Jugadores[0].GetSeleccion())
+        foreach (var pokemon in fachada1.Jugadores[0].GetSeleccion())
         {
             contadorPokemonesJugador1++;
         }
 
         // Contador para el segundo jugador
         int contadorPokemonesJugador2 = 0;
-        foreach (var pokemon in fachada.Jugadores[1].GetSeleccion())
+        foreach (var pokemon in fachada1.Jugadores[1].GetSeleccion())
         {
             contadorPokemonesJugador2++;
         }
 
         // Asegurar que ambos jugadores tengan exactamente 6 Pokémon
-        Assert.That(contadorPokemonesJugador1, Is.EqualTo(6), $"El jugador {fachada.Jugadores[0].GetNombre()} no tiene 6 Pokémon.");
-        Assert.That(contadorPokemonesJugador2, Is.EqualTo(6), $"El jugador {fachada.Jugadores[1].GetNombre()} no tiene 6 Pokémon.");
+        Assert.That(contadorPokemonesJugador1, Is.EqualTo(6), $"El jugador {fachada1.Jugadores[0].GetNombre()} no tiene 6 Pokémon.");
+        Assert.That(contadorPokemonesJugador2, Is.EqualTo(6), $"El jugador {fachada1.Jugadores[1].GetNombre()} no tiene 6 Pokémon.");
     }
 }

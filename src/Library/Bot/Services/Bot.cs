@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Ucu.Poo.DiscordBot.Commands;
 
 namespace Ucu.Poo.DiscordBot.Services;
 
@@ -78,4 +79,24 @@ public class Bot : IBot
                 serviceProvider);
         }
     }
+
+    async Task IBot.StartAsync(ServiceProvider services)
+    {
+        string discordToken = configuration["DiscordToken"] ?? throw new Exception("Falta el token");
+
+        logger.LogInformation("Iniciando el con token {Token}", discordToken);
+
+        serviceProvider = services;
+
+        // Asegúrate de que el comando del catálogo se cargue correctamente
+        await commands.AddModuleAsync<PokemonNameCommand>(serviceProvider);
+
+        await commands.AddModulesAsync(Assembly.GetExecutingAssembly(), serviceProvider);
+
+        await client.LoginAsync(TokenType.Bot, discordToken);
+        await client.StartAsync();
+
+        client.MessageReceived += HandleCommandAsync;
+    }
+
 }

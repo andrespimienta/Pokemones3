@@ -5,13 +5,16 @@ namespace Proyecto_Pokemones_I;
 public class Entrenador
 {
     // Atributos:
+    
+    public ulong Id { get; set; } // ID de Discord para identificar al jugador
     private string nombre;
     private Pokemon? pokemonEnUso;
     private List<Pokemon> seleccionPokemones;
     private int pokemonesVivos;
     private List<IItems> listItems;
     public int TurnosRecargaAtkEspecial { get; set; }
-
+    public bool EstaListo { get; set; }  // Agregar el flag para saber si está listo
+    
     // Getters:
     public string GetNombre()
     {
@@ -65,8 +68,9 @@ public class Entrenador
     }
   
     // Constructor:
-    public Entrenador(string suNombre)
+    public Entrenador(string suNombre,ulong id)
     {
+        this.Id = id;
         this.nombre = suNombre;
         this.pokemonEnUso = null;
         this.seleccionPokemones = new List<Pokemon>();
@@ -74,6 +78,8 @@ public class Entrenador
         this.TurnosRecargaAtkEspecial = 2;      // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
         this.listItems = new List<IItems>();
         this.RecargarItems();
+        this.EstaListo = false;  // Inicialmente no está listo
+        
     }
 
     // Métodos:
@@ -94,20 +100,31 @@ public class Entrenador
             listItems.Add(curaTotal);
         }
     }
-
-    public void AñadirASeleccion(Pokemon elPokemon)
+    // Método para añadir Pokémon y comprobar si está listo
+    public void AñadirASeleccion(Pokemon pokemon)
     {
-        this.seleccionPokemones.Add(elPokemon);
+        if (seleccionPokemones.Count < 6)
+        {
+            seleccionPokemones.Add(pokemon);
+            if (seleccionPokemones.Count == 6)
+            {
+                EstaListo = true;  // Marcar como listo cuando se elijan 6 Pokémon
+            }
+        }
     }
-
     public void GuardarPokemon()
     {
         this.pokemonEnUso = null;
     }
 
-    public void UsarPokemon(Pokemon pokemonAUsar)
+    public Pokemon? UsarPokemon(string pokemonAUsar)
     {
-        this.pokemonEnUso = pokemonAUsar;
+        Pokemon result = null;
+        foreach (Pokemon pokemon in seleccionPokemones)
+        {
+            result = pokemon;
+        }
+        return result;
     }
 
     public string ListaDePokemones()
@@ -127,7 +144,7 @@ public class Entrenador
         Console.WriteLine();
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
-
+/*
     public bool UsarItem(string nombreItem)
     {
         bool result = false;
@@ -161,5 +178,6 @@ public class Entrenador
     public void AceptarVisitorPorTurno(VisitorPorTurno visitor)
     {
         visitor.VisitarEntrenador(this);
-    }
+    }*/
+    
 }

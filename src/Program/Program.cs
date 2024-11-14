@@ -13,7 +13,7 @@ public class Program
        // DemoFacade(); 
         DemoBot();
     }
-
+    /*
     private static void DemoFacade()
     {
         Console.WriteLine(Fachada.Instance.AddTrainerToWaitingList("player"));
@@ -22,7 +22,7 @@ public class Program
         Console.WriteLine(Fachada.Instance.StartBattle("player", "opponent"));
         Console.WriteLine(Fachada.Instance.GetAllTrainersWaiting());
     }
-
+*/
     private static void DemoBot()
     {
         BotLoader.LoadAsync().GetAwaiter().GetResult();
