@@ -119,10 +119,12 @@ public class Entrenador
 
     public Pokemon? UsarPokemon(string pokemonAUsar)
     {
+        string aux = pokemonAUsar.ToUpper();
         Pokemon result = null;
         foreach (Pokemon pokemon in seleccionPokemones)
-        {
-            result = pokemon;
+        { 
+            if(pokemon.GetNombre()==aux)
+            {result = pokemon;}
         }
         return result;
     }
