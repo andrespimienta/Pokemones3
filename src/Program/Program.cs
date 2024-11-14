@@ -3,6 +3,7 @@
 using Proyecto_Pokemones_I;
 using Ucu.Poo.DiscordBot.Domain;
 using Ucu.Poo.DiscordBot.Services;
+using Fachada = Ucu.Poo.DiscordBot.Domain.Fachada;
 
 
 public class Program
@@ -15,11 +16,11 @@ public class Program
 
     private static void DemoFacade()
     {
-        Console.WriteLine(Facade.Instance.AddTrainerToWaitingList("player"));
-        Console.WriteLine(Facade.Instance.AddTrainerToWaitingList("opponent"));
-        Console.WriteLine(Facade.Instance.GetAllTrainersWaiting());
-        Console.WriteLine(Facade.Instance.StartBattle("player", "opponent"));
-        Console.WriteLine(Facade.Instance.GetAllTrainersWaiting());
+        Console.WriteLine(Fachada.Instance.AddTrainerToWaitingList("player"));
+        Console.WriteLine(Fachada.Instance.AddTrainerToWaitingList("opponent"));
+        Console.WriteLine(Fachada.Instance.GetAllTrainersWaiting());
+        Console.WriteLine(Fachada.Instance.StartBattle("player", "opponent"));
+        Console.WriteLine(Fachada.Instance.GetAllTrainersWaiting());
     }
 
     private static void DemoBot()

@@ -20,7 +20,7 @@ public class LeaveCommand : ModuleBase<SocketCommandContext>
     public async Task ExecuteAsync()
     {
         string displayName = CommandHelper.GetDisplayName(Context);
-        string result = Facade.Instance.RemoveTrainerFromWaitingList(displayName);
+        string result = Fachada.Instance.EliminarEntrenadorDeListaEspera(displayName);
         await ReplyAsync(result);
     }
 }

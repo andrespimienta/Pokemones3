@@ -39,7 +39,7 @@ public class UserInfoCommand : ModuleBase<SocketCommandContext>
         
         string userName = displayName ?? CommandHelper.GetDisplayName(Context);
         
-        string result = Facade.Instance.TrainerIsWaiting(userName);
+        string result = Fachada.Instance.TrainerIsWaiting(userName);
         
         await ReplyAsync(result);
     }

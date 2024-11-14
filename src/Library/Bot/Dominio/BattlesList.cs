@@ -1,3 +1,5 @@
+using Proyecto_Pokemones_I;
+
 namespace Ucu.Poo.DiscordBot.Domain;
 
 /// <summary>
@@ -13,7 +15,7 @@ public class BattlesList
     /// <param name="player1">El primer jugador.</param>
     /// <param name="player2">El oponente.</param>
     /// <returns>La batalla creada.</returns>
-    public Battle AddBattle(string player1, string player2)
+    public Battle AddBattle(Entrenador player1, Entrenador player2)
     {
         var battle = new Battle(player1, player2);
         this.battles.Add(battle);

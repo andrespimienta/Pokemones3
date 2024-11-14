@@ -42,7 +42,7 @@ public class BattleCommand : ModuleBase<SocketCommandContext>
         string result;
         if (opponentUser != null)
         {
-            result = Facade.Instance.StartBattle(displayName, opponentUser.DisplayName);
+            result = Ucu.Poo.DiscordBot.Domain.Fachada.Instance.StartBattle(displayName, opponentUser.DisplayName);
             await Context.Message.Author.SendMessageAsync(result);
             await opponentUser.SendMessageAsync(result);
         }
