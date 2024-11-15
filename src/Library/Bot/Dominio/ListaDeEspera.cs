@@ -8,7 +8,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class ListaDeEspera
 {
-    private readonly List<Entrenador> entrenadores = new List<Entrenador>();
+    public readonly List<Entrenador> entrenadores = new List<Entrenador>();
 
     public int Count
     {
@@ -105,4 +105,6 @@ public class ListaDeEspera
 
         return this.entrenadores[0];
     }
+   
+    
 }

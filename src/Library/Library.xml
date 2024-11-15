@@ -18,18 +18,6 @@
             mensaje a la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.JoinCommand">
-            <summary>
-            Esta clase implementa el comando 'join' del bot. Este comando une al jugador
-            que envía el mensaje a la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.JoinCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'join'. Este comando une al jugador que envía el
-            mensaje a la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.LeaveCommand">
             <summary>
             Esta clase implementa el comando 'leave' del bot. Este comando remueve el
@@ -222,6 +210,12 @@
         <member name="T:Ucu.Poo.DiscordBot.Services.IBot">
             <summary>
             La interfaz del Bot de Discord para usar con inyección de dependencias.
+            </summary>
+        </member>
+        <member name="M:JoinCommand.ExecuteAsync">
+            <summary>
+            Implementa el comando 'join'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar y los empareja automáticamente si hay al menos dos.
             </summary>
         </member>
     </members>

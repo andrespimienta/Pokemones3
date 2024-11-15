@@ -11,7 +11,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 public class Fachada
 {
     public ulong UserId { get; set; }
-    private ListaDeEspera ListaDeEspera { get; }
+    public ListaDeEspera ListaDeEspera { get; }
     
     private BattlesList BattlesList { get; }
     
@@ -118,7 +118,7 @@ public class Fachada
     }
 
 
-    private string CrearBatalla(string playerDisplayName, string opponentDisplayName)
+    public string CrearBatalla(string playerDisplayName, string opponentDisplayName)
     {
         // Aunque playerDisplayName y opponentDisplayName no estén en la lista
         // esperando para jugar los removemos igual para evitar preguntar si
