@@ -219,12 +219,6 @@
             Esta clase implementa el bot de Discord.
             </summary>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Services.BotLoader">
-            <summary>
-            Esta clase ejecuta el bot de Discord hasta que en la terminal donde se
-            ejecuta el bot se oprime la tecla 'Q'.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Services.IBot">
             <summary>
             La interfaz del Bot de Discord para usar con inyección de dependencias.

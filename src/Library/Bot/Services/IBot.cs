@@ -1,3 +1,4 @@
+using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ucu.Poo.DiscordBot.Services;
@@ -10,4 +11,5 @@ public interface IBot
     Task StartAsync(ServiceProvider services);
 
     Task StopAsync();
+    
 }

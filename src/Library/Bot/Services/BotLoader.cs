@@ -1,56 +1,123 @@
+using System;
 using System.Reflection;
+using System.Threading.Tasks;
+using Discord;
+using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Ucu.Poo.DiscordBot.Services;
-
-/// <summary>
-/// Esta clase ejecuta el bot de Discord hasta que en la terminal donde se
-/// ejecuta el bot se oprime la tecla 'Q'.
-/// </summary>
-public static class BotLoader
+namespace Ucu.Poo.DiscordBot.Services
 {
-    public static async Task LoadAsync()
+    public static class BotLoader
     {
-        var configuration = new ConfigurationBuilder()
-            .AddUserSecrets(Assembly.GetExecutingAssembly())
-            .Build();
+        private static IBot? botInstance;
+        private static DiscordSocketClient? discordClient;
 
-        var serviceProvider = new ServiceCollection()
-            .AddLogging(options =>
-            {
-                options.ClearProviders();
-                options.AddConsole();
-            })
-            .AddSingleton<IConfiguration>(configuration)
-            .AddScoped<IBot, Bot>()
-            .BuildServiceProvider();
-
-        try
+        public static async Task LoadAsync()
         {
-            IBot bot = serviceProvider.GetRequiredService<IBot>();
+            var configuration = new ConfigurationBuilder()
+                .AddUserSecrets(Assembly.GetExecutingAssembly())
+                .Build();
 
-            await bot.StartAsync(serviceProvider);
+            var serviceProvider = new ServiceCollection()
+                .AddLogging(options =>
+                {
+                    options.ClearProviders();
+                    options.AddConsole();
+                })
+                .AddSingleton<IConfiguration>(configuration)
+                .AddScoped<IBot, Bot>()
+                .BuildServiceProvider();
 
-            Console.WriteLine("Conectado a Discord. Presione 'q' para salir...");
-
-            do
+            try
             {
-                var keyInfo = Console.ReadKey();
+                botInstance = serviceProvider.GetRequiredService<IBot>();
+                await botInstance.StartAsync(serviceProvider);
 
-                if (keyInfo.Key != ConsoleKey.Q) continue;
-                
-                Console.WriteLine("\nFinalizado");
-                await bot.StopAsync();
-                
-                return;
-            } while (true);
+                // Asigna el cliente de Discord para uso posterior
+                if (botInstance is Bot bot)
+                {
+                    discordClient = bot.client;
+
+                    // Escuchar el evento Ready
+                    discordClient.Ready += OnBotReady;
+                }
+
+                Console.WriteLine("Conectado a Discord. Presione 'q' para salir...");
+
+                do
+                {
+                    var keyInfo = Console.ReadKey();
+
+                    if (keyInfo.Key != ConsoleKey.Q) continue;
+
+                    Console.WriteLine("\nFinalizado");
+                    await botInstance.StopAsync();
+
+                    return;
+                } while (true);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                Environment.Exit(-1);
+            }
         }
-        catch (Exception exception)
+
+        // Método que se ejecuta cuando el bot está listo
+        public static async Task OnBotReady()
         {
-            Console.WriteLine(exception.Message);
-            Environment.Exit(-1);
+            Console.WriteLine("Bot está listo. Enviando mensaje de bienvenida...");
+            await SendWelcomeMessage();
+        }
+
+        public static async Task SendWelcomeMessage()
+        {
+            try
+            {
+                if (discordClient == null)
+                {
+                    Console.WriteLine("El cliente de Discord no está inicializado.");
+                    return;
+                }
+
+                string bienvenida = @"¡Bienvenidos al servidor de batalla de Pokémon! 🎮✨
+
+Aún no hay jugadores disponibles para comenzar la batalla, pero no te preocupes, ¡todos pueden unirse!
+
+Para unirte a la lista de espera y encontrar un oponente, simplemente escribe el comando `!join` y espera a ser emparejado con otro entrenador.
+
+Aquí están los pasos para participar:
+
+1. **Unirte a la lista de espera**: Usa el comando `!join` para ser añadido a la lista de espera.
+2. **Esperar un oponente**: Una vez que haya otro jugador disponible, serás emparejado para la batalla.
+3. **¡Comienza a luchar!**: Cuando ambos jugadores estén listos, la batalla comenzará.
+
+¡Buena suerte y que gane el mejor entrenador! 💥";
+
+                // Reemplaza con el ID de tu canal de texto
+                ulong channelId = 1301322498348159028;
+
+                var channel = discordClient.GetChannel(channelId) as IMessageChannel;
+
+                if (channel != null)
+                {
+                    await channel.SendMessageAsync(bienvenida);
+                    Console.WriteLine("Mensaje de bienvenida enviado.");
+                }
+                else
+                {
+                    Console.WriteLine("No se pudo encontrar el canal.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al enviar el mensaje de bienvenida: {ex.Message}");
+            }
         }
     }
 }
+
+
+

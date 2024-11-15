@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Discord;
+using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 using Ucu.Poo.DiscordBot.Domain;
 using Ucu.Poo.DiscordBot.Services;
@@ -10,9 +12,12 @@ public class Program
 {
     static void Main()
     {
-       // DemoFacade(); 
+        // DemoFacade(); 
         DemoBot();
+        // Ejecuta el código para enviar el mensaje
+
     }
+
     /*
     private static void DemoFacade()
     {
@@ -26,7 +31,10 @@ public class Program
     private static void DemoBot()
     {
         BotLoader.LoadAsync().GetAwaiter().GetResult();
+        BotLoader.OnBotReady();
     }
+
+  
 }
 /*
 // ANTES DE EMPEZAR RECUERDA IR A LA CLASE LEER ARCHIVO Y
