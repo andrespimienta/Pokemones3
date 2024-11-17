@@ -4,20 +4,6 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="T:Proyecto_Pokemones_I.Bot.Comandos.BattleCommand">
-            <summary>
-            Esta clase implementa el comando 'battle' del bot. Este comando une al
-            jugador que envía el mensaje con el oponente que se recibe como parámetro,
-            si lo hubiera, en una batalla; si no se recibe un oponente, lo une con
-            cualquiera que esté esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Bot.Comandos.BattleCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'battle'. Este comando une al jugador que envía el
-            mensaje a la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.LeaveCommand">
             <summary>
             Esta clase implementa el comando 'leave' del bot. Este comando remueve el
@@ -89,6 +75,11 @@
             Esta clase representa la lista de batallas en curso.
             </summary>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.Reset">
+            <summary>
+            Inicializa este singleton. Es necesario solo en los tests.
+            </summary>
+        </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(Proyecto_Pokemones_I.Entrenador,Proyecto_Pokemones_I.Entrenador)">
             <summary>
             Crea una nueva batalla entre dos jugadores.
@@ -136,7 +127,7 @@
             <param name="displayName">El jugador a remover.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.GetEntrenadoresEsperando">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.GetTrainerWaiting">
             <summary>
             Obtiene la lista de jugadores esperando.
             </summary>
@@ -147,14 +138,6 @@
             Determina si un jugador está esperando para jugar.
             </summary>
             <param name="displayName">El jugador.</param>
-            <returns>Un mensaje con el resultado.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.StartBattle(System.String,System.String)">
-            <summary>
-            Crea una batalla entre dos jugadores.
-            </summary>
-            <param name="playerDisplayName">El primer jugador.</param>
-            <param name="opponentDisplayName">El oponente.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.ListaDeEspera">

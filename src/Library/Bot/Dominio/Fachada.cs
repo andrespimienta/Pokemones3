@@ -22,7 +22,7 @@ public class Fachada
     private Fachada()
     {
         this.ListaDeEspera= new ListaDeEspera();
-        this.BattlesList = new BattlesList();
+        this.BattlesList = BattlesList.Instance;
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public class Fachada
     /// Obtiene la lista de jugadores esperando.
     /// </summary>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string GetEntrenadoresEsperando()
+    public string GetTrainerWaiting()
     {
         if (ListaDeEspera.Count == 0)
         {
@@ -118,7 +118,7 @@ public class Fachada
     }
 
 
-    public string CrearBatalla(string playerDisplayName, string opponentDisplayName)
+    public string StartBattle(string playerDisplayName, string opponentDisplayName)
     {
         // Aunque playerDisplayName y opponentDisplayName no estén en la lista
         // esperando para jugar los removemos igual para evitar preguntar si
@@ -133,7 +133,8 @@ public class Fachada
         
         return $"Comienza {playerDisplayName} vs {opponentDisplayName}";
     }
-
+    
+/*
     /// <summary>
     /// Crea una batalla entre dos jugadores.
     /// </summary>
@@ -190,6 +191,6 @@ public class Fachada
         {
             return opponent != null;
         }
-    }
+    }*/
     
 }

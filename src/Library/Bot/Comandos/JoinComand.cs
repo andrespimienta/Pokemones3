@@ -34,7 +34,7 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
             Entrenador player2 = ListaDeEspera.entrenadores[1];
 
             // Iniciar la batalla entre los dos jugadores
-            string battleResult = Fachada.Instance.CrearBatalla(player1.GetNombre(), player2.GetNombre());
+            string battleResult = Fachada.Instance.StartBattle(player1.GetNombre(), player2.GetNombre());
 
             // Notificar a ambos jugadores que han sido emparejados
             var user1 = Context.Guild.GetUser(player1.Id);
@@ -55,6 +55,7 @@ Para participar en la batalla, debes elegir 6 Pokémon de tu catálogo. Aquí es
 1. **Ver el catálogo de Pokémon**: Usa el comando `!catalogo` para ver todos los Pokémon disponibles.
 2. **Elegir un Pokémon**: Usa el comando `!agregarPokemon <nombreDelPokemon>` para añadirlo a tu equipo.
 3. **Elegir el Pokémon para la batalla**: Una vez que hayas seleccionado tus 6 Pokémon, utiliza el comando `!elegirPokemon <nombreDelPokemon>` para elegir tu Pokémon inicial.
+4. **Indicar que estás listo para la batalla: Usa el comando !battle para confirmar que has terminado de seleccionar tu Pokémon y estás listo para luchar.
 
 ¡Buena suerte y que gane el mejor entrenador! 💥";
 
