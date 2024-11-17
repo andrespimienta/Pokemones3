@@ -1,23 +1,31 @@
 using System.Collections.ObjectModel;
+using Proyecto_Pokemones_I;
 
 namespace Ucu.Poo.DiscordBot.Domain;
 
 /// <summary>
 /// Esta clase representa la lista de jugadores esperando para jugar.
 /// </summary>
-public class WaitingList
+public class ListaDeEspera
 {
-    private readonly List<Trainer> trainers = new List<Trainer>();
+    public readonly List<Entrenador> entrenadores = new List<Entrenador>();
 
     public int Count
     {
-        get { return this.trainers.Count; }
+        get { return this.entrenadores.Count; }
     }
 
-    public ReadOnlyCollection<Trainer> GetAllWaiting()
+    public string GetListaDeEspera()
     {
-        return this.trainers.AsReadOnly();
+        string result = "";
+        foreach (Entrenador entrenador in entrenadores)
+        {
+            result += entrenador.GetNombre() + " "; // O el delimitador que prefieras
+        }
+
+        return result.Trim(); // Elimina el último espacio en blanco innecesario
     }
+
     
     /// <summary>
     /// Agrega un jugador a la lista de espera.
@@ -27,15 +35,15 @@ public class WaitingList
     /// </param>
     /// <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool AddTrainer(string displayName)
+    public bool AgregarEntrenador(ulong userId ,string displayName)
     {
         if (string.IsNullOrEmpty(displayName))
         {
             throw new ArgumentException(nameof(displayName));
         }
         
-        if (this.FindTrainerByDisplayName(displayName) != null) return false;
-        trainers.Add(new Trainer(displayName));
+        if (EncontrarEntrenador(displayName) != null) return false;
+        entrenadores.Add(new Entrenador(displayName,userId));
         return true;
 
     }
@@ -48,11 +56,11 @@ public class WaitingList
     /// </param>
     /// <returns><c>true</c> si se remueve el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool RemoveTrainer(string displayName)
+    public bool EliminarEntrenador(string displayName)
     {
-        Trainer? trainer = this.FindTrainerByDisplayName(displayName);
+        Entrenador? trainer = this.EncontrarEntrenador(displayName);
         if (trainer == null) return false;
-        trainers.Remove(trainer);
+        entrenadores.Remove(trainer);
         return true;
 
     }
@@ -66,17 +74,19 @@ public class WaitingList
     /// </param>
     /// <returns>El jugador encontrado o <c>null</c> en caso contrario.
     /// </returns>
-    public Trainer? FindTrainerByDisplayName(string displayName)
+    public Entrenador? EncontrarEntrenador(string displayName)
     {
-        foreach (Trainer trainer in this.trainers)
+        Entrenador result = null;
+        foreach (Entrenador trainer in this.entrenadores)
         {
-            if (trainer.DisplayName == displayName)
-            {
-                return trainer;
+            
+            if (trainer.GetNombre() == displayName)
+            { 
+                result = trainer;
             }
         }
 
-        return null;
+        return result;
     }
 
     /// <summary>
@@ -86,13 +96,15 @@ public class WaitingList
     /// 
     /// </summary>
     /// <returns></returns>
-    public Trainer? GetAnyoneWaiting()
+    public Entrenador? GetAlguienEsperando()
     {
-        if (this.trainers.Count == 0)
+        if (this.entrenadores.Count == 0)
         {
             return null;
         }
 
-        return this.trainers[0];
+        return this.entrenadores[0];
     }
+   
+    
 }

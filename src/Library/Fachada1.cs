@@ -1,11 +1,11 @@
 using System.Runtime.InteropServices.JavaScript;
-
+/*
 namespace Proyecto_Pokemones_I;
 
-public class Fachada
+public class Fachada1
 {
     // (Esta clase es un Singleton)
-    private static Fachada instancia;
+    private static Fachada1 instancia;
     
     // Atributos:
     public List<Entrenador> Jugadores { get; private set; }
@@ -25,18 +25,18 @@ public class Fachada
     }
 
     // Constructor:
-    private Fachada()
+    private Fachada1()
     {
         Jugadores = new List<Entrenador>();
         visitorTurno = new VisitorPorTurno();
     }
 
     // Métodos: (En orden de aparición en la Batalla)
-    public static Fachada GetInstancia()
+    public static Fachada1 GetInstancia()
     {
         if (instancia == null)
         {
-            instancia = new Fachada();
+            instancia = new Fachada1();
         }
         return instancia;
     }
@@ -92,14 +92,7 @@ public class Fachada
         Jugadores.Clear();  // Limpia todos los jugadores de la lista
     }
     
-    public void MostrarCatalogo()
-    {
-        Console.WriteLine("======================================================================" +
-                          "\n*--------------* Estos son los pokemones disponibles: *--------------*\n" +
-                          "======================================================================");
-        LeerArchivo.ImprimirCatalogoProcesado();
-        Console.WriteLine("======================================================================");
-    }
+   
     
     public bool ElegirPokemon(string nombrePokemon)
     {
@@ -273,5 +266,5 @@ public class Fachada
 }
 
 
-    
+    */
 

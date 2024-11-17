@@ -1,33 +1,40 @@
+using Proyecto_Pokemones_I;
+
 namespace Ucu.Poo.DiscordBot.Domain;
 
 /// <summary>
 /// Esta clase recibe las acciones y devuelve los resultados que permiten
 /// implementar las historias de usuario. Otras clases que implementan el bot
-/// usan esta <see cref="Facade"/> pero no conocen el resto de las clases del
+/// usan esta <see cref="Fachada"/> pero no conocen el resto de las clases del
 /// dominio. Esta clase es un singleton.
 /// </summary>
-public class Facade
+public class Fachada
 {
-    private static Facade? _instance;
+    public ulong UserId { get; set; }
+    public ListaDeEspera ListaDeEspera { get; }
+    
+    private BattlesList BattlesList { get; }
+    
+    private static Fachada? _instance;
 
     // Este constructor privado impide que otras clases puedan crear instancias
     // de esta.
-    private Facade()
+    private Fachada()
     {
-        this.WaitingList = new WaitingList();
-        this.BattlesList = new BattlesList();
+        this.ListaDeEspera= new ListaDeEspera();
+        this.BattlesList = BattlesList.Instance;
     }
 
     /// <summary>
-    /// Obtiene la única instancia de la clase <see cref="Facade"/>.
+    /// Obtiene la única instancia de la clase <see cref="Fachada"/>.
     /// </summary>
-    public static Facade Instance
+    public static Fachada Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = new Facade();
+                _instance = new Fachada();
             }
 
             return _instance;
@@ -42,20 +49,20 @@ public class Facade
         _instance = null;
     }
     
-    private WaitingList WaitingList { get; }
-    
-    private BattlesList BattlesList { get; }
+   
 
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
     /// <param name="displayName">El nombre del jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string AddTrainerToWaitingList(string displayName)
+    public string AddTrainerToWaitingList(ulong userId, string displayName)
     {
-        if (this.WaitingList.AddTrainer(displayName))
+        if (this.ListaDeEspera.AgregarEntrenador(userId,displayName))
         {
+            this.UserId = userId;
             return $"{displayName} agregado a la lista de espera";
+            
         }
         
         return $"{displayName} ya está en la lista de espera";
@@ -66,9 +73,9 @@ public class Facade
     /// </summary>
     /// <param name="displayName">El jugador a remover.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string RemoveTrainerFromWaitingList(string displayName)
+    public string EliminarEntrenadorDeListaEspera(string displayName)
     {
-        if (this.WaitingList.RemoveTrainer(displayName))
+        if (ListaDeEspera.EliminarEntrenador(displayName))
         {
             return $"{displayName} removido de la lista de espera";
         }
@@ -82,18 +89,14 @@ public class Facade
     /// Obtiene la lista de jugadores esperando.
     /// </summary>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string GetAllTrainersWaiting()
+    public string GetTrainerWaiting()
     {
-        if (this.WaitingList.Count == 0)
+        if (ListaDeEspera.Count == 0)
         {
             return "No hay nadie esperando";
         }
 
-        string result = "Esperan: ";
-        foreach (Trainer trainer in this.WaitingList.GetAllWaiting())
-        {
-            result = result + trainer.DisplayName + "; ";
-        }
+        string result = ListaDeEspera.GetListaDeEspera();
         
         return result;
     }
@@ -105,7 +108,7 @@ public class Facade
     /// <returns>Un mensaje con el resultado.</returns>
     public string TrainerIsWaiting(string displayName)
     {
-        Trainer? trainer = this.WaitingList.FindTrainerByDisplayName(displayName);
+        Entrenador? trainer = this.ListaDeEspera.EncontrarEntrenador(displayName);
         if (trainer == null)
         {
             return $"{displayName} no está esperando";
@@ -115,18 +118,23 @@ public class Facade
     }
 
 
-    private string CreateBattle(string playerDisplayName, string opponentDisplayName)
+    public string StartBattle(string playerDisplayName, string opponentDisplayName)
     {
         // Aunque playerDisplayName y opponentDisplayName no estén en la lista
         // esperando para jugar los removemos igual para evitar preguntar si
         // están para luego removerlos.
-        this.WaitingList.RemoveTrainer(playerDisplayName);
-        this.WaitingList.RemoveTrainer(opponentDisplayName);
+        Entrenador jugador = ListaDeEspera.EncontrarEntrenador(playerDisplayName);
+        Entrenador oponente = ListaDeEspera.EncontrarEntrenador(opponentDisplayName);
         
-        BattlesList.AddBattle(playerDisplayName, opponentDisplayName);
+        BattlesList.AddBattle(jugador, oponente);
+        
+        ListaDeEspera.EliminarEntrenador(playerDisplayName);
+        ListaDeEspera.EliminarEntrenador(opponentDisplayName);
+        
         return $"Comienza {playerDisplayName} vs {opponentDisplayName}";
     }
-
+    
+/*
     /// <summary>
     /// Crea una batalla entre dos jugadores.
     /// </summary>
@@ -137,7 +145,7 @@ public class Facade
     {
         // El símbolo ? luego de Trainer indica que la variable opponent puede
         // referenciar una instancia de Trainer o ser null.
-        Trainer? opponent;
+        Entrenador opponent;
         
         if (!OpponentProvided() && !SomebodyIsWaiting())
         {
@@ -146,26 +154,26 @@ public class Facade
         
         if (!OpponentProvided()) // && SomebodyIsWaiting
         {
-            opponent = this.WaitingList.GetAnyoneWaiting();
+            opponent = ListaDeEspera.GetAlguienEsperando();
             
             // El símbolo ! luego de opponent indica que sabemos que esa
             // variable no es null. Estamos seguros porque SomebodyIsWaiting
             // retorna true si y solo si hay usuarios esperando y en tal caso
             // GetAnyoneWaiting nunca retorna null.
-            return this.CreateBattle(playerDisplayName, opponent!.DisplayName);
+            return CrearBatalla(playerDisplayName, opponent!.GetNombre());
         }
 
         // El símbolo ! luego de opponentDisplayName indica que sabemos que esa
         // variable no es null. Estamos seguros porque OpponentProvided hubiera
         // retorna false antes y no habríamos llegado hasta aquí.
-        opponent = this.WaitingList.FindTrainerByDisplayName(opponentDisplayName!);
+        opponent = ListaDeEspera.EncontrarEntrenador(opponentDisplayName!);
         
         if (!OpponentFound())
         {
             return $"{opponentDisplayName} no está esperando";
         }
         
-        return this.CreateBattle(playerDisplayName, opponent!.DisplayName);
+        return this.CrearBatalla(playerDisplayName, opponent!.GetNombre());
         
         // Funciones locales a continuación para mejorar la legibilidad
 
@@ -176,12 +184,13 @@ public class Facade
 
         bool SomebodyIsWaiting()
         {
-            return this.WaitingList.Count != 0;
+            return this.ListaDeEspera.Count != 0;
         }
 
         bool OpponentFound()
         {
             return opponent != null;
         }
-    }
+    }*/
+    
 }

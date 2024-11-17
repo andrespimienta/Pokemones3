@@ -1,24 +1,54 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Discord;
+using Discord.WebSocket;
 using Proyecto_Pokemones_I;
+using Ucu.Poo.DiscordBot.Domain;
+using Ucu.Poo.DiscordBot.Services;
+using Fachada = Ucu.Poo.DiscordBot.Domain.Fachada;
 
 
 public class Program
 {
     static void Main()
     {
-        // ANTES DE EMPEZAR RECUERDA IR A LA CLASE LEER ARCHIVO Y
+        // DemoFacade(); 
+        DemoBot();
+        // Ejecuta el código para enviar el mensaje
+
+    }
+
+    /*
+    private static void DemoFacade()
+    {
+        Console.WriteLine(Fachada.Instance.AddTrainerToWaitingList("player"));
+        Console.WriteLine(Fachada.Instance.AddTrainerToWaitingList("opponent"));
+        Console.WriteLine(Fachada.Instance.GetAllTrainersWaiting());
+        Console.WriteLine(Fachada.Instance.StartBattle("player", "opponent"));
+        Console.WriteLine(Fachada.Instance.GetAllTrainersWaiting());
+    }
+*/
+    private static void DemoBot()
+    {
+        BotLoader.LoadAsync().GetAwaiter().GetResult();
+        BotLoader.OnBotReady();
+    }
+
+  
+}
+/*
+// ANTES DE EMPEZAR RECUERDA IR A LA CLASE LEER ARCHIVO Y
         // MODIFICAR LA PRIMER STRING POR TU PATH ABSOLUTE
         // DEL ARCHIVO CATALOGOPOKEMONES.TXT
-        
+
         DiccionarioTipos.GetInstancia();    // Instancia el Singleton y define el contenido de todos sus diccionarios
         Fachada fachada = Fachada.GetInstancia();
         fachada.ListaDeEspera();
         fachada.MostrarCatalogo();
-        
+
         string input = "";
         bool seleccionExitosa;
-        
+
         for (int j= 0; j <= 1; j++) // lo repite para los dos jugadores
         {
             for (int i = 1; i <= 1; i++)
@@ -36,14 +66,14 @@ public class Program
                               "======================================================================");
             fachada.CambiarTurno();
         }
-        
+
 
         Console.WriteLine("----------------------------------------------------------------------" +
                           $"\n\n                ⚔ INICIA EL COMBATE ⚔                      \n\n" +
                           "----------------------------------------------------------------------");
         Entrenador entrenadorConTurno;
         entrenadorConTurno = fachada.GetJugadorConTurno();// para manejar mas facil la variable
-        for (int i = 0; i <= 1; i++) 
+        for (int i = 0; i <= 1; i++)
         {
             seleccionExitosa = false;
             do
@@ -58,18 +88,18 @@ public class Program
             fachada.CambiarTurno();
             entrenadorConTurno = fachada.GetJugadorConTurno();
         }
-       
+
         fachada.ChequearQuienEmpieza();
         Console.WriteLine($"{fachada.GetJugadorConTurno().GetNombre()} tiene al Pokemon más rápido");
-        
+
         do
         {
             fachada.InformeDeSituacion();
             bool operacionExitosa = false;// chequea si se realizó alguna operación con éxito
-                                          // de lo contrario muestra el menu principal de nuevo 
+                                          // de lo contrario muestra el menu principal de nuevo
             do
             {
-                
+
                 if (entrenadorConTurno.GetPokemonEnUso().GetVida() > 0)
                 {
                     Console.WriteLine("Elija una acción: ");
@@ -165,3 +195,4 @@ public class Program
     }
 }
 
+*/
