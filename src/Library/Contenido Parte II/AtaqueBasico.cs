@@ -1,52 +1,23 @@
 #nullable enable
-using System.ComponentModel.Design.Serialization;
+using Proyecto_Pokemones_I;
 
-namespace Proyecto_Pokemones_I;
+namespace Library.Contenido_Parte_II;
 
-public class AtaqueBasico:IAtaque
+/// <inheritdoc />
+public class AtaqueBasico:Ataque
 {
-    // Atributos:
-    private string nombre;
-    private string tipo;
-    private double daño;
-    private int precision;
-    private bool esEspecial;
-    private string? efectoNegativo;
-
-    // Getters:
-    public string GetNombre()
-    {
-        return this.nombre;
-    }
-    public string GetTipo()
-    {
-        return this.tipo;
-    }
-    public double GetDaño()
-    {
-        return this.daño;
-    }
-    public int GetPrecision()
-    {
-        return this.precision;
-    }
-    public bool GetEsEspecial()
-    {
-        return this.esEspecial;
-    }
-    public string? GetEfecto()
-    {
-        return this.efectoNegativo;
-    }
-
     // Constructor:
+    /// <summary>
+    /// Hereda de la clase abstracta "Ataque", sin efectos y esEspecial = false
+    /// </summary>
+    /// <param name="nombreAtaque"></param>
+    /// <param name="tipoAtaque"></param>
+    /// <param name="dañoAtaque"></param>
+    /// <param name="precisionAtaque"></param>
     public AtaqueBasico(string nombreAtaque, string tipoAtaque, double dañoAtaque, int precisionAtaque)
-    {
-        this.nombre = nombreAtaque;
-        this.tipo = tipoAtaque;
-        this.daño = dañoAtaque;
-        this.precision = precisionAtaque;
-        this.esEspecial = false;
-        this.efectoNegativo = null;
-    }
+        :base(nombreAtaque,tipoAtaque,dañoAtaque,precisionAtaque)
+        {
+            this.efectoNegativo = null;
+            this.esEspecial = false;
+        }
 }
