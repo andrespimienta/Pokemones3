@@ -14,39 +14,49 @@ namespace Ucu.Poo.DiscordBot.Commands;
 /// </summary>
 // ReSharper disable once UnusedType.Global
 public class PokemonNameCommand : ModuleBase<SocketCommandContext>
-{
-    
+{ 
     [Command("agregarPokemon")]
-    public async Task AgregarPokemonAsync(string pokemonNombre)
+public async Task AgregarPokemonAsync(string numerosIdentificadores)
+{
+    // Obtener el entrenador del usuario actual
+    Entrenador? entrenador = BattlesList.Instance.ObtenerEntrenadorPorUsuario(Context.User.Id); 
+
+    if (entrenador == null)
     {
-        // Obtener el entrenador del usuario actual
-        Entrenador? entrenador = BattlesList.Instance.ObtenerEntrenadorPorUsuario(Context.User.Id); 
+        await ReplyAsync("No se ha encontrado un entrenador asociado a tu cuenta. ¿Estás en medio de una batalla?");
+        return;
+    }
 
-        if (entrenador == null)
-        {
-            await ReplyAsync("No se ha encontrado un entrenador asociado a tu cuenta. ¿Estás en medio de una batalla?");
-            return;
-        }
-        // si ya lo eligio no lo puede elegir de nuevo.
-        if (entrenador.ListaDePokemones().Contains(pokemonNombre))
-        {
-            await ReplyAsync("Ya has seleccionado ese pokemon, elige otro.");
-            return;
-        }
-            
+    // Obtener la lista actual de Pokémon seleccionados por el entrenador
+    List<Pokemon> listaDePokemones = entrenador.seleccionPokemones;
 
-        // Obtener la lista actual de Pokémon seleccionados por el entrenador
-        List<Pokemon> listaDePokemones = entrenador.seleccionPokemones;
+    // Validar si ya ha seleccionado 6 Pokémon
+    if (listaDePokemones.Count >= 6)
+    {
+        await ReplyAsync("Ya has seleccionado el máximo de 6 Pokémon permitidos para la batalla.");
+        return;
+    }
 
-        // Validar si ya ha seleccionado 2 Pokémon
-        if (listaDePokemones.Count >= 2)
+    // Separar los números identificadores por coma y eliminar espacios
+    string[] identificadoresArray = numerosIdentificadores.Split(',');
+    HashSet<string> identificadoresUnicos = new HashSet<string>(identificadoresArray.Select(id => id.Trim()));
+
+    // Lista para almacenar Pokémon que no se encontraron
+    List<string> noEncontrados = new List<string>();
+    List<string> pokemonesAgregados = new List<string>();
+
+    // Recorrer los identificadores
+    foreach (string numeroIdentificador in identificadoresUnicos)
+    {
+        // Verificar si el entrenador ya seleccionó ese Pokémon
+        if (listaDePokemones.Any(p => p.NumeroIdentificador == numeroIdentificador))
         {
-            await ReplyAsync("Ya has seleccionado los 2 Pokémon permitidos para la batalla. No puedes agregar más.");
-            return;
+            await ReplyAsync($"Ya has seleccionado el Pokémon con identificador {numeroIdentificador}, elige otro.");
+            continue;
         }
 
         // Buscar el Pokémon en el catálogo
-        Pokemon? pokemon = LeerArchivo.EncontrarPokemon(pokemonNombre);
+        Pokemon? pokemon = LeerArchivo.EncontrarPokemon(numeroIdentificador);
 
         if (pokemon != null)
         {
@@ -59,23 +69,38 @@ public class PokemonNameCommand : ModuleBase<SocketCommandContext>
 
             // Añadir el Pokémon al equipo del entrenador
             entrenador.AñadirASeleccion(pokemon);
-
-            // Enviar mensaje de confirmación
-            await ReplyAsync($"¡El Pokémon {pokemon.GetNombre()} ha sido añadido a tu selección!");
-
-            // Avisar si ya ha completado la selección de 2 Pokémon
-            if (listaDePokemones.Count == 2)
-            {
-                await ReplyAsync("Has completado tu selección de Pokémon. Ahora elige un Pokemón para iniciar la batalla con !elegirPokemon");
-                
-            }
+            pokemonesAgregados.Add(pokemon.GetNombre());
         }
         else
         {
-            // Si no se encontró el Pokémon, mostrar un mensaje de error
-            await ReplyAsync($"No se encontró un Pokémon llamado {pokemonNombre} en el catálogo.");
+            // Si no se encontró el Pokémon, agregarlo a la lista de no encontrados
+            noEncontrados.Add(numeroIdentificador);
+        }
+
+        // Verificar si ya alcanzó el límite de 6 Pokémon
+        if (listaDePokemones.Count >= 6)
+        {
+            await ReplyAsync("Has completado tu selección de 6 Pokémon. ¡Estás listo para la batalla!\n");
+            break;
         }
     }
+
+    // Enviar un solo mensaje con todos los Pokémon agregados
+    if (pokemonesAgregados.Count > 0)
+    {
+        string agregadosMsg = string.Join(", ", pokemonesAgregados);
+        await ReplyAsync($"Los siguientes Pokémon han sido añadidos a tu selección: {agregadosMsg}\n"+
+                         "**Elegir el Pokémon para la batalla**: Una vez que hayas seleccionado tus 6 Pokémon, " +
+                         "utiliza el comando `!elegirPokemon  para ver la lista de tus Pokémon elegidos.**\n");
+    }
+
+    // Enviar mensaje de error si hay Pokémon que no se encontraron
+    if (noEncontrados.Count > 0)
+    {
+        string noEncontradosMsg = string.Join(", ", noEncontrados);
+        await ReplyAsync($"No se encontraron Pokémon con los identificadores: {noEncontradosMsg}.");
+    }
+}
 
     
     [Command("catalogo")]
@@ -108,37 +133,76 @@ public class PokemonNameCommand : ModuleBase<SocketCommandContext>
             else
             {
                 // Si el catálogo cabe en un solo mensaje, enviarlo directamente
-                await ReplyAsync($"**Estos son los pokemones disponibles:**\n{catalogo}");
+                await ReplyAsync($"**Estos son los pokemones disponibles:**\n{catalogo}\n");
+                
             }
         }
     }
+    
     [Command("elegirPokemon")]
-    public async Task ElegirPokemonAsync(string pokemonNombre)
+    public async Task ElegirPokemonAsync()
     {
         // Obtener al entrenador del usuario actual
         Entrenador entrenador = BattlesList.Instance.ObtenerEntrenadorPorUsuario(Context.User.Id);
 
-        if (entrenador != null )
+        if (entrenador != null)
         {
-            // Verificar si el nombre del Pokémon ingresado está en la selección del jugador
-            Pokemon pokemonSeleccionado = entrenador.UsarPokemon(pokemonNombre);
-            if (pokemonSeleccionado != null)
+            List<Pokemon> seleccionPokemones = entrenador.seleccionPokemones;
+
+            if (seleccionPokemones.Count == 0)
             {
-                // Se seleccionó el Pokémon correctamente
-                await ReplyAsync($"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla! Inicia la batalla escribiendo !battle");
-            
-                // Si ambos jugadores han elegido su Pokémon, puedes iniciar la batalla
-                // Verificar si ambos jugadores han elegido un Pokémon
-                // Si es necesario, puedes establecer la lógica aquí para iniciar la batalla
+                await ReplyAsync("No tienes Pokémon en tu selección.");
+                return;
             }
-            else
+
+            // Mostrar los Pokémon disponibles de forma numerada
+            StringBuilder respuesta = new StringBuilder("Pokémon disponibles en tu selección:\n"+
+                                                        "**Elige uno de tus pokemones con el comando !usar <numero identiicador del pokemon de tu lista>**\n");
+            for (int i = 0; i < seleccionPokemones.Count; i++)
             {
-                // El Pokémon no está en la selección
-                await ReplyAsync($"No tienes un Pokémon llamado {pokemonNombre} en tu selección.");
+                respuesta.AppendLine($"{i + 1}. {seleccionPokemones[i].GetNombre()}");
             }
+
+            await ReplyAsync(respuesta.ToString());
         }
-        
+        else
+        {
+            await ReplyAsync("No se ha encontrado un entrenador asociado a tu cuenta.");
+        }
     }
+
+    [Command("usar")]
+    public async Task UsarPokemonAsync(int numero)
+    {
+        // Obtener al entrenador del usuario actual
+        Entrenador entrenador = BattlesList.Instance.ObtenerEntrenadorPorUsuario(Context.User.Id);
+
+        if (entrenador != null)
+        {
+            List<Pokemon> seleccionPokemones = entrenador.seleccionPokemones;
+
+            // Validar si el número ingresado es válido
+            if (numero < 1 || numero > seleccionPokemones.Count)
+            {
+                await ReplyAsync($"Por favor, ingresa un número válido entre 1 y {seleccionPokemones.Count}.");
+                return;
+            }
+
+            // Seleccionar el Pokémon basado en el número ingresado
+            Pokemon pokemonSeleccionado = seleccionPokemones[numero - 1];
+
+            // Usar el Pokémon seleccionado
+            entrenador.pokemonEnUso = pokemonSeleccionado;
+
+            await ReplyAsync($"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!\n"+
+                              "**Indicar que estás listo para la batalla: Usa el comando !battle para confirmas que estás listo para luchar.**");
+        }
+        else
+        {
+            await ReplyAsync("No se ha encontrado un entrenador asociado a tu cuenta.");
+        }
+    }
+
 
 
 

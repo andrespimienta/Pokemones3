@@ -53,9 +53,8 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
 Para participar en la batalla, debes elegir 6 Pokémon de tu catálogo. Aquí están los pasos:
 
 1. **Ver el catálogo de Pokémon**: Usa el comando `!catalogo` para ver todos los Pokémon disponibles.
-2. **Elegir un Pokémon**: Usa el comando `!agregarPokemon <nombreDelPokemon>` para añadirlo a tu equipo.
-3. **Elegir el Pokémon para la batalla**: Una vez que hayas seleccionado tus 6 Pokémon, utiliza el comando `!elegirPokemon <nombreDelPokemon>` para elegir tu Pokémon inicial.
-4. **Indicar que estás listo para la batalla: Usa el comando !battle para confirmar que has terminado de seleccionar tu Pokémon y estás listo para luchar.
+2. **Elegir un Pokémon**: Usa el comando `!agregarPokemon <numero identiicador del pokemon>` para añadirlo a tu equipo. (Puedes elegir mas de uno a la vez, ejemplo !agregarPokemon 1,2,3,4,5,6
+
 
 ¡Buena suerte y que gane el mejor entrenador! 💥";
 
