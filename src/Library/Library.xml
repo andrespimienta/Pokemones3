@@ -201,5 +201,30 @@
             mensaje a la lista de jugadores esperando para jugar y los empareja automáticamente si hay al menos dos.
             </summary>
         </member>
+        <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
+            <inheritdoc />
+        </member>
+        <member name="M:Library.Contenido_Parte_II.AtaqueBasico.#ctor(System.String,System.String,System.Double,System.Int32)">
+            <summary>
+            Hereda de la clase abstracta "Ataque", sin efectos y esEspecial = false
+            </summary>
+            <param name="nombreAtaque"></param>
+            <param name="tipoAtaque"></param>
+            <param name="dañoAtaque"></param>
+            <param name="precisionAtaque"></param>
+        </member>
+        <member name="T:Library.Contenido_Parte_II.AtaqueEspecial">
+            <inheritdoc />
+        </member>
+        <member name="M:Library.Contenido_Parte_II.AtaqueEspecial.#ctor(System.String,System.String,System.Double,System.Int32,System.String)">
+            <summary>
+            Hereda de la clase abstracta "Ataque", con un efecto y esEspecial = true
+            </summary>
+            <param name="nombreAtaque"></param>
+            <param name="tipoAtaque"></param>
+            <param name="dañoAtaque"></param>
+            <param name="precisionAtaque"></param>
+            <param name="efecto"></param>
+        </member>
     </members>
 </doc>
