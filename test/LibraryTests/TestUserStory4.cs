@@ -1,3 +1,4 @@
+using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
 
@@ -28,7 +29,7 @@ public class TestUserStory4
     {
         AtaqueBasico rayo = new AtaqueBasico("RAYO", "ELÉCTRICO", 10, 100);
         AtaqueBasico hidrobomba = new AtaqueBasico("HIDROBOMBA", "AGUA", 10, 100);
-        List<IAtaque> pikachuataques = new List<IAtaque>();
+        List<Ataque> pikachuataques = new List<Ataque>();
         pikachuataques.Add(rayo);
         pikachuataques.Add(hidrobomba);
 
@@ -55,7 +56,7 @@ public class TestUserStory4
     {
         AtaqueBasico rayo = new AtaqueBasico("RAYO", "ELÉCTRICO", 10, 100);
         AtaqueBasico hidrobomba = new AtaqueBasico("HIDROBOMBA", "AGUA", 10, 100);
-        List<IAtaque> pikachuataques = new List<IAtaque>();
+        List<Ataque> pikachuataques = new List<Ataque>();
         pikachuataques.Add(rayo);
         pikachuataques.Add(hidrobomba);
 
@@ -82,7 +83,7 @@ public class TestUserStory4
     {
         AtaqueBasico rayo = new AtaqueBasico("RAYO", "ELÉCTRICO", 10, 100);
         AtaqueBasico hidrobomba = new AtaqueBasico("HIDROBOMBA", "AGUA", 10, 100);
-        List<IAtaque> pikachuataques = new List<IAtaque>();
+        List<Ataque> pikachuataques = new List<Ataque>();
         pikachuataques.Add(rayo);
         pikachuataques.Add(hidrobomba);
 

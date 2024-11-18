@@ -1,3 +1,4 @@
+using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
 
@@ -14,7 +15,7 @@ public class TestUserStory1
 
         // Crear un ataque y una lista de ataques
         AtaqueBasico ataque = new AtaqueBasico("IMPACTRUENO", "ELÉCTRICO", 40, 90);
-        List<IAtaque> Ataques = new List<IAtaque> { ataque };
+        List<Ataque> Ataques = new List<Ataque> { ataque };
 
         // Crear 6 Pokémon y añadirlos a la selección del entrenador
         Pokemon p1 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques);
