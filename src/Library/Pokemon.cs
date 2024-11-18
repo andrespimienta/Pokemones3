@@ -4,6 +4,7 @@ namespace Proyecto_Pokemones_I;
 
 public class Pokemon
 {
+    public string NumeroIdentificador { get; private set; }
     private string nombre;
     private string tipo;
     private double vida;
@@ -43,8 +44,9 @@ public class Pokemon
     
 
     //Constructor:
-    public Pokemon(string pokeNombre, string pokeTipo, double pokeVida, double pokeVelAtaque, List<IAtaque> ataques)
+    public Pokemon(string pokeNombre, string pokeTipo, double pokeVida, double pokeVelAtaque, List<IAtaque> ataques,string Identificador)
     {
+        NumeroIdentificador= Identificador;
         this.nombre = pokeNombre;
         this.tipo = pokeTipo;
         this.vida = pokeVida;
