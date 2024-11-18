@@ -1,22 +1,12 @@
 namespace Proyecto_Pokemones_I;
 
-public class DiccionarioTipos 
+public static class DiccionarioTipos // Clase estática que contiene los datos sobre los tipos
 {
-    // Clase Singleton, no es necesario instanciarla más de una vez
-    private static DiccionarioTipos instancia;
     private static Dictionary<string, List<string>> diccDebilContra = new Dictionary<string, List<string>>();
     private static Dictionary<string, List<string>> diccResistenteContra= new Dictionary<string, List<string>>();
     private static Dictionary<string, List<string>> diccInmuneContra= new Dictionary<string, List<string>>();
-
+    
     // Métodos:
-    public static DiccionarioTipos GetInstancia()
-    {
-        if (instancia == null)
-        {
-            instancia = new DiccionarioTipos();
-        }
-        return instancia;
-    }
     public static List<string> GetDebilContra(string tipo)
     {
         return diccDebilContra[tipo];
@@ -31,7 +21,7 @@ public class DiccionarioTipos
     }
 
     // Constructor:
-    private DiccionarioTipos()
+    static DiccionarioTipos()
     {
         // Formato: (Clave <Tipo>) Débil/Resistente/Inmune contra (Valor <Lista Tipos>)
         // Inmunidades:
