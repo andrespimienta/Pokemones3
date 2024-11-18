@@ -11,7 +11,6 @@ public class TestUserStory_9_10_11
     public void AgregarJugadroLista()
     {
         // Arrange
-        DiccionarioTipos.GetInstancia(); // Instancia el Singleton y define el contenido de todos sus diccionarios
         Fachada1 fachada1 = Fachada1.GetInstancia();
         fachada1.LimpiarListaDeJugadores(); // Limpia la lista de jugadores
 
@@ -31,7 +30,6 @@ public class TestUserStory_9_10_11
     public void TestListaDeJugadoresEsperando()
     {
         // Arrange
-        DiccionarioTipos.GetInstancia(); // Instancia el Singleton y define el contenido de todos sus diccionarios
         Fachada1 fachada1 = Fachada1.GetInstancia();
         fachada1.LimpiarListaDeJugadores(); // Asegúrate de empezar con una lista limpia
     
@@ -58,7 +56,6 @@ public class TestUserStory_9_10_11
 public void TestIniciarBatalla()
 {
     // Arrange
-    DiccionarioTipos.GetInstancia(); // Instancia el Singleton y define el contenido de todos sus diccionarios
     Fachada1 fachada1 = Fachada1.GetInstancia();
     fachada1.LimpiarListaDeJugadores();
 

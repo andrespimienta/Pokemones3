@@ -46,7 +46,6 @@ public class TestUserStory1
     [Test]
     public void Elige6pokemonesProgram()
     {
-        DiccionarioTipos.GetInstancia(); // Instancia el Singleton y define el contenido de todos sus diccionarios
         Fachada1 fachada1 = Fachada1.GetInstancia();
         fachada1.LimpiarListaDeJugadores();
         

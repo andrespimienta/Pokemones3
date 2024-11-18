@@ -16,9 +16,8 @@ public class TestUserStory6
     [SetUp]
     public void SetUp()
     {
-        DiccionarioTipos.GetInstancia(); // Inicializa el Singleton
         fachada1 = Fachada1.GetInstancia(); // Crea una nueva instancia de Fachada para cada test
-        fachada1.LimpiarListaDeJugadores();
+        fachada1.LimpiarLisdores();taDeJuga
     }
 
     [Test]

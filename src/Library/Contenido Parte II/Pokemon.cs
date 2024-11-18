@@ -64,7 +64,6 @@ public class Pokemon
     
     public void RecibirDaño(Ataque ataqueRecibido)
     {
-        DiccionarioTipos.GetInstancia();
         List<string> listaDebilidades = DiccionarioTipos.GetDebilContra(this.tipo);
         List<string> listaResistencias = DiccionarioTipos.GetResistenteContra(this.tipo);
         List<string> listaInmunidades = DiccionarioTipos.GetInmuneContra(this.tipo);
