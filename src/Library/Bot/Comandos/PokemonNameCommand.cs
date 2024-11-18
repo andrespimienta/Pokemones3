@@ -66,7 +66,7 @@ public class PokemonNameCommand : ModuleBase<SocketCommandContext>
             // Avisar si ya ha completado la selección de 2 Pokémon
             if (listaDePokemones.Count == 2)
             {
-                await ReplyAsync("Has completado tu selección de Pokémon. ¡Estás listo para la batalla!");
+                await ReplyAsync("Has completado tu selección de Pokémon. Ahora elige un Pokemón para iniciar la batalla con !elegirPokemon");
                 
             }
         }
@@ -125,7 +125,7 @@ public class PokemonNameCommand : ModuleBase<SocketCommandContext>
             if (pokemonSeleccionado != null)
             {
                 // Se seleccionó el Pokémon correctamente
-                await ReplyAsync($"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!");
+                await ReplyAsync($"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla! Inicia la batalla escribiendo !battle");
             
                 // Si ambos jugadores han elegido su Pokémon, puedes iniciar la batalla
                 // Verificar si ambos jugadores han elegido un Pokémon
