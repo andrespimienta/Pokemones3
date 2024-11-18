@@ -42,10 +42,12 @@ namespace Ucu.Poo.DiscordBot.Commands
             await ReplyAsync($"{Context.User.Username} está listo para la batalla.");
 
             // Comprobar si ambos jugadores están listos
-            if (batalla.Player1.EstaListo && batalla.Player2.EstaListo)
-            {
-                IniciarBatallaAsync(batalla);
-                entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
+            if (batalla.EstanListos()==true)
+            { 
+                Entrenador player1 = batalla.Player1;
+                Entrenador player2 = batalla.Player2;
+                IniciarBatallaAsync(batalla,player1,player2);
+                //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
             }
             else
             {
@@ -54,12 +56,12 @@ namespace Ucu.Poo.DiscordBot.Commands
             }
         }
 
-        private async Task IniciarBatallaAsync(Battle batalla)
+        private async Task IniciarBatallaAsync(Battle batalla, Entrenador player1, Entrenador player2)
         {
             // Obtener el ID del jugador actual usando su ID de Discord
            
-            Entrenador player1 = batalla.Player1;
-            Entrenador player2 = batalla.Player2;
+           // Entrenador player1 = batalla.Player1;
+           // Entrenador player2 = batalla.Player2;
             
             var user1 = Context.Guild.GetUser(player1.Id);
             var user2 = Context.Guild.GetUser(player2.Id);
