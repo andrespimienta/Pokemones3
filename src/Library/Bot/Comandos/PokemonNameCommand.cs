@@ -27,6 +27,13 @@ public class PokemonNameCommand : ModuleBase<SocketCommandContext>
             await ReplyAsync("No se ha encontrado un entrenador asociado a tu cuenta. ¿Estás en medio de una batalla?");
             return;
         }
+        // si ya lo eligio no lo puede elegir de nuevo.
+        if (entrenador.ListaDePokemones().Contains(pokemonNombre))
+        {
+            await ReplyAsync("Ya has seleccionado ese pokemon, elige otro.");
+            return;
+        }
+            
 
         // Obtener la lista actual de Pokémon seleccionados por el entrenador
         List<Pokemon> listaDePokemones = entrenador.seleccionPokemones;
