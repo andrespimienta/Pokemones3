@@ -5,7 +5,7 @@ namespace Proyecto_Pokemones_I;
 public static class LeerArchivo
 {
 
-    public static string RutaCatalogo = "C:\\Repositorios\\Pokemones3\\src\\Program\\Catalogo";
+    public static string RutaCatalogo = "/Users/andrespimienta/Desktop/Facultad/Programación 2/Proyecto/Pokemones3/src/Program/Catalogo";
 
     public static string ObtenerCatalogoProcesado()
     {
