@@ -13,13 +13,13 @@ namespace Ucu.Poo.DiscordBot.Commands
         private static BattlesList battlesList = BattlesList.Instance;
         private static int entrenadoresListos = 0;
 
-        [Command("battle")]
+        [Command("StartBattle")]
         public async Task BattleAsync()
         {
             // Obtener el ID del jugador actual usando su ID de Discord
             ulong usuarioId = Context.User.Id;
             Battle batalla = battlesList.GetBattle(usuarioId);
-            
+
             Entrenador? entrenador = battlesList.ObtenerEntrenadorPorUsuario(usuarioId);
 
             if (entrenador == null)
@@ -42,10 +42,11 @@ namespace Ucu.Poo.DiscordBot.Commands
             await ReplyAsync($"{Context.User.Username} está listo para la batalla.");
 
             // Comprobar si ambos jugadores están listos
-            if (batalla.EstanListos()==true)
-            { 
-                IniciarBatallaAsync(batalla);
-                
+            if (batalla.EstanListos() == true)
+            {
+                Entrenador player1 = batalla.Player1;
+                Entrenador player2 = batalla.Player2;
+                IniciarBatallaAsync(batalla, player1, player2);
                 //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
             }
             else
@@ -53,6 +54,11 @@ namespace Ucu.Poo.DiscordBot.Commands
                 // Si solo uno está listo, esperar al oponente
                 await ReplyAsync("Esperando a que tu oponente esté listo...");
             }
+        }
+
+        private void IniciarBatallaAsync(Battle batalla, Entrenador player1, Entrenador player2)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task IniciarBatallaAsync(Battle batalla)
@@ -131,5 +137,4 @@ namespace Ucu.Poo.DiscordBot.Commands
         }
     }
 }
-
 
