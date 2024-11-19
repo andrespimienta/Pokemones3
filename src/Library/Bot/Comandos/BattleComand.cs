@@ -44,9 +44,8 @@ namespace Ucu.Poo.DiscordBot.Commands
             // Comprobar si ambos jugadores están listos
             if (batalla.EstanListos()==true)
             { 
-                Entrenador player1 = batalla.Player1;
-                Entrenador player2 = batalla.Player2;
-                IniciarBatallaAsync(batalla,player1,player2);
+                IniciarBatallaAsync(batalla);
+                
                 //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
             }
             else
@@ -56,26 +55,32 @@ namespace Ucu.Poo.DiscordBot.Commands
             }
         }
 
-        private async Task IniciarBatallaAsync(Battle batalla, Entrenador player1, Entrenador player2)
+        private async Task IniciarBatallaAsync(Battle batalla)
         {
             // Obtener el ID del jugador actual usando su ID de Discord
-           
-           // Entrenador player1 = batalla.Player1;
-           // Entrenador player2 = batalla.Player2;
-            
-            var user1 = Context.Guild.GetUser(player1.Id);
-            var user2 = Context.Guild.GetUser(player2.Id);
-            
-            await user2.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
+            Console.WriteLine("Obteniendo usuario..1.");
+            var user1 = batalla.Player1.GetSocketGuildUser();
+            Console.WriteLine("Usuario obtenido.2");
+
+            Console.WriteLine("Obteniendo usuario...2");
+            var user2 = batalla.Player2.GetSocketGuildUser();
+            Console.WriteLine("Usuario obtenido.2");
+
             await user1.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
-            
+            await user2.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
+
             await ChequearQuienEmpieza(batalla);
         }
 
         private async Task ChequearQuienEmpieza(Battle batalla)
         {
-            var user1 = Context.Guild.GetUser(batalla.Player1.Id);
-            var user2 = Context.Guild.GetUser(batalla.Player2.Id);
+            Console.WriteLine("Obteniendo usuario..1.");
+            var user1 = batalla.Player1.GetSocketGuildUser();
+            Console.WriteLine("Usuario obtenido.2");
+
+            Console.WriteLine("Obteniendo usuario...2");
+            var user2 = batalla.Player2.GetSocketGuildUser();
+            Console.WriteLine("Usuario obtenido.2");
 
             Pokemon pokemonJugador1 = batalla.Player1.GetPokemonEnUso();
             Pokemon pokemonJugador2 = batalla.Player2.GetPokemonEnUso();
