@@ -10,9 +10,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-    public ulong UserId { get; set; }
-    public ListaDeEspera ListaDeEspera { get; }
-    
+    public ListaDeEspera WaitingList { get; private set; }
     private BattlesList BattlesList { get; }
     
     private static Fachada? _instance;
@@ -21,7 +19,7 @@ public class Fachada
     // de esta.
     private Fachada()
     {
-        this.ListaDeEspera= new ListaDeEspera();
+        this.WaitingList = ListaDeEspera.Instance;
         this.BattlesList = BattlesList.Instance;
     }
 
@@ -58,10 +56,9 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public string AddTrainerToWaitingList(ulong userId, string displayName)
     {
-        if (this.ListaDeEspera.AgregarEntrenador(userId,displayName))
+        if (WaitingList.AgregarEntrenador(userId,displayName))
         {
-            this.UserId = userId;
-            return $"{displayName} agregado a la lista de espera";
+           return $"{displayName} agregado a la lista de espera";
             
         }
         
@@ -75,7 +72,7 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public string EliminarEntrenadorDeListaEspera(string displayName)
     {
-        if (ListaDeEspera.EliminarEntrenador(displayName))
+        if (WaitingList.EliminarEntrenador(displayName))
         {
             return $"{displayName} removido de la lista de espera";
         }
@@ -91,12 +88,12 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public string GetTrainerWaiting()
     {
-        if (ListaDeEspera.Count == 0)
+        if (WaitingList.Count == 0)
         {
             return "No hay nadie esperando";
         }
 
-        string result = ListaDeEspera.GetListaDeEspera();
+        string result = WaitingList.GetListaDeEspera();
         
         return result;
     }
@@ -108,7 +105,7 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public string TrainerIsWaiting(string displayName)
     {
-        Entrenador? trainer = this.ListaDeEspera.EncontrarEntrenador(displayName);
+        Entrenador? trainer = WaitingList.EncontrarEntrenador(displayName);
         if (trainer == null)
         {
             return $"{displayName} no está esperando";
@@ -123,74 +120,15 @@ public class Fachada
         // Aunque playerDisplayName y opponentDisplayName no estén en la lista
         // esperando para jugar los removemos igual para evitar preguntar si
         // están para luego removerlos.
-        Entrenador jugador = ListaDeEspera.EncontrarEntrenador(playerDisplayName);
-        Entrenador oponente = ListaDeEspera.EncontrarEntrenador(opponentDisplayName);
+        Entrenador jugador = WaitingList.EncontrarEntrenador(playerDisplayName);
+        Entrenador oponente = WaitingList.EncontrarEntrenador(opponentDisplayName);
         
         BattlesList.AddBattle(jugador, oponente);
         
-        ListaDeEspera.EliminarEntrenador(playerDisplayName);
-        ListaDeEspera.EliminarEntrenador(opponentDisplayName);
+        WaitingList.EliminarEntrenador(playerDisplayName);
+        WaitingList.EliminarEntrenador(opponentDisplayName);
         
         return $"Comienza {playerDisplayName} vs {opponentDisplayName}";
     }
-    
-/*
-    /// <summary>
-    /// Crea una batalla entre dos jugadores.
-    /// </summary>
-    /// <param name="playerDisplayName">El primer jugador.</param>
-    /// <param name="opponentDisplayName">El oponente.</param>
-    /// <returns>Un mensaje con el resultado.</returns>
-    public string StartBattle(string playerDisplayName, string? opponentDisplayName)
-    {
-        // El símbolo ? luego de Trainer indica que la variable opponent puede
-        // referenciar una instancia de Trainer o ser null.
-        Entrenador opponent;
-        
-        if (!OpponentProvided() && !SomebodyIsWaiting())
-        {
-            return "No hay nadie esperando";
-        }
-        
-        if (!OpponentProvided()) // && SomebodyIsWaiting
-        {
-            opponent = ListaDeEspera.GetAlguienEsperando();
-            
-            // El símbolo ! luego de opponent indica que sabemos que esa
-            // variable no es null. Estamos seguros porque SomebodyIsWaiting
-            // retorna true si y solo si hay usuarios esperando y en tal caso
-            // GetAnyoneWaiting nunca retorna null.
-            return CrearBatalla(playerDisplayName, opponent!.GetNombre());
-        }
-
-        // El símbolo ! luego de opponentDisplayName indica que sabemos que esa
-        // variable no es null. Estamos seguros porque OpponentProvided hubiera
-        // retorna false antes y no habríamos llegado hasta aquí.
-        opponent = ListaDeEspera.EncontrarEntrenador(opponentDisplayName!);
-        
-        if (!OpponentFound())
-        {
-            return $"{opponentDisplayName} no está esperando";
-        }
-        
-        return this.CrearBatalla(playerDisplayName, opponent!.GetNombre());
-        
-        // Funciones locales a continuación para mejorar la legibilidad
-
-        bool OpponentProvided()
-        {
-            return !string.IsNullOrEmpty(opponentDisplayName);
-        }
-
-        bool SomebodyIsWaiting()
-        {
-            return this.ListaDeEspera.Count != 0;
-        }
-
-        bool OpponentFound()
-        {
-            return opponent != null;
-        }
-    }*/
-    
+ 
 }

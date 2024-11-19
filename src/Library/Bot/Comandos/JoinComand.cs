@@ -23,44 +23,5 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
         // Agregar al jugador a la lista de espera usando tu método existente
         string result = Fachada.Instance.AddTrainerToWaitingList(userId, displayName);
         await ReplyAsync(result);
-
-        // Comprobar si hay al menos dos jugadores en la lista de espera
-        ListaDeEspera ListaDeEspera = Fachada.Instance.ListaDeEspera;
-
-        if (ListaDeEspera.Count >= 2)
-        {
-            // Emparejar a los dos primeros jugadores de la lista de espera
-            Entrenador player1 = ListaDeEspera.entrenadores[0];
-            Entrenador player2 = ListaDeEspera.entrenadores[1];
-
-            // Iniciar la batalla entre los dos jugadores
-            string battleResult = Fachada.Instance.StartBattle(player1.GetNombre(), player2.GetNombre());
-
-            // Notificar a ambos jugadores que han sido emparejados
-            var user1 = Context.Guild.GetUser(player1.Id);
-            var user2 = Context.Guild.GetUser(player2.Id);
-
-            if (user1 != null && user2 != null)
-            {
-                await user1.SendMessageAsync($"¡Has sido emparejado con {player2.GetNombre()} para la batalla! 🎮");
-                await user2.SendMessageAsync($"¡Has sido emparejado con {player1.GetNombre()} para la batalla! 🎮");
-                await user1.SendMessageAsync(battleResult);
-                await user2.SendMessageAsync(battleResult);
-
-                // Enviar las instrucciones para la batalla
-                string instrucciones = @"¡La batalla ha comenzado! Ahora es el momento de elegir tus Pokémon.
-
-Para participar en la batalla, debes elegir 6 Pokémon de tu catálogo. Aquí están los pasos:
-
-1. **Ver el catálogo de Pokémon**: Usa el comando `!catalogo` para ver todos los Pokémon disponibles.
-2. **Elegir un Pokémon**: Usa el comando `!agregarPokemon <numero identiicador del pokemon>` para añadirlo a tu equipo. (Puedes elegir mas de uno a la vez, ejemplo !agregarPokemon 1,2,3,4,5,6
-
-
-¡Buena suerte y que gane el mejor entrenador! 💥";
-
-                await user1.SendMessageAsync(instrucciones);
-                await user2.SendMessageAsync(instrucciones);
-            }
-        }
     }
 }

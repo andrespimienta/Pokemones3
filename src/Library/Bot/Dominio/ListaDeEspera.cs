@@ -8,17 +8,34 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class ListaDeEspera
 {
-    public readonly List<Entrenador> entrenadores = new List<Entrenador>();
+    public List<Entrenador> WaitingList { get;}
+    public static ListaDeEspera? _instance;
+    private ListaDeEspera()
+    {
+        WaitingList= new List<Entrenador>();
+        
+    }
+    public static ListaDeEspera Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new ListaDeEspera();
+            }
 
+            return _instance;
+        }
+    }
     public int Count
     {
-        get { return this.entrenadores.Count; }
+        get { return this.WaitingList.Count; }
     }
 
     public string GetListaDeEspera()
     {
         string result = "";
-        foreach (Entrenador entrenador in entrenadores)
+        foreach (Entrenador entrenador in WaitingList)
         {
             result += entrenador.GetNombre() + " "; // O el delimitador que prefieras
         }
@@ -43,7 +60,7 @@ public class ListaDeEspera
         }
         
         if (EncontrarEntrenador(displayName) != null) return false;
-        entrenadores.Add(new Entrenador(displayName,userId));
+        WaitingList.Add(new Entrenador(displayName,userId));
         return true;
 
     }
@@ -60,7 +77,7 @@ public class ListaDeEspera
     {
         Entrenador? trainer = this.EncontrarEntrenador(displayName);
         if (trainer == null) return false;
-        entrenadores.Remove(trainer);
+        WaitingList.Remove(trainer);
         return true;
 
     }
@@ -77,7 +94,7 @@ public class ListaDeEspera
     public Entrenador? EncontrarEntrenador(string displayName)
     {
         Entrenador result = null;
-        foreach (Entrenador trainer in this.entrenadores)
+        foreach (Entrenador trainer in WaitingList)
         {
             
             if (trainer.GetNombre() == displayName)
@@ -98,12 +115,12 @@ public class ListaDeEspera
     /// <returns></returns>
     public Entrenador? GetAlguienEsperando()
     {
-        if (this.entrenadores.Count == 0)
+        if (WaitingList.Count == 0)
         {
             return null;
         }
 
-        return this.entrenadores[0];
+        return this.WaitingList[0];
     }
    
     
