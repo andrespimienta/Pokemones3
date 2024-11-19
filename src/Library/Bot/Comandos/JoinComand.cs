@@ -40,6 +40,14 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
             var user1 = Context.Guild.GetUser(player1.Id);
             var user2 = Context.Guild.GetUser(player2.Id);
 
+            SocketGuildUser userds1 = user1;
+            SocketGuildUser userds2 = user2;
+            
+            player1.AgregarsUserDs(userds1);
+            player2.AgregarsUserDs(userds2);
+
+
+
             if (user1 != null && user2 != null)
             {
                 await user1.SendMessageAsync($"¡Has sido emparejado con {player2.GetNombre()} para la batalla! 🎮");
