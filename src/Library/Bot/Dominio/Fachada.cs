@@ -12,10 +12,12 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-    public ulong UserId { get; set; }
-    public ListaDeEspera ListaDeEspera { get; }
+  
+    public ListaDeEspera WaitingList { get; }
     
     private BattlesList BattlesList { get; }
+
+    private VisitorPorTurno visitor;
     
     private static Fachada? _instance;
 
@@ -23,8 +25,9 @@ public class Fachada
     // de esta.
     private Fachada()
     {
-        this.ListaDeEspera= new ListaDeEspera();
+        this.WaitingList= new ListaDeEspera();
         this.BattlesList = BattlesList.Instance;
+        this.visitor = new VisitorPorTurno();
     }
 
     /// <summary>
@@ -60,9 +63,8 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public string AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user)
     {
-        if (this.ListaDeEspera.AgregarEntrenador(userId,displayName,user))
+        if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
         {
-            this.UserId = userId;
             return $"{displayName} agregado a la lista de espera";
             
         }
@@ -77,7 +79,7 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public string EliminarEntrenadorDeListaEspera(string displayName)
     {
-        if (ListaDeEspera.EliminarEntrenador(displayName))
+        if (WaitingList.EliminarEntrenador(displayName))
         {
             return $"{displayName} removido de la lista de espera";
         }
@@ -93,12 +95,12 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public string GetTrainerWaiting()
     {
-        if (ListaDeEspera.Count == 0)
+        if (WaitingList.Count == 0)
         {
             return "No hay nadie esperando";
         }
 
-        string result = ListaDeEspera.GetListaDeEspera();
+        string result = WaitingList.GetListaDeEspera();
         
         return result;
     }
@@ -110,7 +112,7 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public string TrainerIsWaiting(string displayName)
     {
-        Entrenador? trainer = this.ListaDeEspera.EncontrarEntrenador(displayName);
+        Entrenador? trainer = this.WaitingList.EncontrarEntrenador(displayName);
         if (trainer == null)
         {
             return $"{displayName} no está esperando";
@@ -121,13 +123,13 @@ public class Fachada
     
     private string CreateBattle(string playerDisplayName, string opponentDisplayName)
     {
-        Entrenador jugador = ListaDeEspera.EncontrarEntrenador(playerDisplayName);
-        Entrenador oponente = ListaDeEspera.EncontrarEntrenador(opponentDisplayName);
+        Entrenador jugador = WaitingList.EncontrarEntrenador(playerDisplayName);
+        Entrenador oponente = WaitingList.EncontrarEntrenador(opponentDisplayName);
         
         BattlesList.AddBattle(jugador, oponente);
         
-        ListaDeEspera.EliminarEntrenador(playerDisplayName);
-        ListaDeEspera.EliminarEntrenador(opponentDisplayName);
+        WaitingList.EliminarEntrenador(playerDisplayName);
+        WaitingList.EliminarEntrenador(opponentDisplayName);
         return $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.\n\n" +
                $"¡Ahora debes elegir 6 pokémon para la batalla!\n" +
                $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
@@ -155,7 +157,7 @@ public class Fachada
         
         if (!OpponentProvided()) // && SomebodyIsWaiting
         {
-            opponent = ListaDeEspera.GetAlguienEsperando();
+            opponent = WaitingList.GetAlguienEsperando();
             
             // El símbolo ! luego de opponent indica que sabemos que esa
             // variable no es null. Estamos seguros porque SomebodyIsWaiting
@@ -167,7 +169,7 @@ public class Fachada
         // El símbolo ! luego de opponentDisplayName indica que sabemos que esa
         // variable no es null. Estamos seguros porque OpponentProvided hubiera
         // retorna false antes y no habríamos llegado hasta aquí.
-        opponent = ListaDeEspera.EncontrarEntrenador(opponentDisplayName!);
+        opponent = WaitingList.EncontrarEntrenador(opponentDisplayName!);
         
         if (!OpponentFound())
         {
@@ -185,7 +187,7 @@ public class Fachada
 
         bool SomebodyIsWaiting()
         {
-            return this.ListaDeEspera.Count != 0;
+            return this.WaitingList.Count != 0;
         }
 
         bool OpponentFound()
@@ -193,37 +195,6 @@ public class Fachada
             return opponent != null;
         }
     }
-
-    public bool? estaParalizado(ulong usuarioId)
-    {
-        Entrenador? trainer = BattlesList.ObtenerOponentePorUsuario(usuarioId);//busca al entrenador
-        if (trainer != null)
-        {
-            string aux = trainer.GetStatusPokemonEnUso();
-            aux = aux.ToUpper();
-            if (aux != null)
-            {
-                if (aux == "PARALIZADO")
-                {
-                    return false;
-                }
-
-                if (aux == "DORMIDO")
-                {
-                    Random random = new Random();
-
-                    // Generar un valor aleatorio entre 0 y 1
-                    bool resultado = random.NextDouble() < 0.5;
-                    return resultado;
-                }
-            }
-
-            return false;
-        }
-
-        return null;
-    }
-
     public string? ListaAtaques(ulong id)
     {
         Entrenador entrenador = BattlesList.ObtenerEntrenadorPorUsuario(id);
@@ -244,6 +215,46 @@ public class Fachada
         return null;
     }
 
+    public string? Atacar(ulong userId, string nombreAtaque)
+    {
+        Pokemon pokemonVictima = BattlesList.ObtenerOponentePorUsuario(userId).GetPokemonEnUso();
+        Pokemon pokemonAtacante = BattlesList.ObtenerEntrenadorPorUsuario(userId).GetPokemonEnUso();
+        string result = null;
+        
+        // Si es el turno del Jugador 1, intentará efectuar el ataque indicado sobre el Pokemon en Uso del Jugador 2
+        foreach (Ataque ataque in pokemonAtacante.GetAtaques())
+        {
+            // Si encontró el ataque especificado en la lista de ataques del Pokemon en uso del jugador, ataca al pokemon en uso del rival
+            if (ataque.GetNombre() == nombreAtaque)
+            {
+                double vidaPrevia = pokemonVictima.GetVida();
+                pokemonVictima.RecibirDaño(ataque);
+
+                if (vidaPrevia > pokemonVictima.GetVida())
+                {
+                    if (pokemonVictima.GetVida() <= 0)
+                    {
+                        return result = $"{pokemonVictima.GetNombre()} ha sido vencido";
+                    }
+                    else
+                    {
+                        return result =
+                            $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}";
+                    }
+                }
+
+            }
+        }
+        // Si sale del Foreach sin haber retornado antes, es que no encontró el ataque
+        return result="No se encontró el ataque";
+    }
+    
+    public void comienzoDeTurno(ulong id)
+    {
+        Entrenador usuario = BattlesList.ObtenerEntrenadorPorUsuario(id);
+        usuario.AceptarVisitorPorTurno(this.visitor);
+        
+    }
 
 
 }

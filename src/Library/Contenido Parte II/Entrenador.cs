@@ -181,7 +181,7 @@ public class Entrenador
         Pokemon pokemon = GetPokemonEnUso();
         return pokemon.EfectoActivo;
     }
-}
+
 /*
     public bool UsarItem(string nombreItem)
     {
@@ -212,9 +212,10 @@ public class Entrenador
 
         return result;
     }
-
+*/
     public void AceptarVisitorPorTurno(VisitorPorTurno visitor)
     {
         visitor.VisitarEntrenador(this);
-    }*/
+    }
+}
 
