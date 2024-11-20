@@ -15,12 +15,13 @@ namespace Ucu.Poo.DiscordBot.Commands
         private static BattlesList battlesList = BattlesList.Instance;
         private static int entrenadoresListos = 0;
 
-        [Command("StartBattle")]
+        [Command("StartBattle")] 
         public async Task BattleAsync()
         {
             // Obtener el ID del jugador actual usando su ID de Discord
             ulong usuarioId = Context.User.Id;
             Battle batalla = battlesList.GetBattle(usuarioId);
+            
 
             Entrenador? entrenador = battlesList.ObtenerEntrenadorPorUsuario(usuarioId);
 
@@ -170,31 +171,29 @@ namespace Ucu.Poo.DiscordBot.Commands
             {
                 result = $"No hay un usuario {opponentDisplayName} esperando.";
             }
+            
 
             await ReplyAsync(result);
         }
 
         [Command("Atacar")]
-        [Summary(
-            """
-            Si el pokemon del jugador esta en condiciones de atacar, 
-            se le despliega la lista de ataques.
-            """)]
-        public async Task ExecuteAsync()
+        public async Task atacar([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
+            string? attackName = null)
         {
             ulong usuarioId = Context.User.Id;
 
-            bool? result = Fachada.Instance.estaParalizado(usuarioId);
-
-            if (result != null)
+            if (attackName == null)
             {
-                if (result == true)
-                {
-                    string? aux = Fachada.Instance.ListaAtaques(usuarioId);
-                    await Context.Message.Author.SendMessageAsync(aux);
-                }
-
+                string? aux = Fachada.Instance.ListaAtaques(usuarioId);
+            
+                await Context.Message.Author.SendMessageAsync(aux);
             }
+            else
+            {
+                string? aux=Fachada.Instance.Atacar(usuarioId,attackName);
+                await Context.Message.Author.SendMessageAsync(aux);
+            }
+
         }
 
     }

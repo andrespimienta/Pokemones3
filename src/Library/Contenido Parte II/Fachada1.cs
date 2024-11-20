@@ -50,42 +50,7 @@ public class Fachada1
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
 
-    public bool Atacar(string nombreAtaque)
-    {
-        Pokemon pokemonVictima = entrenadorSinTurno.GetPokemonEnUso();
-        Pokemon pokemonAtacante = entrenadorConTurno.GetPokemonEnUso();
-        
-        bool ataqueExitoso = true;
-        
-        // Si es el turno del Jugador 1, intentará efectuar el ataque indicado sobre el Pokemon en Uso del Jugador 2
-        foreach (IAtaque ataque in pokemonAtacante.GetAtaques())
-        {
-            // Si encontró el ataque especificado en la lista de ataques del Pokemon en uso del jugador, ataca al pokemon en uso del rival
-            if (ataque.GetNombre() == nombreAtaque)
-            { 
-                double vidaPrevia = pokemonVictima.GetVida();
-                pokemonVictima.RecibirDaño(ataque);
-                    if (vidaPrevia > pokemonVictima.GetVida())
-                    {
-                        if (pokemonVictima.GetVida() <= 0)
-                        {
-                            Console.WriteLine($"{pokemonVictima.GetNombre()} ha sido vencido");
-                        }
-                        else
-                        {
-                            Console.WriteLine(
-                                $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}");
-                        }
-                    }
-                return ataqueExitoso;
-            }
-        }
-        
-        // Si sale del Foreach sin haber retornado antes, es que no encontró el ataque
-        Console.WriteLine("No se encontró el ataque");
-        ataqueExitoso = false;
-        return ataqueExitoso;  
-    }
+   
 
     public bool CambiarPokemonPor(string nombrePokemon)
     {
