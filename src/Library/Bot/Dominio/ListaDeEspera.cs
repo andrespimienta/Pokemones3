@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 
 namespace Ucu.Poo.DiscordBot.Domain;
@@ -35,7 +36,7 @@ public class ListaDeEspera
     /// </param>
     /// <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool AgregarEntrenador(ulong userId ,string displayName)
+    public bool AgregarEntrenador(ulong userId ,string displayName, SocketGuildUser? user)
     {
         if (string.IsNullOrEmpty(displayName))
         {
@@ -43,7 +44,7 @@ public class ListaDeEspera
         }
         
         if (EncontrarEntrenador(displayName) != null) return false;
-        entrenadores.Add(new Entrenador(displayName,userId));
+        entrenadores.Add(new Entrenador(displayName,userId,user));
         return true;
 
     }

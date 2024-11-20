@@ -119,7 +119,7 @@
             Inicializa este singleton. Es necesario solo en los tests.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser)">
             <summary>
             Agrega un jugador a la lista de espera.
             </summary>
@@ -159,7 +159,7 @@
             Esta clase representa la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.ListaDeEspera.AgregarEntrenador(System.UInt64,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.ListaDeEspera.AgregarEntrenador(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser)">
             <summary>
             Agrega un jugador a la lista de espera.
             </summary>

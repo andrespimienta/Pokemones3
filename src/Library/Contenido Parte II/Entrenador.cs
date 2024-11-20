@@ -6,7 +6,7 @@ namespace Proyecto_Pokemones_I;
 public class Entrenador
 {
     // Atributos:
-    
+
     public ulong Id { get; set; } // ID de Discord para identificar al jugador
     private string nombre;
     public Pokemon? pokemonEnUso;
@@ -14,39 +14,44 @@ public class Entrenador
     private int pokemonesVivos;
     private List<IItems> listItems;
     public int TurnosRecargaAtkEspecial { get; set; }
-    public bool EstaListo { get; set; }  // Agregar el flag para saber si está listo
-    private SocketGuildUser userds1 ;
+    public bool EstaListo { get; set; } // Agregar el flag para saber si está listo
+    private SocketGuildUser userds1;
 
-    
+
     // Getters:
     public string GetNombre()
     {
         return this.nombre;
     }
+
     public Pokemon GetPokemonEnUso()
     {
         return this.pokemonEnUso;
     }
+
     public List<Pokemon> GetSeleccion()
     {
         return this.seleccionPokemones;
     }
+
     public int GetPokemonesVivos()
     {
         pokemonesVivos = 0;
         foreach (Pokemon pokemon in seleccionPokemones)
         {
-            if(pokemon.GetVida() > 0)
+            if (pokemon.GetVida() > 0)
             {
                 pokemonesVivos += 1;
             }
         }
+
         return pokemonesVivos;
     }
+
     public string GetListaDeItems()
     {
         Dictionary<string, int> itemCounts = new Dictionary<string, int>();
-    
+
         // Contar la cantidad de cada item en listItems
         foreach (IItems item in listItems)
         {
@@ -67,6 +72,7 @@ public class Entrenador
             resultado += $"{entry.Key} (x{entry.Value}) ";
             Console.Write($"{entry.Key} (x{entry.Value}) / ");
         }
+
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
 
@@ -74,41 +80,45 @@ public class Entrenador
     {
         return this.userds1;
     }
-    
-  
+
+
     // Constructor:
-    public Entrenador(string suNombre,ulong id)
+    public Entrenador(string suNombre, ulong id, SocketGuildUser guild )
     {
         this.Id = id;
         this.nombre = suNombre;
         this.pokemonEnUso = null;
         this.seleccionPokemones = new List<Pokemon>();
         this.pokemonesVivos = 6;
-        this.TurnosRecargaAtkEspecial = 2;      // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
+        this.TurnosRecargaAtkEspecial =
+            2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
         this.listItems = new List<IItems>();
         this.RecargarItems();
-        this.EstaListo = false;  // Inicialmente no está listo
+        this.userds1 = guild;
         
+        this.EstaListo = false; // Inicialmente no está listo
+
     }
 
     // Métodos:
     public void RecargarItems()
     {
-        for (int i = 0; i < 4; i++)    // Agrega 4 Super Poción
+        for (int i = 0; i < 4; i++) // Agrega 4 Super Poción
         {
             SuperPociones pocion = new SuperPociones();
             listItems.Add(pocion);
         }
-        
-        Revivir resusitacion = new Revivir();   // Agrega 1 Revivir
+
+        Revivir resusitacion = new Revivir(); // Agrega 1 Revivir
         listItems.Add(resusitacion);
 
         for (int i = 0; i < 2; i++)
         {
-            CuraTotal curaTotal = new CuraTotal();  // Agrega 2 Cura Total
+            CuraTotal curaTotal = new CuraTotal(); // Agrega 2 Cura Total
             listItems.Add(curaTotal);
         }
     }
+
     // Método para añadir Pokémon y comprobar si está listo
     public void AñadirASeleccion(Pokemon pokemon)
     {
@@ -117,10 +127,11 @@ public class Entrenador
             seleccionPokemones.Add(pokemon);
             if (seleccionPokemones.Count == 6)
             {
-                EstaListo = true;  // Marcar como listo cuando se elijan 6 Pokémon
+              
             }
         }
     }
+
     public void GuardarPokemon()
     {
         this.pokemonEnUso = null;
@@ -138,6 +149,7 @@ public class Entrenador
                 pokemonEnUso = pokemon;
             }
         }
+
         return result;
     }
 
@@ -147,7 +159,7 @@ public class Entrenador
 
         foreach (Pokemon pokemon in seleccionPokemones)
         {
-            if (pokemon.GetVida() > 0)// Tengo que especificar esto para cuando sean vencidos, no lo vuelvan a listas
+            if (pokemon.GetVida() > 0) // Tengo que especificar esto para cuando sean vencidos, no lo vuelvan a listas
             {
                 string nombre = pokemon.GetNombre();
                 Console.Write(nombre + " "); // Imprime cada nombre seguido de un espacio
@@ -161,8 +173,15 @@ public class Entrenador
 
     public void AgregarsUserDs(SocketGuildUser user)
     {
-        this.userds1 = user;
+       
     }
+
+    public string? GetStatusPokemonEnUso()
+    {
+        Pokemon pokemon = GetPokemonEnUso();
+        return pokemon.EfectoActivo;
+    }
+}
 /*
     public bool UsarItem(string nombreItem)
     {
@@ -199,4 +218,3 @@ public class Entrenador
         visitor.VisitarEntrenador(this);
     }*/
 
-}

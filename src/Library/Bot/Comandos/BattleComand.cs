@@ -46,9 +46,7 @@ namespace Ucu.Poo.DiscordBot.Commands
             // Comprobar si ambos jugadores están listos
             if (batalla.EstanListos() == true)
             {
-                Entrenador player1 = batalla.Player1;
-                Entrenador player2 = batalla.Player2;
-                IniciarBatallaAsync(batalla, player1, player2);
+                IniciarBatallaAsync(batalla);
                 //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
             }
             else
@@ -56,11 +54,6 @@ namespace Ucu.Poo.DiscordBot.Commands
                 // Si solo uno está listo, esperar al oponente
                 await ReplyAsync("Esperando a que tu oponente esté listo...");
             }
-        }
-
-        private void IniciarBatallaAsync(Battle batalla, Entrenador player1, Entrenador player2)
-        {
-            throw new NotImplementedException();
         }
 
         private async Task IniciarBatallaAsync(Battle batalla)
@@ -175,12 +168,38 @@ namespace Ucu.Poo.DiscordBot.Commands
             }
             else
             {
-                result = $"No hay un usuario {opponentDisplayName}";
+                result = $"No hay un usuario {opponentDisplayName} esperando.";
             }
 
             await ReplyAsync(result);
         }
+
+        [Command("Atacar")]
+        [Summary(
+            """
+            Si el pokemon del jugador esta en condiciones de atacar, 
+            se le despliega la lista de ataques.
+            """)]
+        public async Task ExecuteAsync()
+        {
+            ulong usuarioId = Context.User.Id;
+
+            bool? result = Fachada.Instance.estaParalizado(usuarioId);
+
+            if (result != null)
+            {
+                if (result == true)
+                {
+                    string? aux = Fachada.Instance.ListaAtaques(usuarioId);
+                    await Context.Message.Author.SendMessageAsync(aux);
+                }
+
+            }
+        }
+
     }
 }
+
+
 
 

@@ -24,116 +24,10 @@ public class Fachada1
         return this.entrenadorSinTurno;
     }
 
-    // Constructor:
-    private Fachada1()
-    {
-        Jugadores = new List<Entrenador>();
-        visitorTurno = new VisitorPorTurno();
-    }
-
-    // Métodos: (En orden de aparición en la Batalla)
-    public static Fachada1 GetInstancia()
-    {
-        if (instancia == null)
-        {
-            instancia = new Fachada1();
-        }
-        return instancia;
-    }
-    
-    public void AgregarJugadorALista(string nombreJugador)
-    {
-        // Validar que el nombre no esté vacío
-        if (string.IsNullOrWhiteSpace(nombreJugador))
-        {
-            Console.WriteLine("El nombre no puede estar vacío. Por favor, inténtelo de nuevo.");
-            return;
-        }
-
-        // Crear un nuevo jugador y agregarlo a la lista
-        Entrenador jugador = new Entrenador(nombreJugador);
-        Jugadores.Add(jugador);
-
-        Console.WriteLine($"\n¡Bienvenido, {nombreJugador}! Has sido agregado a la lista de espera.");
-        Console.WriteLine($"Jugadores en la lista de espera: {Jugadores.Count}/2");
-    }
-    
-    public void ListaDeEspera()
-    {
-        Console.WriteLine("------------------ ¡BIENVENIDO A LA BATALLA POKÉMON! -------------------");
-        Console.WriteLine("Prepárate para una aventura épica, Entrenador.");
-        Console.WriteLine("Ingresa tu nombre para unirte a la batalla.");
-        Console.WriteLine("Necesitamos al menos 2 jugadores para empezar.");
-        Console.WriteLine("------------------------------------------------------------------------");
-
-        // Bucle para agregar jugadores hasta tener al menos 2
-        while (Jugadores.Count < 2)
-        {
-            Console.WriteLine("\nIngrese su nombre: ");
-            string nombreJugador = Console.ReadLine();
-
-            // Llamar al método para agregar jugador
-            AgregarJugadorALista(nombreJugador);
-            
-            Console.WriteLine($"\nEsperando más jugadores para iniciar la batalla...");
-        }
-
-        // Asignar roles a los jugadores una vez que haya suficientes
-        entrenadorConTurno = Jugadores[0];
-        entrenadorSinTurno = Jugadores[1];
-
-        Console.WriteLine("\n¡Ya hay suficientes jugadores! La batalla está a punto de comenzar...");
-        Console.WriteLine($"El entrenador {entrenadorConTurno.GetNombre()} comenzará eligiendo");
-        Console.WriteLine($"El entrenador {entrenadorSinTurno.GetNombre()} deberá esperar su turno de elegir.");
-    }
-    
-    public void LimpiarListaDeJugadores()
-    {
-        Jugadores.Clear();  // Limpia todos los jugadores de la lista
-    }
-    
+  
    
-    
-    public bool ElegirPokemon(string nombrePokemon)
-    {
-        bool elecciónExitosa = true;    // Una simple variable para indicarle a Program si se efectuó o no la elección
+     
 
-        Pokemon pokemonElegido = LeerArchivo.EncontrarPokemon(nombrePokemon); // Intenta buscar el Pokemon indicado en el catálogo
-        if (pokemonElegido == null)     // Si no lo encontró o dio error, se cancela la elección del Pokemon
-        {
-            elecciónExitosa = false;
-            return elecciónExitosa;
-        }
-
-        foreach (Pokemon pokemon in entrenadorConTurno.GetSeleccion()) // Intenta buscar el Pokemon indicado en la selección del jugador
-        {
-            if (pokemon.GetNombre() == nombrePokemon)   // Si el Pokemon ya estaba en la selección, se cancela la elección del Pokemon
-            {
-                Console.WriteLine("¡Ya habías añadido ese Pokemon a tu selección!");
-                elecciónExitosa = false;
-                return elecciónExitosa;
-            }
-        }
-
-        entrenadorConTurno.AñadirASeleccion(pokemonElegido);   // Si no se dio ninguno de los casos anteriores, añade al pokemon a la selección
-        return elecciónExitosa;
-    }
-
-    public void CambiarTurno()
-    {
-        if (entrenadorConTurno == Jugadores[0])
-        {
-            entrenadorConTurno = Jugadores[1];
-            entrenadorSinTurno = Jugadores[0];
-        }
-        else if (entrenadorConTurno == Jugadores[1])
-        {
-            entrenadorConTurno = Jugadores[0];
-            entrenadorSinTurno = Jugadores[1];
-        }
-        entrenadorConTurno.AceptarVisitorPorTurno(this.visitorTurno);
-    }
-    
     public void ChequearQuienEmpieza()
     {
         if (entrenadorConTurno.GetPokemonEnUso().GetVelocidadAtaque() < entrenadorSinTurno.GetPokemonEnUso().GetVelocidadAtaque())
@@ -142,18 +36,7 @@ public class Fachada1
         }
     }
     
-    public void InformeDeSituacion()
-    {
-        Console.WriteLine($"\n El turno es de {entrenadorConTurno.GetNombre()}, " +
-                          $"El Pokémon usado es {entrenadorConTurno.GetPokemonEnUso().GetNombre()}, " +
-                          $"vida = {(entrenadorConTurno.GetPokemonEnUso().GetVida() <= 0 ? "muerto" : entrenadorConTurno.GetPokemonEnUso().GetVida().ToString())}/{entrenadorConTurno.GetPokemonEnUso().GetVidaMax()}" +
-                          $"{(entrenadorConTurno.GetPokemonEnUso().GetVida() > 0 ? $", su estado = {(entrenadorConTurno.GetPokemonEnUso().EfectoActivo ?? "consciente")}\n" : "")}\n" +
-                          $"Tu oponente es {entrenadorSinTurno.GetNombre()}, " +
-                          $"El Pokémon usado es {entrenadorSinTurno.GetPokemonEnUso().GetNombre()}, " +
-                          $"vida = {(entrenadorSinTurno.GetPokemonEnUso().GetVida() <= 0 ? "muerto" : entrenadorSinTurno.GetPokemonEnUso().GetVida().ToString())}/{entrenadorSinTurno.GetPokemonEnUso().GetVidaMax()}" +
-                          $"{(entrenadorSinTurno.GetPokemonEnUso().GetVida() > 0 ? $", su estado = {(entrenadorSinTurno.GetPokemonEnUso().EfectoActivo ?? "consciente")}" : "")}\n");
-    }
-    
+   
     public string ListaAtaques()
     {
         string resultado = "";

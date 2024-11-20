@@ -1,3 +1,5 @@
+using System.Data.SqlTypes;
+using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 
 namespace Ucu.Poo.DiscordBot.Domain;
@@ -56,9 +58,9 @@ public class Fachada
     /// </summary>
     /// <param name="displayName">El nombre del jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string AddTrainerToWaitingList(ulong userId, string displayName)
+    public string AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user)
     {
-        if (this.ListaDeEspera.AgregarEntrenador(userId,displayName))
+        if (this.ListaDeEspera.AgregarEntrenador(userId,displayName,user))
         {
             this.UserId = userId;
             return $"{displayName} agregado a la lista de espera";
@@ -191,5 +193,57 @@ public class Fachada
             return opponent != null;
         }
     }
-    
+
+    public bool? estaParalizado(ulong usuarioId)
+    {
+        Entrenador? trainer = BattlesList.ObtenerOponentePorUsuario(usuarioId);//busca al entrenador
+        if (trainer != null)
+        {
+            string aux = trainer.GetStatusPokemonEnUso();
+            aux = aux.ToUpper();
+            if (aux != null)
+            {
+                if (aux == "PARALIZADO")
+                {
+                    return false;
+                }
+
+                if (aux == "DORMIDO")
+                {
+                    Random random = new Random();
+
+                    // Generar un valor aleatorio entre 0 y 1
+                    bool resultado = random.NextDouble() < 0.5;
+                    return resultado;
+                }
+            }
+
+            return false;
+        }
+
+        return null;
+    }
+
+    public string? ListaAtaques(ulong id)
+    {
+        Entrenador entrenador = BattlesList.ObtenerEntrenadorPorUsuario(id);
+        if (entrenador != null)
+        {
+            string resultado = "";
+
+            foreach (Ataque ataque in entrenador.GetPokemonEnUso().GetAtaques())
+            {
+                string palabraAux = ataque.GetNombre();
+                Console.Write(palabraAux + " / "); // Imprime cada nombre seguido de un espacio
+                resultado += palabraAux + " "; // Agrega cada nombre a la cadena `resultado` seguido de un espacio
+            }
+
+            return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
+        }
+
+        return null;
+    }
+
+
+
 }
