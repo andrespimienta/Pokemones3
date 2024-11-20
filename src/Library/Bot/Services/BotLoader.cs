@@ -82,7 +82,8 @@ namespace Ucu.Poo.DiscordBot.Services
                     return;
                 }
 
-                string bienvenida = @"¡Bienvenidos al servidor de batalla de Pokémon! 🎮✨
+                string bienvenida = @"
+¡Bienvenidos al servidor de batalla de Pokémon! 🎮✨
 
 Aún no hay jugadores disponibles para comenzar la batalla, pero no te preocupes, ¡todos pueden unirse!
 
@@ -91,10 +92,13 @@ Para unirte a la lista de espera y encontrar un oponente, simplemente escribe el
 Aquí están los pasos para participar:
 
 1. **Unirte a la lista de espera**: Usa el comando `!join` para ser añadido a la lista de espera.
-2. **Esperar un oponente**: Una vez que haya otro jugador disponible, serás emparejado para la batalla.
-3. **¡Comienza a luchar!**: Cuando ambos jugadores estén listos, la batalla comenzará.
+
+2. **Esperar un oponente**:
+   - Usa el comando `!battle` para emparejarte automáticamente con cualquier otro jugador que esté esperando.
+   - Si prefieres elegir un oponente específico, usa `!waitinList` para ver todos los jugadores en espera, y luego usa `!battle <nombreOponente>` para desafiar a alguien en particular.
 
 ¡Buena suerte y que gane el mejor entrenador! 💥";
+
 
                 // Reemplaza con el ID de tu canal de texto
                 ulong channelId = 1301322498348159028;
