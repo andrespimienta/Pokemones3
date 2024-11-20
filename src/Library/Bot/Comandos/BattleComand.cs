@@ -19,7 +19,7 @@ namespace Ucu.Poo.DiscordBot.Commands
             // Obtener el ID del jugador actual usando su ID de Discord
             ulong usuarioId = Context.User.Id;
             Battle batalla = battlesList.GetBattle(usuarioId);
-
+            
             Entrenador? entrenador = battlesList.ObtenerEntrenadorPorUsuario(usuarioId);
 
             if (entrenador == null)
@@ -56,26 +56,37 @@ namespace Ucu.Poo.DiscordBot.Commands
             }
         }
 
-        private async Task IniciarBatallaAsync(Battle batalla, Entrenador player1, Entrenador player2)
+        private void IniciarBatallaAsync(Battle batalla, Entrenador player1, Entrenador player2)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task IniciarBatallaAsync(Battle batalla)
         {
             // Obtener el ID del jugador actual usando su ID de Discord
+            Console.WriteLine("Obteniendo usuario..1.");
+            var user1 = batalla.Player1.GetSocketGuildUser();
+            Console.WriteLine("Usuario obtenido.2");
 
-            // Entrenador player1 = batalla.Player1;
-            // Entrenador player2 = batalla.Player2;
+            Console.WriteLine("Obteniendo usuario...2");
+            var user2 = batalla.Player2.GetSocketGuildUser();
+            Console.WriteLine("Usuario obtenido.2");
 
-            var user1 = Context.Guild.GetUser(player1.Id);
-            var user2 = Context.Guild.GetUser(player2.Id);
-
-            await user2.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
             await user1.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
+            await user2.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
 
             await ChequearQuienEmpieza(batalla);
         }
 
         private async Task ChequearQuienEmpieza(Battle batalla)
         {
-            var user1 = Context.Guild.GetUser(batalla.Player1.Id);
-            var user2 = Context.Guild.GetUser(batalla.Player2.Id);
+            Console.WriteLine("Obteniendo usuario..1.");
+            var user1 = batalla.Player1.GetSocketGuildUser();
+            Console.WriteLine("Usuario obtenido.2");
+
+            Console.WriteLine("Obteniendo usuario...2");
+            var user2 = batalla.Player2.GetSocketGuildUser();
+            Console.WriteLine("Usuario obtenido.2");
 
             Pokemon pokemonJugador1 = batalla.Player1.GetPokemonEnUso();
             Pokemon pokemonJugador2 = batalla.Player2.GetPokemonEnUso();
@@ -94,29 +105,23 @@ namespace Ucu.Poo.DiscordBot.Commands
             else
             {
                 // Si la velocidad es igual, se elige al azar
-                turnoJugador = new System.Random().Next(2) == 0
-                    ? batalla.Player1.GetNombre()
-                    : batalla.Player2.GetNombre();
+                turnoJugador = new System.Random().Next(2) == 0 ? batalla.Player1.GetNombre() : batalla.Player2.GetNombre();
             }
 
             // Notificar a ambos jugadores sobre quién empieza
             if (turnoJugador == batalla.Player1.GetNombre())
             {
-                await user2.SendMessageAsync(
-                    $"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.");
-                await user1.SendMessageAsync(
-                    $"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.");
-
+                await user2.SendMessageAsync($"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.");
+                await user1.SendMessageAsync($"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.");
+                
                 // Mostrar opciones solo al jugador que tiene el turno
                 await MostrarOpciones(user1);
             }
             else
             {
-                await user1.SendMessageAsync(
-                    $"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.");
-                await user2.SendMessageAsync(
-                    $"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.");
-
+                await user1.SendMessageAsync($"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.");
+                await user2.SendMessageAsync($"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.");
+                
                 // Mostrar opciones solo al jugador que tiene el turno
                 await MostrarOpciones(user2);
             }

@@ -1,3 +1,4 @@
+using Discord.WebSocket;
 using Proyecto_Pokemones_I.Items;
 
 namespace Proyecto_Pokemones_I;
@@ -14,6 +15,8 @@ public class Entrenador
     private List<IItems> listItems;
     public int TurnosRecargaAtkEspecial { get; set; }
     public bool EstaListo { get; set; }  // Agregar el flag para saber si está listo
+    private SocketGuildUser userds1 ;
+
     
     // Getters:
     public string GetNombre()
@@ -66,6 +69,12 @@ public class Entrenador
         }
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
+
+    public SocketGuildUser GetSocketGuildUser()
+    {
+        return this.userds1;
+    }
+    
   
     // Constructor:
     public Entrenador(string suNombre,ulong id)
@@ -149,14 +158,19 @@ public class Entrenador
         Console.WriteLine();
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
+
+    public void AgregarsUserDs(SocketGuildUser user)
+    {
+        this.userds1 = user;
+    }
 /*
     public bool UsarItem(string nombreItem)
     {
         bool result = false;
         nombreItem = nombreItem.ToUpper();    // Evito errores por mayúsculas o minúsculas en el parámetro
-        
+
         IItems item = listItems.FirstOrDefault(i => i.Nombre.Equals(nombreItem, StringComparison.OrdinalIgnoreCase));
-    
+
         if (item != null)
         {   item.DescribirItem();
             //Console.WriteLine("Desea usarlo: s/n");
@@ -184,5 +198,5 @@ public class Entrenador
     {
         visitor.VisitarEntrenador(this);
     }*/
-    
+
 }

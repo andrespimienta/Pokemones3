@@ -10,7 +10,7 @@ public class Pokemon
     private double vida;
     private double vidaMax;
     private double velocidadAtaque;
-    private List<IAtaque> listadoAtaques;
+    private List<Ataque> listadoAtaques;
     public string EfectoActivo { get; set;}
     public bool PuedeAtacar { get; set; }
     public int TurnosDuracionEfecto { get; set; }
@@ -36,7 +36,7 @@ public class Pokemon
     {
         return this.velocidadAtaque;
     }
-    public List<IAtaque> GetAtaques()
+    public List<Ataque> GetAtaques()
     {
         return this.listadoAtaques;
     }
@@ -44,7 +44,7 @@ public class Pokemon
     
 
     //Constructor:
-    public Pokemon(string pokeNombre, string pokeTipo, double pokeVida, double pokeVelAtaque, List<IAtaque> ataques,string Identificador)
+    public Pokemon(string pokeNombre, string pokeTipo, double pokeVida, double pokeVelAtaque, List<Ataque> ataques,string Identificador)
     {
         NumeroIdentificador= Identificador;
         this.nombre = pokeNombre;
@@ -64,9 +64,8 @@ public class Pokemon
         this.vida = vida-dañoEspecial;
     }
     
-    public void RecibirDaño(IAtaque ataqueRecibido)
+    public void RecibirDaño(Ataque ataqueRecibido)
     {
-        DiccionarioTipos.GetInstancia();
         List<string> listaDebilidades = DiccionarioTipos.GetDebilContra(this.tipo);
         List<string> listaResistencias = DiccionarioTipos.GetResistenteContra(this.tipo);
         List<string> listaInmunidades = DiccionarioTipos.GetInmuneContra(this.tipo);

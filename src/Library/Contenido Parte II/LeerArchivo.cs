@@ -98,7 +98,7 @@ public static class LeerArchivo
                  AtaqueEspecial ataque4 = new AtaqueEspecial(ataqueNombre, ataqueTipo, ataqueDaño, ataquePrecision, ataqueEfecto);
 
                  // Define el atributo Lista de Ataques del Pokemon:
-                 List<IAtaque> pokeAtaques = new List<IAtaque>
+                 List<Ataque> pokeAtaques = new List<Ataque>
                  {
                      ataque1,
                      ataque2,
