@@ -4,6 +4,12 @@
         <name>Library</name>
     </assembly>
     <members>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.BattleCommand.ExecuteAsync(System.String)">
+            <summary>
+            Implementa el comando 'battle'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.LeaveCommand">
             <summary>
             Esta clase implementa el comando 'leave' del bot. Este comando remueve el
