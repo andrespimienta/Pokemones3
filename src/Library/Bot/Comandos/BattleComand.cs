@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Discord;
 using Ucu.Poo.DiscordBot.Domain;
 
+
+
 namespace Ucu.Poo.DiscordBot.Commands
 {
     public class BattleCommand : ModuleBase<SocketCommandContext>
@@ -105,23 +107,29 @@ namespace Ucu.Poo.DiscordBot.Commands
             else
             {
                 // Si la velocidad es igual, se elige al azar
-                turnoJugador = new System.Random().Next(2) == 0 ? batalla.Player1.GetNombre() : batalla.Player2.GetNombre();
+                turnoJugador = new System.Random().Next(2) == 0
+                    ? batalla.Player1.GetNombre()
+                    : batalla.Player2.GetNombre();
             }
 
             // Notificar a ambos jugadores sobre quién empieza
             if (turnoJugador == batalla.Player1.GetNombre())
             {
-                await user2.SendMessageAsync($"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.");
-                await user1.SendMessageAsync($"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.");
-                
+                await user2.SendMessageAsync(
+                    $"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.");
+                await user1.SendMessageAsync(
+                    $"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.");
+
                 // Mostrar opciones solo al jugador que tiene el turno
                 await MostrarOpciones(user1);
             }
             else
             {
-                await user1.SendMessageAsync($"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.");
-                await user2.SendMessageAsync($"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.");
-                
+                await user1.SendMessageAsync(
+                    $"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.");
+                await user2.SendMessageAsync(
+                    $"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.");
+
                 // Mostrar opciones solo al jugador que tiene el turno
                 await MostrarOpciones(user2);
             }
@@ -135,6 +143,44 @@ namespace Ucu.Poo.DiscordBot.Commands
                                            "(3) Usar poción\n" +
                                            "(4) Rendirse");
         }
+
+
+        /// <summary>
+        /// Implementa el comando 'battle'. Este comando une al jugador que envía el
+        /// mensaje a la lista de jugadores esperando para jugar.
+        /// </summary>
+        [Command("battle")]
+        [Summary(
+            """
+            Une al jugador que envía el mensaje con el oponente que se recibe
+            como parámetro, si lo hubiera, en una batalla; si no se recibe un
+            oponente, lo une con cualquiera que esté esperando para jugar.
+            """)]
+        // ReSharper disable once UnusedMember.Global
+        public async Task ExecuteAsync(
+            [Remainder] [Summary("Display name del oponente, opcional")]
+            string? opponentDisplayName = null)
+        {
+            string displayName = CommandHelper.GetDisplayName(Context);
+
+            SocketGuildUser? opponentUser = CommandHelper.GetUser(
+                Context, opponentDisplayName);
+
+            string result;
+            if (opponentUser != null)
+            {
+                result = Fachada.Instance.StartBattle(displayName, opponentUser.DisplayName);
+                await Context.Message.Author.SendMessageAsync(result);
+                await opponentUser.SendMessageAsync(result);
+            }
+            else
+            {
+                result = $"No hay un usuario {opponentDisplayName}";
+            }
+
+            await ReplyAsync(result);
+        }
     }
 }
+
 

@@ -131,7 +131,13 @@ public class Fachada
         ListaDeEspera.EliminarEntrenador(playerDisplayName);
         ListaDeEspera.EliminarEntrenador(opponentDisplayName);
         
-        return $"Comienza {playerDisplayName} vs {opponentDisplayName}";
+        return $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.\n\n" +
+               $"¡Ahora debes elegir 6 pokémon para la batalla!\n" +
+               $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
+               $"Para seleccionar tus pokémon, utiliza el comando: `!agregarPokemon <id1>,<id2>,<id3>,<id4>,<id5>,<id6>`\n" +
+               $"Por ejemplo: `!agregarPokemon 1,2,3,4,5,6`.\n\n" +
+               $"¡Prepárate para la batalla!";
+
     }
     
 /*
