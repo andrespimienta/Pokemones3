@@ -116,13 +116,9 @@ public class Fachada
         
         return $"{displayName} está esperando";
     }
-
-
-    public string StartBattle(string playerDisplayName, string opponentDisplayName)
+    
+    private string CreateBattle(string playerDisplayName, string opponentDisplayName)
     {
-        // Aunque playerDisplayName y opponentDisplayName no estén en la lista
-        // esperando para jugar los removemos igual para evitar preguntar si
-        // están para luego removerlos.
         Entrenador jugador = ListaDeEspera.EncontrarEntrenador(playerDisplayName);
         Entrenador oponente = ListaDeEspera.EncontrarEntrenador(opponentDisplayName);
         
@@ -130,17 +126,14 @@ public class Fachada
         
         ListaDeEspera.EliminarEntrenador(playerDisplayName);
         ListaDeEspera.EliminarEntrenador(opponentDisplayName);
-        
         return $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.\n\n" +
                $"¡Ahora debes elegir 6 pokémon para la batalla!\n" +
                $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
                $"Para seleccionar tus pokémon, utiliza el comando: `!agregarPokemon <id1>,<id2>,<id3>,<id4>,<id5>,<id6>`\n" +
                $"Por ejemplo: `!agregarPokemon 1,2,3,4,5,6`.\n\n" +
                $"¡Prepárate para la batalla!";
-
     }
-    
-/*
+
     /// <summary>
     /// Crea una batalla entre dos jugadores.
     /// </summary>
@@ -166,7 +159,7 @@ public class Fachada
             // variable no es null. Estamos seguros porque SomebodyIsWaiting
             // retorna true si y solo si hay usuarios esperando y en tal caso
             // GetAnyoneWaiting nunca retorna null.
-            return CrearBatalla(playerDisplayName, opponent!.GetNombre());
+            return CreateBattle(playerDisplayName, opponent!.GetNombre());
         }
 
         // El símbolo ! luego de opponentDisplayName indica que sabemos que esa
@@ -179,7 +172,7 @@ public class Fachada
             return $"{opponentDisplayName} no está esperando";
         }
         
-        return this.CrearBatalla(playerDisplayName, opponent!.GetNombre());
+        return this.CreateBattle(playerDisplayName, opponent!.GetNombre());
         
         // Funciones locales a continuación para mejorar la legibilidad
 
@@ -197,6 +190,6 @@ public class Fachada
         {
             return opponent != null;
         }
-    }*/
+    }
     
 }
