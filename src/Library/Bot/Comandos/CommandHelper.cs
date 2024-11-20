@@ -32,10 +32,7 @@ public static class CommandHelper
         SocketCommandContext context,
         string? name)
     {
-        if (name == null)
-        {
-            return null;
-        }
+       
         
         foreach (SocketGuildUser user in context.Guild.Users)
         {

@@ -146,6 +146,14 @@
             <param name="displayName">El jugador.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.StartBattle(System.String,System.String)">
+            <summary>
+            Crea una batalla entre dos jugadores.
+            </summary>
+            <param name="playerDisplayName">El primer jugador.</param>
+            <param name="opponentDisplayName">El oponente.</param>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.ListaDeEspera">
             <summary>
             Esta clase representa la lista de jugadores esperando para jugar.
