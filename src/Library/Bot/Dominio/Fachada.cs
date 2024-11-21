@@ -120,7 +120,12 @@ public class Fachada
         
         return $"{displayName} está esperando";
     }
-    
+
+    public bool EntrenadorEstaListo(ulong userId)
+    {
+        
+    }
+
     private string CreateBattle(string playerDisplayName, string opponentDisplayName)
     {
         Entrenador jugador = WaitingList.EncontrarEntrenador(playerDisplayName);
@@ -195,9 +200,10 @@ public class Fachada
             return opponent != null;
         }
     }
-    public string? ListaAtaques(ulong id)
+    public string? ListaAtaques(ulong userId)
     {
-        Entrenador entrenador = BattlesList.ObtenerEntrenadorPorUsuario(id);
+        Battle batalla = BattlesList.GetBattle(userId);
+        Entrenador entrenador = batalla.GetEntrenadorActual(userId);
         if (entrenador != null)
         {
             string resultado = "";
@@ -217,8 +223,9 @@ public class Fachada
 
     public string? Atacar(ulong userId, string nombreAtaque)
     {
-        Pokemon pokemonVictima = BattlesList.ObtenerOponentePorUsuario(userId).GetPokemonEnUso();
-        Pokemon pokemonAtacante = BattlesList.ObtenerEntrenadorPorUsuario(userId).GetPokemonEnUso();
+        Battle batalla = BattlesList.GetBattle(userId);
+        Pokemon pokemonVictima = batalla.GetEntrenadorOponente(userId).GetPokemonEnUso();
+        Pokemon pokemonAtacante = batalla.GetEntrenadorActual(userId).GetPokemonEnUso();
         string result = null;
         
         // Si es el turno del Jugador 1, intentará efectuar el ataque indicado sobre el Pokemon en Uso del Jugador 2
@@ -249,10 +256,11 @@ public class Fachada
         return result="No se encontró el ataque";
     }
     
-    public void comienzoDeTurno(ulong id)
+    public void ComienzoDeTurno(ulong userId)
     {
-        Entrenador usuario = BattlesList.ObtenerEntrenadorPorUsuario(id);
-        usuario.AceptarVisitorPorTurno(this.visitor);
+        Battle batalla = BattlesList.GetBattle(userId);
+        Entrenador jugador = batalla.GetEntrenadorActual(userId);
+        jugador.AceptarVisitorPorTurno(this.visitor);
         
     }
 

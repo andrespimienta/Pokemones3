@@ -50,49 +50,6 @@ public class BattlesList
         battles.Add(battle);
     }
 
-    /// <summary>
-    /// Busca una batalla que tenga como uno de sus jugadores al usuario.
-    /// </summary>
-    /// <param name="idUsuario">El ID del usuario.</param>
-    /// <returns>La batalla si se encuentra, o null si no se encuentra.</returns>
-    // Método para buscar al entrenador que tiene el idUsuario
-    public Entrenador? ObtenerEntrenadorPorUsuario(ulong idUsuario)
-    {
-        // Buscar al entrenador en la lista de batallas
-        foreach (var battle in battles)
-        {
-            if (battle.Player1.Id == idUsuario)
-            {
-                return battle.Player1;  // Si el idUsuario es el jugador 1, devolvemos el entrenador
-            }
-            else if (battle.Player2.Id == idUsuario)
-            {
-                return battle.Player2;  // Si el idUsuario es el jugador 2, devolvemos el entrenador
-            }
-        }
-
-        // Si no se encuentra el entrenador en ninguna batalla, devolvemos null
-        return null;
-    }
-    public Entrenador? ObtenerOponentePorUsuario(ulong idUsuario)
-    {
-        // Buscar al entrenador en la lista de batallas
-        foreach (var battle in battles)
-        {
-            if (battle.Player1.Id == idUsuario)
-            {
-                return battle.Player2;  // Si el idUsuario es el jugador 1, devolvemos el entrenador 2
-            }
-            else if (battle.Player2.Id == idUsuario)
-            {
-                return battle.Player1;  // Si el idUsuario es el jugador 2, devolvemos el entrenador 1
-            }
-        }
-
-        // Si no se encuentra el entrenador en ninguna batalla, devolvemos null
-        return null;
-    }
-
     public Battle? GetBattle(ulong id)
     {
         foreach (Battle batalla in this.battles)
@@ -102,7 +59,6 @@ public class BattlesList
                 return batalla;
             }
         }
-
         return null;
     }
 }
