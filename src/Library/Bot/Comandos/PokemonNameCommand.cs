@@ -19,8 +19,9 @@ public class PokemonNameCommand : ModuleBase<SocketCommandContext>
     [Command("agregarPokemon")]
 public async Task AgregarPokemonAsync(string numerosIdentificadores)
 {
-    // Obtener el entrenador del usuario actual
-    Entrenador? entrenador = BattlesList.Instance.ObtenerEntrenadorPorUsuario(Context.User.Id); 
+    ulong userId = Context.User.Id;
+    Battle batalla = BattlesList.Instance.GetBattle(userId);
+    Entrenador? entrenador = batalla.GetEntrenadorActual(userId); 
 
     if (entrenador == null)
     {
@@ -158,8 +159,9 @@ public async Task AgregarPokemonAsync(string numerosIdentificadores)
     [Command("usar")]
     public async Task UsarPokemonAsync(int numero)
     {
-        // Obtener al entrenador del usuario actual
-        Entrenador entrenador = BattlesList.Instance.ObtenerEntrenadorPorUsuario(Context.User.Id);
+        ulong userId = Context.User.Id;
+        Battle batalla = BattlesList.Instance.GetBattle(userId);
+        Entrenador? entrenador = batalla.GetEntrenadorActual(userId); 
 
         if (entrenador != null)
         {

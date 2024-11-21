@@ -121,11 +121,6 @@ public class Fachada
         return $"{displayName} está esperando";
     }
 
-    public bool EntrenadorEstaListo(ulong userId)
-    {
-        
-    }
-
     private string CreateBattle(string playerDisplayName, string opponentDisplayName)
     {
         Entrenador jugador = WaitingList.EncontrarEntrenador(playerDisplayName);
