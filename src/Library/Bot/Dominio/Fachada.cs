@@ -12,7 +12,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-  
+    private IGestorUsuario discord;
     public ListaDeEspera WaitingList { get; }
     
     private BattlesList BattlesList { get; }
@@ -25,7 +25,8 @@ public class Fachada
     // de esta.
     private Fachada()
     {
-        this.WaitingList= new ListaDeEspera();
+        this.discord = GestorDiscord.Instance;
+        this.WaitingList = new ListaDeEspera();
         this.BattlesList = BattlesList.Instance;
         this.visitor = new VisitorPorTurno();
     }
@@ -53,8 +54,16 @@ public class Fachada
     {
         _instance = null;
     }
-    
-   
+
+    public void EnviarAGestor(string mensaje)
+    {
+        this.discord.EnviarMensaje(mensaje);
+    }
+
+    public string RecibirDeGestor()
+    {
+        return this.discord.RecibirMensaje();
+    }
 
     /// <summary>
     /// Agrega un jugador a la lista de espera.
@@ -120,11 +129,7 @@ public class Fachada
         
         return $"{displayName} está esperando";
     }
-
-    public bool EntrenadorEstaListo(ulong userId)
-    {
-        
-    }
+    
 
     private string CreateBattle(string playerDisplayName, string opponentDisplayName)
     {
