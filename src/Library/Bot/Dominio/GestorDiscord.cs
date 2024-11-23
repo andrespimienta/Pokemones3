@@ -31,20 +31,11 @@ public class GestorDiscord : ModuleBase<SocketCommandContext>, IGestorUsuario
     }
     
     // En realidad no sirve, porque si fachada acepta IGestorUsuario, este método no está en la interfaz, es exclusivo de Discord
-    public void UsuarioReceptor(ulong receptor) 
+   
+    public async void EnviarMensaje(string mensaje,IMessageChannel canal)
     {
-        this.usuarioId = receptor;
+        // Enviar el mensaje al canal
+        await canal.SendMessageAsync(mensaje);
     }
 
-    public void EnviarMensaje(string mensaje)
-    {
-        // Llama a un nuevo método dentro de la clase Bot, ni idea si funciona lamentablemente
-        Bot.SendMessageAsync(this.usuarioId, mensaje);  
-        throw new NotImplementedException();
-    }
-
-    public string RecibirMensaje()  // No sé siquiera si es necesario, porque el bot solo recibe comandos, nunca un string cualquiera
-    {
-        throw new NotImplementedException();
-    }
 }

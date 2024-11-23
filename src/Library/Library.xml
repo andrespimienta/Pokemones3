@@ -68,6 +68,11 @@
             Obtiene un valor que representa al oponente.
             </summary>
         </member>
+        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Ganador">
+            <summary>
+            Obtiene un valor que representa al ganador.
+            </summary>
+        </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(Proyecto_Pokemones_I.Entrenador,Proyecto_Pokemones_I.Entrenador)">
             <summary>
             Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
@@ -75,6 +80,30 @@
             </summary>
             <param name="player1">El primer jugador.</param>
             <param name="player2">El oponente.</param>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.EstanListos">
+            <summary>
+            Chequea que ambos jugadores estén preparados.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.GetEntrenadorActual(System.UInt64)">
+            <summary>
+            Busca si alguno de los entrenadores de esta batalla tiene el ID del parámetro, y si es así, lo devuelve.
+            </summary>
+            <param name="userId">El ID del usuario.</param>
+            <returns>El entrenador si se encuentra, o null si no se encuentra.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.GetEntrenadorOponente(System.UInt64)">
+            <summary>
+            Busca si alguno de los entrenadores de esta batalla tiene el ID del parámetro, y si es así, lo devuelve.
+            </summary>
+            <param name="userId">El ID del usuario.</param>
+            <returns>El entrenador si se encuentra, o null si no se encuentra.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.HayGanador(Proyecto_Pokemones_I.Entrenador)">
+            <summary>
+            Asigna un ganador a la batalla.
+            </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.BattlesList">
             <summary>
@@ -94,13 +123,6 @@
             <param name="player2">El oponente.</param>
             <returns>La batalla creada.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.ObtenerEntrenadorPorUsuario(System.UInt64)">
-            <summary>
-            Busca una batalla que tenga como uno de sus jugadores al usuario.
-            </summary>
-            <param name="idUsuario">El ID del usuario.</param>
-            <returns>La batalla si se encuentra, o null si no se encuentra.</returns>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Fachada">
             <summary>
             Esta clase recibe las acciones y devuelve los resultados que permiten
@@ -119,7 +141,7 @@
             Inicializa este singleton. Es necesario solo en los tests.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser,Discord.IMessageChannel)">
             <summary>
             Agrega un jugador a la lista de espera.
             </summary>

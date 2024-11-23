@@ -23,7 +23,7 @@ namespace Ucu.Poo.DiscordBot.Commands
             Battle batalla = battlesList.GetBattle(usuarioId);
             
 
-            Entrenador? entrenador = battlesList.ObtenerEntrenadorPorUsuario(usuarioId);
+            Entrenador? entrenador = batalla.GetEntrenadorActual(usuarioId);
 
             if (entrenador == null)
             {

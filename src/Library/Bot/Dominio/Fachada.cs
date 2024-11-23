@@ -1,4 +1,5 @@
 using System.Data.SqlTypes;
+using Discord;
 using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 
@@ -12,7 +13,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-    private IGestorUsuario discord;
+    private IGestorUsuario gestorUsuario;
     public ListaDeEspera WaitingList { get; }
     
     private BattlesList BattlesList { get; }
@@ -25,11 +26,17 @@ public class Fachada
     // de esta.
     private Fachada()
     {
-        this.discord = GestorDiscord.Instance;
+        // Cambia entre GestorDiscord o cualquier otra plataforma
+        this.gestorUsuario = GestorDiscord.Instance;
         this.WaitingList = new ListaDeEspera();
         this.BattlesList = BattlesList.Instance;
         this.visitor = new VisitorPorTurno();
     }
+    public void SetGestorUsuario(IGestorUsuario nuevoGestor)
+    {
+        this.gestorUsuario = nuevoGestor;
+    }
+
 
     /// <summary>
     /// Obtiene la única instancia de la clase <see cref="Fachada"/>.
@@ -55,30 +62,29 @@ public class Fachada
         _instance = null;
     }
 
-    public void EnviarAGestor(string mensaje)
+    public void EnviarAGestor(string mensaje,IMessageChannel canal)
     {
-        this.discord.EnviarMensaje(mensaje);
+        gestorUsuario.EnviarMensaje(mensaje,canal);
     }
 
-    public string RecibirDeGestor()
-    {
-        return this.discord.RecibirMensaje();
-    }
-
+   
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
     /// <param name="displayName">El nombre del jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user)
+    public void AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user,IMessageChannel canal)
     {
         if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
         {
-            return $"{displayName} agregado a la lista de espera";
+            gestorUsuario.EnviarMensaje($"{displayName} agregado a la lista de espera",canal); ;
             
         }
-        
-        return $"{displayName} ya está en la lista de espera";
+        else
+        {
+            gestorUsuario.EnviarMensaje($"{displayName} ya está en la lista de espera",canal);
+        }
+         
     }
 
     /// <summary>

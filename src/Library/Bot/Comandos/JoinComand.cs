@@ -20,9 +20,10 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
         ulong userId = Context.User.Id;  // Obtener el ID del usuario
         string displayName = CommandHelper.GetDisplayName(Context);
         SocketGuildUser? user = CommandHelper.GetUser(Context, displayName);
+        IMessageChannel canal = Context.Channel;
 
         // Agregar al jugador a la lista de espera usando tu método existente
-        string result = Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user);
-        await ReplyAsync(result);
+        Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user,canal);
+        
     }
 }
