@@ -141,7 +141,7 @@
             Inicializa este singleton. Es necesario solo en los tests.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser,Discord.IMessageChannel)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser,ICanal)">
             <summary>
             Agrega un jugador a la lista de espera.
             </summary>

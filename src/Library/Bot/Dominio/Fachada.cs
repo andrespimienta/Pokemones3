@@ -13,7 +13,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-    private IGestorUsuario gestorUsuario;
+    private ICanal canal;
     public ListaDeEspera WaitingList { get; }
     
     private BattlesList BattlesList { get; }
@@ -27,14 +27,14 @@ public class Fachada
     private Fachada()
     {
         // Cambia entre GestorDiscord o cualquier otra plataforma
-        this.gestorUsuario = GestorDiscord.Instance;
+       
         this.WaitingList = new ListaDeEspera();
         this.BattlesList = BattlesList.Instance;
         this.visitor = new VisitorPorTurno();
     }
-    public void SetGestorUsuario(IGestorUsuario nuevoGestor)
+    public void SetGestorUsuario(ICanal nuevoGestor)
     {
-        this.gestorUsuario = nuevoGestor;
+        this.canal = nuevoGestor;
     }
 
 
@@ -62,27 +62,22 @@ public class Fachada
         _instance = null;
     }
 
-    public void EnviarAGestor(string mensaje,IMessageChannel canal)
-    {
-        gestorUsuario.EnviarMensaje(mensaje,canal);
-    }
-
    
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
     /// <param name="displayName">El nombre del jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public void AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user,IMessageChannel canal)
+    public void AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user,ICanal canal)
     {
         if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
         {
-            gestorUsuario.EnviarMensaje($"{displayName} agregado a la lista de espera",canal); ;
+            canal.EnviarMensajeAsync($"{displayName} agregado a la lista de espera"); ;
             
         }
         else
         {
-            gestorUsuario.EnviarMensaje($"{displayName} ya está en la lista de espera",canal);
+            canal.EnviarMensajeAsync($"{displayName} ya está en la lista de espera");
         }
          
     }
