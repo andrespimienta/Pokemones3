@@ -1,5 +1,4 @@
 using System.Data.SqlTypes;
-using Discord;
 using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 
@@ -13,6 +12,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
+  
     public ListaDeEspera WaitingList { get; }
     
     private BattlesList BattlesList { get; }
@@ -25,9 +25,7 @@ public class Fachada
     // de esta.
     private Fachada()
     {
-        // Cambia entre GestorDiscord o cualquier otra plataforma
-       
-        this.WaitingList = new ListaDeEspera();
+        this.WaitingList= new ListaDeEspera();
         this.BattlesList = BattlesList.Instance;
         this.visitor = new VisitorPorTurno();
     }
@@ -43,6 +41,7 @@ public class Fachada
             {
                 _instance = new Fachada();
             }
+
             return _instance;
         }
     }
@@ -54,29 +53,23 @@ public class Fachada
     {
         _instance = null;
     }
-
-    public void EnviarACanal(ICanal canal, string mensaje)
-    {
-        canal.EnviarMensajeAsync(mensaje);
-    }
     
+   
+
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
     /// <param name="displayName">El nombre del jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public void AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user,ICanal canal)
+    public string AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user)
     {
-        string mensaje;
         if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
         {
-            mensaje = $"{displayName} agregado a la lista de espera";
+            return $"{displayName} agregado a la lista de espera";
+            
         }
-        else
-        {
-            mensaje = $"{displayName} ya está en la lista de espera";
-        }
-        this.EnviarACanal(canal, mensaje);
+        
+        return $"{displayName} ya está en la lista de espera";
     }
 
     /// <summary>
@@ -127,7 +120,6 @@ public class Fachada
         
         return $"{displayName} está esperando";
     }
-    
 
     private string CreateBattle(string playerDisplayName, string opponentDisplayName)
     {

@@ -20,9 +20,13 @@ namespace Ucu.Poo.DiscordBot.Commands
         {
             // Obtener el ID del jugador actual usando su ID de Discord
             ulong usuarioId = Context.User.Id;
-            Battle batalla = battlesList.GetBattle(usuarioId);
             
-
+            //============================================================================================
+            // ***** DE ACÁ PARA ABAJO ESTÁ MAL, DEBERÍA IMPLEMENTARLO FACHADA CON SU PROPIO MÉTODO. *****
+            // ********* PERO ANTES DEBERÍA QUEDAR PRONTA LA CLASE GESTORA/IMPRESORA DE MENSAJES, ********
+            // ********************** PORQUE EL MÉTODO EN FACHADA ENVIARÍA MENSAJES **********************
+            
+            Battle batalla = battlesList.GetBattle(usuarioId);
             Entrenador? entrenador = batalla.GetEntrenadorActual(usuarioId);
 
             if (entrenador == null)
@@ -55,6 +59,8 @@ namespace Ucu.Poo.DiscordBot.Commands
                 // Si solo uno está listo, esperar al oponente
                 await ReplyAsync("Esperando a que tu oponente esté listo...");
             }
+            // ********************** (HASTA ACÁ DEBERÍA SER UN MÉTODO DE FACHADA) **********************
+            //===========================================================================================
         }
 
         private async Task IniciarBatallaAsync(Battle batalla)
@@ -171,8 +177,6 @@ namespace Ucu.Poo.DiscordBot.Commands
             {
                 result = $"No hay un usuario {opponentDisplayName} esperando.";
             }
-            
-
             await ReplyAsync(result);
         }
 
