@@ -13,7 +13,6 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-    private ICanal canal;
     public ListaDeEspera WaitingList { get; }
     
     private BattlesList BattlesList { get; }
@@ -32,11 +31,6 @@ public class Fachada
         this.BattlesList = BattlesList.Instance;
         this.visitor = new VisitorPorTurno();
     }
-    public void SetGestorUsuario(ICanal nuevoGestor)
-    {
-        this.canal = nuevoGestor;
-    }
-
 
     /// <summary>
     /// Obtiene la única instancia de la clase <see cref="Fachada"/>.
@@ -49,7 +43,6 @@ public class Fachada
             {
                 _instance = new Fachada();
             }
-
             return _instance;
         }
     }
@@ -62,7 +55,11 @@ public class Fachada
         _instance = null;
     }
 
-   
+    public void EnviarACanal(ICanal canal, string mensaje)
+    {
+        canal.EnviarMensajeAsync(mensaje);
+    }
+    
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
@@ -70,16 +67,16 @@ public class Fachada
     /// <returns>Un mensaje con el resultado.</returns>
     public void AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user,ICanal canal)
     {
+        string mensaje;
         if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
         {
-            canal.EnviarMensajeAsync($"{displayName} agregado a la lista de espera"); ;
-            
+            mensaje = $"{displayName} agregado a la lista de espera";
         }
         else
         {
-            canal.EnviarMensajeAsync($"{displayName} ya está en la lista de espera");
+            mensaje = $"{displayName} ya está en la lista de espera";
         }
-         
+        this.EnviarACanal(canal, mensaje);
     }
 
     /// <summary>
