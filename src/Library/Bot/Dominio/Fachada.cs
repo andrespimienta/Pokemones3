@@ -12,7 +12,6 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-  
     public ListaDeEspera WaitingList { get; }
     
     private BattlesList BattlesList { get; }
@@ -53,23 +52,32 @@ public class Fachada
     {
         _instance = null;
     }
-    
-   
+
+    public void EnviarACanal(ICanal canal, string mensaje)
+    {
+        canal.EnviarMensajeAsync(mensaje);
+    }
 
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
+    /// <param name="userId"></param>
     /// <param name="displayName">El nombre del jugador.</param>
+    /// <param name="user"></param>
+    /// <param name="canal"></param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string AddTrainerToWaitingList(ulong userId, string displayName,  SocketGuildUser? user)
+    public void AddTrainerToWaitingList(ulong userId, string displayName, SocketGuildUser user, ICanal canal)
     {
+        string mensaje;
         if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
         {
-            return $"{displayName} agregado a la lista de espera";
-            
+            mensaje = $"{displayName} agregado a la lista de espera";
         }
-        
-        return $"{displayName} ya está en la lista de espera";
+        else
+        {
+            mensaje = $"{displayName} ya está en la lista de espera";
+        }
+        this.EnviarACanal(canal,mensaje);
     }
 
     /// <summary>

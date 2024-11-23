@@ -99,5 +99,12 @@ public class Bot : IBot
         client.MessageReceived += HandleCommandAsync;
     }
     
+    // Quien sabrá si esto funciona
+    public async Task SendMessageAsync(ulong channelId, string message)
+    {
+        var channel = client.GetChannel(channelId) as IMessageChannel;
+        await channel.SendMessageAsync(message);
+       
+    }
 }
 
