@@ -12,7 +12,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-    public ListaDeEspera WaitingList { get; }
+    public WaitingList WaitingList { get; }
     
     private BattlesList BattlesList { get; }
 
@@ -24,7 +24,7 @@ public class Fachada
     // de esta.
     private Fachada()
     {
-        this.WaitingList= new ListaDeEspera();
+        this.WaitingList= new WaitingList();
         this.BattlesList = BattlesList.Instance;
         this.visitor = new VisitorPorTurno();
     }
@@ -103,16 +103,18 @@ public class Fachada
     /// Obtiene la lista de jugadores esperando.
     /// </summary>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string GetTrainerWaiting()
+    public void GetTrainersWaiting(ICanal canal)
     {
+        string mensaje;
         if (WaitingList.Count == 0)
         {
-            return "No hay nadie esperando";
+            mensaje = "No hay nadie esperando";
         }
-
-        string result = WaitingList.GetListaDeEspera();
-        
-        return result;
+        else
+        {
+            mensaje = WaitingList.GetListaDeEspera();
+        }
+        this.EnviarACanal(canal, mensaje);
     }
 
     /// <summary>
