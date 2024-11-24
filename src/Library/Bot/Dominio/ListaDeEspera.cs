@@ -63,7 +63,6 @@ public class ListaDeEspera
         if (trainer == null) return false;
         entrenadores.Remove(trainer);
         return true;
-
     }
 
     /// <summary>
@@ -80,13 +79,11 @@ public class ListaDeEspera
         Entrenador result = null;
         foreach (Entrenador trainer in this.entrenadores)
         {
-            
             if (trainer.GetNombre() == displayName)
             { 
                 result = trainer;
             }
         }
-
         return result;
     }
 

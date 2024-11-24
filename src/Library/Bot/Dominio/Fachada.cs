@@ -85,16 +85,18 @@ public class Fachada
     /// </summary>
     /// <param name="displayName">El jugador a remover.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string EliminarEntrenadorDeListaEspera(string displayName)
+    public void RemoveTrainerFromWaitingList(string displayName, ICanal canal)
     {
+        string mensaje;
         if (WaitingList.EliminarEntrenador(displayName))
         {
-            return $"{displayName} removido de la lista de espera";
+            mensaje = $"{displayName} removido de la lista de espera";
         }
         else
         {
-            return $"{displayName} no está en la lista de espera";
+            mensaje = $"{displayName} no está en la lista de espera";
         }
+        this.EnviarACanal(canal, mensaje);
     }
 
     /// <summary>

@@ -181,7 +181,7 @@ public async Task AgregarPokemonAsync(string numerosIdentificadores)
             entrenador.pokemonEnUso = pokemonSeleccionado;
 
             await ReplyAsync($"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!\n"+
-                              "**Indicar que estás listo para la batalla: Usa el comando !battle para confirmas que estás listo para luchar.**");
+                              "**Indica que estás listo para la batalla: Usa el comando !startBattle para confirmar que estás listo para luchar.**");
         }
         else
         {

@@ -17,13 +17,15 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
     [Summary("Une el usuario que envía el mensaje a la lista de espera y empareja si hay otro jugador disponible")]
     public async Task ExecuteAsync()
     {
+        // Obtiene los 3 atributos necesarios para crear un objeto Entrenador:
         ulong userId = Context.User.Id;  // Obtener el ID del usuario
-        string displayName = CommandHelper.GetDisplayName(Context);
+        string displayName = CommandHelper.GetDisplayName(Context); // Obtiene el nombre del usuario/Entrenador
         SocketGuildUser? user = CommandHelper.GetUser(Context, displayName);
-        ICanal canal = new CanalDeDiscord(Context.Channel);// solamente en esta instancia se puede obtener el canal. Por ende es Expert
-
-        // Agregar al jugador a la lista de espera usando tu método existente, fachada no queda acoplada a la plataforma que se use.
-        Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user,canal);
         
+        // Solamente en esta instancia se puede obtener el canal. Por ende, es Expert
+        ICanal canal = new CanalDeDiscord(Context.Channel);
+
+        // Agrega al jugador a la lista de espera usando el método existente, fachada no queda acoplada a la plataforma que se use.
+        Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user,canal);
     }
 }
