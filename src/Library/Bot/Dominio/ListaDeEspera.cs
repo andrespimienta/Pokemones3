@@ -36,7 +36,7 @@ public class ListaDeEspera
     /// </param>
     /// <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool AgregarEntrenador(ulong userId ,string displayName, SocketGuildUser? user)
+    public bool AgregarEntrenador(ulong userId ,string displayName, ICanal canal)
     {
         if (string.IsNullOrEmpty(displayName))
         {
@@ -44,7 +44,7 @@ public class ListaDeEspera
         }
         
         if (EncontrarEntrenador(displayName) != null) return false;
-        entrenadores.Add(new Entrenador(displayName,userId,user));
+        entrenadores.Add(new Entrenador(displayName,userId,canal));
         return true;
 
     }

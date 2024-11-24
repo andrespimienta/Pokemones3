@@ -9,9 +9,9 @@ using Ucu.Poo.DiscordBot.Services;
 
 public class CanalDeDiscord : ICanal
 {
-    private readonly IMessageChannel canalDiscord;
+    private readonly SocketGuildUser canalDiscord;
 
-    public CanalDeDiscord(IMessageChannel canalDiscord)
+    public CanalDeDiscord(SocketGuildUser canalDiscord)
     {
         this.canalDiscord = canalDiscord;
     }

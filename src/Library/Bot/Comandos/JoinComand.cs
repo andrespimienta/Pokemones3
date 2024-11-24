@@ -19,11 +19,10 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
     {
         ulong userId = Context.User.Id;  // Obtener el ID del usuario
         string displayName = CommandHelper.GetDisplayName(Context);
-        SocketGuildUser? user = CommandHelper.GetUser(Context, displayName);
-        ICanal canal = new CanalDeDiscord(Context.Channel);// solamente en esta instancia se puede obtener el canal. Por ende es Expert
+        ICanal canal = new CanalDeDiscord(CommandHelper.GetUser(Context, displayName));// solamente en esta instancia se puede obtener el canal. Por ende es Expert
 
         // Agregar al jugador a la lista de espera usando tu método existente, fachada no queda acoplada a la plataforma que se use.
-        Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user,canal);
+        Fachada.Instance.AddTrainerToWaitingList(userId, displayName,canal);
         
     }
 }

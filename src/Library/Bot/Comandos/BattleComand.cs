@@ -74,8 +74,8 @@ namespace Ucu.Poo.DiscordBot.Commands
             var user2 = batalla.Player2.GetSocketGuildUser();
             Console.WriteLine("Usuario obtenido.2");
 
-            await user1.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
-            await user2.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
+            await user1.EnviarMensajeAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
+            await user2.EnviarMensajeAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
 
             await ChequearQuienEmpieza(batalla);
         }
@@ -115,9 +115,9 @@ namespace Ucu.Poo.DiscordBot.Commands
             // Notificar a ambos jugadores sobre quién empieza
             if (turnoJugador == batalla.Player1.GetNombre())
             {
-                await user2.SendMessageAsync(
+                await user2.EnviarMensajeAsync(
                     $"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.");
-                await user1.SendMessageAsync(
+                await user1.EnviarMensajeAsync(
                     $"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.");
 
                 // Mostrar opciones solo al jugador que tiene el turno
@@ -125,19 +125,19 @@ namespace Ucu.Poo.DiscordBot.Commands
             }
             else
             {
-                await user1.SendMessageAsync(
+                await user1.EnviarMensajeAsync(
                     $"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.");
-                await user2.SendMessageAsync(
+                await user2.EnviarMensajeAsync(
                     $"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.");
 
                 // Mostrar opciones solo al jugador que tiene el turno
-                await MostrarOpciones(user2);
+                await MostrarOpciones(user1);
             }
         }
 
-        private async Task MostrarOpciones(SocketGuildUser jugador)
+        private async Task MostrarOpciones(ICanal jugador)
         {
-            await jugador.SendMessageAsync("Elige una acción:\n" +
+            await jugador.EnviarMensajeAsync("Elige una acción:\n" +
                                            "(1) Atacar\n" +
                                            "(2) Cambiar de Pokémon\n" +
                                            "(3) Usar poción\n" +

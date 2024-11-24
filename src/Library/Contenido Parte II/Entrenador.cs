@@ -15,7 +15,7 @@ public class Entrenador
     private List<IItems> listItems;
     public int TurnosRecargaAtkEspecial { get; set; }
     public bool EstaListo { get; set; } // Agregar el flag para saber si está listo
-    private SocketGuildUser userds1;
+    private ICanal userDs;
 
 
     // Getters:
@@ -76,14 +76,14 @@ public class Entrenador
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
 
-    public SocketGuildUser GetSocketGuildUser()
+    public ICanal GetSocketGuildUser()
     {
-        return this.userds1;
+        return this.userDs;
     }
 
 
     // Constructor:
-    public Entrenador(string suNombre, ulong id, SocketGuildUser guild )
+    public Entrenador(string suNombre, ulong id, ICanal canal )
     {
         this.Id = id;
         this.nombre = suNombre;
@@ -94,7 +94,7 @@ public class Entrenador
             2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
         this.listItems = new List<IItems>();
         this.RecargarItems();
-        this.userds1 = guild;
+        this.userDs = canal;
         
         this.EstaListo = false; // Inicialmente no está listo
 

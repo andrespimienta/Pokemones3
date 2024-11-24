@@ -66,10 +66,10 @@ public class Fachada
     /// <param name="user"></param>
     /// <param name="canal"></param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public void AddTrainerToWaitingList(ulong userId, string displayName, SocketGuildUser user, ICanal canal)
+    public void AddTrainerToWaitingList(ulong userId, string displayName, ICanal canal)
     {
         string mensaje;
-        if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
+        if (this.WaitingList.AgregarEntrenador(userId,displayName,canal))
         {
             mensaje = $"{displayName} agregado a la lista de espera";
         }
