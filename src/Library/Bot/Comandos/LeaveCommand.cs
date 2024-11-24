@@ -20,11 +20,10 @@ public class LeaveCommand : ModuleBase<SocketCommandContext>
     // ReSharper disable once UnusedMember.Global
     public async Task ExecuteAsync()
     {
-        ulong userId = Context.User.Id;  // Obtener el ID del usuario
         string displayName = CommandHelper.GetDisplayName(Context);
-        ICanal canal = new CanalDeDiscord(Context.Channel);// Solamente en esta instancia se puede obtener el canal. Por ende, es Expert
+        ICanal canal = new CanalDeDiscord(Context.Channel);
         
-        // Eliminar al jugador de la lista de espera usando tu método existente, fachada no queda acoplada a la plataforma que se use.
+        // Elimina al jugador de la lista de espera usando el método existente, fachada no queda acoplada a la plataforma que se use.
         Fachada.Instance.RemoveTrainerFromWaitingList(displayName,canal);
     }
 }

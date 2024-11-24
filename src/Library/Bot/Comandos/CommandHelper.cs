@@ -32,7 +32,6 @@ public static class CommandHelper
         SocketCommandContext context,
         string? name)
     {
-       
         
         foreach (SocketGuildUser user in context.Guild.Users)
         {
