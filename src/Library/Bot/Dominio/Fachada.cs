@@ -1,4 +1,5 @@
 using System.Data.SqlTypes;
+using Discord;
 using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 
@@ -40,7 +41,6 @@ public class Fachada
             {
                 _instance = new Fachada();
             }
-
             return _instance;
         }
     }
@@ -53,19 +53,19 @@ public class Fachada
         _instance = null;
     }
 
-    public void EnviarACanal(ICanal canal, string mensaje)
+    public void EnviarACanal (ICanal canal, string mensaje)
     {
         canal.EnviarMensajeAsync(mensaje);
+    }
+
+    public void EnviarAUsuario(IGuildUser usuario, string mensaje)
+    {
+        usuario.SendMessageAsync(mensaje);
     }
 
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="displayName">El nombre del jugador.</param>
-    /// <param name="user"></param>
-    /// <param name="canal"></param>
-    /// <returns>Un mensaje con el resultado.</returns>
     public void AddTrainerToWaitingList(ulong userId, string displayName, SocketGuildUser user, ICanal canal)
     {
         string mensaje;
@@ -84,7 +84,6 @@ public class Fachada
     /// Remueve un jugador de la lista de espera.
     /// </summary>
     /// <param name="displayName">El jugador a remover.</param>
-    /// <returns>Un mensaje con el resultado.</returns>
     public void RemoveTrainerFromWaitingList(string displayName, ICanal canal)
     {
         string mensaje;
