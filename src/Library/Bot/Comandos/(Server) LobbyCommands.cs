@@ -7,7 +7,7 @@ using Proyecto_Pokemones_I;
 using Ucu.Poo.DiscordBot.Commands;
 using Ucu.Poo.DiscordBot.Domain;
 
-public class ServerCommands : ModuleBase<SocketCommandContext>
+public class LobbyCommands : ModuleBase<SocketCommandContext>
 {
     /// <summary>
     /// Implementa el comando 'join'. Este comando une al jugador que envía el

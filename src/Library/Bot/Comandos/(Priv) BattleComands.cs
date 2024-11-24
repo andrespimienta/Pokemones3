@@ -9,7 +9,7 @@ using Ucu.Poo.DiscordBot.Domain;
 
 namespace Ucu.Poo.DiscordBot.Commands
 {
-    public class BattleCommand : ModuleBase<SocketCommandContext>
+    public class BattleCommands : ModuleBase<SocketCommandContext>
     {
         // Instancia de la lista de batallas
         private static BattlesList battlesList = BattlesList.Instance;

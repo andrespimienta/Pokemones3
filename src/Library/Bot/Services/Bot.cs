@@ -89,7 +89,7 @@ public class Bot : IBot
         serviceProvider = services;
 
         // Asegúrate de que el comando del catálogo se cargue correctamente
-        await commands.AddModuleAsync<PokemonNameCommand>(serviceProvider);
+        await commands.AddModuleAsync<StartingCommands>(serviceProvider);
 
         await commands.AddModulesAsync(Assembly.GetExecutingAssembly(), serviceProvider);
 

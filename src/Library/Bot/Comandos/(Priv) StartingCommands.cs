@@ -14,7 +14,7 @@ namespace Ucu.Poo.DiscordBot.Commands;
 /// nombre de un Pokémon dado su identificador.
 /// </summary>
 // ReSharper disable once UnusedType.Global
-public class PokemonNameCommand : ModuleBase<SocketCommandContext>
+public class StartingCommands : ModuleBase<SocketCommandContext>
 { 
     [Command("agregarPokemon")]
 public async Task AgregarPokemonAsync(string numerosIdentificadores)
