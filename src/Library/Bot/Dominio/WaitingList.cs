@@ -7,7 +7,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// <summary>
 /// Esta clase representa la lista de jugadores esperando para jugar.
 /// </summary>
-public class ListaDeEspera
+public class WaitingList
 {
     public readonly List<Entrenador> entrenadores = new List<Entrenador>();
 
@@ -21,10 +21,10 @@ public class ListaDeEspera
         string result = "";
         foreach (Entrenador entrenador in entrenadores)
         {
-            result += entrenador.GetNombre() + " "; // O el delimitador que prefieras
+            result += entrenador.GetNombre() + ", "; // Separa los nombres con una coma y un espacio
         }
-
-        return result.Trim(); // Elimina el último espacio en blanco innecesario
+        result = result.Substring(0,result.Length-2); // Elimina la última coma y el espacio al final.
+        return result; 
     }
 
     
