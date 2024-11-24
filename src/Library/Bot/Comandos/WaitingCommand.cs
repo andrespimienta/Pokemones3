@@ -17,10 +17,11 @@ public class WaitingCommand : ModuleBase<SocketCommandContext>
     [Command("waitinglist")]
     [Summary("Muestra los usuarios en la lista de espera")]
     // ReSharper disable once UnusedMember.Global
-    public async Task ExecuteAsync()
+    public async Task WaitingListAsync()
     {
-        string result = Fachada.Instance.GetTrainerWaiting();
-
-        await ReplyAsync(result);
+        ICanal canal = new CanalDeDiscord(Context.Channel);
+        
+        // Muestra los jugadores en lista de espera, si es que los hay.
+        Fachada.Instance.GetTrainersWaiting(canal);
     }
 }
