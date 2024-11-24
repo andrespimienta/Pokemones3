@@ -28,31 +28,6 @@
             nombre de un Pokémon dado su identificador.
             </summary>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.UserInfoCommand">
-            <summary>
-            Esta clase implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
-            Este comando retorna información sobre el usuario que envía el mensaje o sobre
-            otro usuario si se incluye como parámetro..
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.UserInfoCommand.ExecuteAsync(System.String)">
-            <summary>
-            Implementa el comando 'userinfo', alias 'who' o 'whois' del bot.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord a buscar.</param>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.WaitingCommand">
-            <summary>
-            Esta clase implementa el comando 'waitinglist' del bot. Este comando muestra
-            la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.WaitingCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'waitinglist'. Este comando muestra la lista de
-            jugadores esperando para jugar.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
             <summary>
             Esta clase representa una batalla entre dos jugadores.
@@ -158,13 +133,13 @@
             <param name="displayName">El jugador a remover.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.GetTrainerWaiting">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.GetTrainersWaiting(ICanal)">
             <summary>
             Obtiene la lista de jugadores esperando.
             </summary>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.TrainerIsWaiting(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.TrainerStatus(System.UInt64,System.String,ICanal)">
             <summary>
             Determina si un jugador está esperando para jugar.
             </summary>
@@ -179,12 +154,12 @@
             <param name="opponentDisplayName">El oponente.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.ListaDeEspera">
+        <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
             <summary>
             Esta clase representa la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.ListaDeEspera.AgregarEntrenador(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.AgregarEntrenador(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser)">
             <summary>
             Agrega un jugador a la lista de espera.
             </summary>
@@ -194,7 +169,7 @@
             <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
             contrario.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.ListaDeEspera.EliminarEntrenador(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.EliminarEntrenador(System.String)">
             <summary>
             Remueve un jugador de la lista de espera.
             </summary>
@@ -204,7 +179,7 @@
             <returns><c>true</c> si se remueve el usuario; <c>false</c> en caso
             contrario.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.ListaDeEspera.EncontrarEntrenador(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.EncontrarEntrenador(System.String)">
             <summary>
             Busca un jugador por el nombre de usuario de Discord en el servidor del
             bot.
@@ -215,7 +190,7 @@
             <returns>El jugador encontrado o <c>null</c> en caso contrario.
             </returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.ListaDeEspera.GetAlguienEsperando">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.GetAlguienEsperando">
             <summary>
             Retorna un jugador cualquiera esperando para jugar. En esta
             implementación provista no es cualquiera, sino el primero. En la
@@ -234,10 +209,28 @@
             La interfaz del Bot de Discord para usar con inyección de dependencias.
             </summary>
         </member>
-        <member name="M:JoinCommand.ExecuteAsync">
+        <member name="M:ServerCommands.JoinAsync">
             <summary>
             Implementa el comando 'join'. Este comando une al jugador que envía el
             mensaje a la lista de jugadores esperando para jugar y los empareja automáticamente si hay al menos dos.
+            </summary>
+        </member>
+        <member name="M:ServerCommands.LeaveAsync">
+            <summary>
+            Implementa el comando 'leave' del bot. Este comando remueve el jugador
+            que envía el mensaje de la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:ServerCommands.WaitingListAsync">
+            <summary>
+            Implementa el comando 'waitinglist'. Este comando muestra la lista de
+            jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:ServerCommands.StatusAsync(System.String)">
+            <summary>
+            Implementa el comando 'status'. Este comando muestra el estado
+            de un jugador en específico (batallando, esperando o no esperando).
             </summary>
         </member>
         <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
