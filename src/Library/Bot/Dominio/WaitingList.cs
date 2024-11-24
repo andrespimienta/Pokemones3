@@ -7,7 +7,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// <summary>
 /// Esta clase representa la lista de jugadores esperando para jugar.
 /// </summary>
-public class ListaDeEspera
+public class WaitingList
 {
     public readonly List<Entrenador> entrenadores = new List<Entrenador>();
 
@@ -100,7 +100,6 @@ public class ListaDeEspera
         {
             return null;
         }
-
         return this.entrenadores[0];
     }
    

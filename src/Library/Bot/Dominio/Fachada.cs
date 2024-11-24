@@ -12,7 +12,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-    public ListaDeEspera WaitingList { get; }
+    public WaitingList WaitingList { get; }
     
     private BattlesList BattlesList { get; }
 
@@ -24,7 +24,7 @@ public class Fachada
     // de esta.
     private Fachada()
     {
-        this.WaitingList= new ListaDeEspera();
+        this.WaitingList= new WaitingList();
         this.BattlesList = BattlesList.Instance;
         this.visitor = new VisitorPorTurno();
     }
