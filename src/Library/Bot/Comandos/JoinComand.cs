@@ -24,6 +24,5 @@ public class JoinCommand : ModuleBase<SocketCommandContext>
 
         // Agregar al jugador a la lista de espera usando tu método existente, fachada no queda acoplada a la plataforma que se use.
         Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user,canal);
-        
     }
 }

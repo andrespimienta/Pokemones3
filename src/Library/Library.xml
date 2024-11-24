@@ -145,10 +145,13 @@
             <summary>
             Agrega un jugador a la lista de espera.
             </summary>
+            <param name="userId"></param>
             <param name="displayName">El nombre del jugador.</param>
+            <param name="user"></param>
+            <param name="canal"></param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.EliminarEntrenadorDeListaEspera(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.RemoveTrainerFromWaitingList(System.String,ICanal)">
             <summary>
             Remueve un jugador de la lista de espera.
             </summary>
