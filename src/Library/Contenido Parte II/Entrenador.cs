@@ -23,17 +23,14 @@ public class Entrenador
     {
         return this.nombre;
     }
-
     public Pokemon GetPokemonEnUso()
     {
         return this.pokemonEnUso;
     }
-
     public List<Pokemon> GetSeleccion()
     {
         return this.seleccionPokemones;
     }
-
     public int GetPokemonesVivos()
     {
         pokemonesVivos = 0;
@@ -47,7 +44,6 @@ public class Entrenador
 
         return pokemonesVivos;
     }
-
     public string GetListaDeItems()
     {
         Dictionary<string, int> itemCounts = new Dictionary<string, int>();
@@ -75,7 +71,6 @@ public class Entrenador
 
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
-
     public SocketGuildUser GetSocketGuildUser()
     {
         return this.userds1;
@@ -90,8 +85,7 @@ public class Entrenador
         this.pokemonEnUso = null;
         this.seleccionPokemones = new List<Pokemon>();
         this.pokemonesVivos = 6;
-        this.TurnosRecargaAtkEspecial =
-            2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
+        this.TurnosRecargaAtkEspecial = 2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
         this.listItems = new List<IItems>();
         this.RecargarItems();
         this.userds1 = guild;
