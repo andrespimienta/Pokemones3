@@ -1,4 +1,5 @@
 using System.Data.SqlTypes;
+using Discord;
 using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 
@@ -12,7 +13,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
-    public ListaDeEspera WaitingList { get; }
+    public WaitingList WaitingList { get; }
     
     private BattlesList BattlesList { get; }
 
@@ -24,7 +25,7 @@ public class Fachada
     // de esta.
     private Fachada()
     {
-        this.WaitingList= new ListaDeEspera();
+        this.WaitingList= new WaitingList();
         this.BattlesList = BattlesList.Instance;
         this.visitor = new VisitorPorTurno();
     }
@@ -40,7 +41,6 @@ public class Fachada
             {
                 _instance = new Fachada();
             }
-
             return _instance;
         }
     }
@@ -53,23 +53,26 @@ public class Fachada
         _instance = null;
     }
 
-    public void EnviarACanal(ICanal canal, string mensaje)
+    public void EnviarACanal (ICanal canal, string mensaje)
     {
         canal.EnviarMensajeAsync(mensaje);
+    }
+
+    public void EnviarAUsuario(IGuildUser usuario, string mensaje)
+    {
+        usuario.SendMessageAsync(mensaje);
     }
 
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="displayName">El nombre del jugador.</param>
-    /// <param name="user"></param>
-    /// <param name="canal"></param>
-    /// <returns>Un mensaje con el resultado.</returns>
-    public void AddTrainerToWaitingList(ulong userId, string displayName, ICanal canal)
+    public void AddTrainerToWaitingList(ulong userId, string displayName, SocketGuildUser user, ICanal canal)
     {
+        //*** FALTA AÑADIR FUNCIONALIDAD DE QUE NO PERMITA UNIRSE A OTRA BATALLA SI YA ESTOY JUGANDO UNA. ***
+        //*** POR AHORA NO ESTÁ AÑADIDA, PORQUE RENDIRSE NO ESTÁ AÑADIDO, Y ESO PUEDE DAR PROBLEMAS AL TESTEAR,***
+        //*** SI EL BOT CONSIDERA QUE ESTOY EN BATALLA Y NO PUEDO SALIR DE ELLA ***
         string mensaje;
-        if (this.WaitingList.AgregarEntrenador(userId,displayName,canal))
+        if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
         {
             mensaje = $"{displayName} agregado a la lista de espera";
         }
@@ -84,33 +87,36 @@ public class Fachada
     /// Remueve un jugador de la lista de espera.
     /// </summary>
     /// <param name="displayName">El jugador a remover.</param>
-    /// <returns>Un mensaje con el resultado.</returns>
-    public string EliminarEntrenadorDeListaEspera(string displayName)
+    public void RemoveTrainerFromWaitingList(string displayName, ICanal canal)
     {
+        string mensaje;
         if (WaitingList.EliminarEntrenador(displayName))
         {
-            return $"{displayName} removido de la lista de espera";
+            mensaje = $"{displayName} removido de la lista de espera";
         }
         else
         {
-            return $"{displayName} no está en la lista de espera";
+            mensaje = $"{displayName} no está en la lista de espera";
         }
+        this.EnviarACanal(canal, mensaje);
     }
 
     /// <summary>
     /// Obtiene la lista de jugadores esperando.
     /// </summary>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string GetTrainerWaiting()
+    public void GetTrainersWaiting(ICanal canal)
     {
+        string mensaje;
         if (WaitingList.Count == 0)
         {
-            return "No hay nadie esperando";
+            mensaje = "No hay nadie esperando";
         }
-
-        string result = WaitingList.GetListaDeEspera();
-        
-        return result;
+        else
+        {
+            mensaje = WaitingList.GetListaDeEspera();
+        }
+        this.EnviarACanal(canal, mensaje);
     }
 
     /// <summary>
@@ -118,15 +124,24 @@ public class Fachada
     /// </summary>
     /// <param name="displayName">El jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string TrainerIsWaiting(string displayName)
+    public void TrainerStatus(ulong userId, string displayName, ICanal canal)
     {
+        string mensaje;
         Entrenador? trainer = this.WaitingList.EncontrarEntrenador(displayName);
-        if (trainer == null)
+        /* TODAVÍA NO ES IMPLEMENTABLE HASTA QUE LA LISTA DE BATALLAS SE VACÍE AUTOMÁTICAMENTE
+        if (BattlesList.GetBattle(userId) != null)
         {
-            return $"{displayName} no está esperando";
+            mensaje = $"{displayName} está en una batalla";
         }
-        
-        return $"{displayName} está esperando";
+        else*/ if (trainer == null)
+        {
+            mensaje = $"{displayName} no está esperando";
+        }
+        else
+        {
+            mensaje = $"{displayName} está esperando";
+        }
+        this.EnviarACanal(canal, mensaje);
     }
 
     private string CreateBattle(string playerDisplayName, string opponentDisplayName)

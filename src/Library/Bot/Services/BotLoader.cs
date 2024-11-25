@@ -95,7 +95,7 @@ Aquí están los pasos para participar:
 
 2. **Esperar un oponente**:
    - Usa el comando `!battle` para emparejarte automáticamente con cualquier otro jugador que esté esperando.
-   - Si prefieres elegir un oponente específico, usa `!waitinList` para ver todos los jugadores en espera, y luego usa `!battle <nombreOponente>` para desafiar a alguien en particular.
+   - Si prefieres elegir un oponente específico, usa `!waitingList` para ver todos los jugadores en espera, y luego usa `!battle <nombreOponente>` para desafiar a alguien en particular.
 
 ¡Buena suerte y que gane el mejor entrenador! 💥";
 

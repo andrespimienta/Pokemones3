@@ -15,7 +15,7 @@ public class Entrenador
     private List<IItems> listItems;
     public int TurnosRecargaAtkEspecial { get; set; }
     public bool EstaListo { get; set; } // Agregar el flag para saber si está listo
-    private ICanal userDs;
+    private SocketGuildUser userds1;
 
 
     // Getters:
@@ -23,17 +23,14 @@ public class Entrenador
     {
         return this.nombre;
     }
-
     public Pokemon GetPokemonEnUso()
     {
         return this.pokemonEnUso;
     }
-
     public List<Pokemon> GetSeleccion()
     {
         return this.seleccionPokemones;
     }
-
     public int GetPokemonesVivos()
     {
         pokemonesVivos = 0;
@@ -47,7 +44,6 @@ public class Entrenador
 
         return pokemonesVivos;
     }
-
     public string GetListaDeItems()
     {
         Dictionary<string, int> itemCounts = new Dictionary<string, int>();
@@ -75,26 +71,24 @@ public class Entrenador
 
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
-
-    public ICanal GetSocketGuildUser()
+    public SocketGuildUser GetSocketGuildUser()
     {
-        return this.userDs;
+        return this.userds1;
     }
 
 
     // Constructor:
-    public Entrenador(string suNombre, ulong id, ICanal canal )
+    public Entrenador(string suNombre, ulong id, SocketGuildUser guild )
     {
         this.Id = id;
         this.nombre = suNombre;
         this.pokemonEnUso = null;
         this.seleccionPokemones = new List<Pokemon>();
         this.pokemonesVivos = 6;
-        this.TurnosRecargaAtkEspecial =
-            2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
+        this.TurnosRecargaAtkEspecial = 2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
         this.listItems = new List<IItems>();
         this.RecargarItems();
-        this.userDs = canal;
+        this.userds1 = guild;
         
         this.EstaListo = false; // Inicialmente no está listo
 

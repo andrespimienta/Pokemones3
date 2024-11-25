@@ -9,7 +9,7 @@ using Ucu.Poo.DiscordBot.Domain;
 
 namespace Ucu.Poo.DiscordBot.Commands
 {
-    public class BattleCommand : ModuleBase<SocketCommandContext>
+    public class BattleCommands : ModuleBase<SocketCommandContext>
     {
         // Instancia de la lista de batallas
         private static BattlesList battlesList = BattlesList.Instance;
@@ -68,7 +68,7 @@ namespace Ucu.Poo.DiscordBot.Commands
             // Obtener el ID del jugador actual usando su ID de Discord
             Console.WriteLine("Obteniendo usuario..1.");
             var user1 = batalla.Player1.GetSocketGuildUser();
-            Console.WriteLine("Usuario obtenido.2");
+            Console.WriteLine("Usuario obtenido.1");
 
             Console.WriteLine("Obteniendo usuario...2");
             var user2 = batalla.Player2.GetSocketGuildUser();
