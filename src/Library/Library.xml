@@ -4,25 +4,13 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.BattleCommand.ExecuteAsync(System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Commands.BattleCommands.BattleAsync(System.String)">
             <summary>
             Implementa el comando 'battle'. Este comando une al jugador que envía el
             mensaje a la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.LeaveCommand">
-            <summary>
-            Esta clase implementa el comando 'leave' del bot. Este comando remueve el
-            jugador que envía el mensaje de la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.LeaveCommand.ExecuteAsync">
-            <summary>
-            Implementa el comando 'leave' del bot. Este comando remueve el jugador
-            que envía el mensaje de la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.PokemonNameCommand">
+        <member name="T:Ucu.Poo.DiscordBot.Commands.StartingCommands">
             <summary>
             Esta clase implementa el comando 'name' del bot. Este comando retorna el
             nombre de un Pokémon dado su identificador.
@@ -120,18 +108,12 @@
             <summary>
             Agrega un jugador a la lista de espera.
             </summary>
-            <param name="userId"></param>
-            <param name="displayName">El nombre del jugador.</param>
-            <param name="user"></param>
-            <param name="canal"></param>
-            <returns>Un mensaje con el resultado.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.RemoveTrainerFromWaitingList(System.String,ICanal)">
             <summary>
             Remueve un jugador de la lista de espera.
             </summary>
             <param name="displayName">El jugador a remover.</param>
-            <returns>Un mensaje con el resultado.</returns>
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.GetTrainersWaiting(ICanal)">
             <summary>
@@ -146,7 +128,7 @@
             <param name="displayName">El jugador.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.StartBattle(System.String,System.String)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ChallengeTrainerToBattle(System.String,System.String,ICanal)">
             <summary>
             Crea una batalla entre dos jugadores.
             </summary>
@@ -190,7 +172,7 @@
             <returns>El jugador encontrado o <c>null</c> en caso contrario.
             </returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.GetAlguienEsperando">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.GetAlguienEsperando(System.String)">
             <summary>
             Retorna un jugador cualquiera esperando para jugar. En esta
             implementación provista no es cualquiera, sino el primero. En la
@@ -209,25 +191,25 @@
             La interfaz del Bot de Discord para usar con inyección de dependencias.
             </summary>
         </member>
-        <member name="M:ServerCommands.JoinAsync">
+        <member name="M:LobbyCommands.JoinAsync">
             <summary>
             Implementa el comando 'join'. Este comando une al jugador que envía el
             mensaje a la lista de jugadores esperando para jugar y los empareja automáticamente si hay al menos dos.
             </summary>
         </member>
-        <member name="M:ServerCommands.LeaveAsync">
+        <member name="M:LobbyCommands.LeaveAsync">
             <summary>
             Implementa el comando 'leave' del bot. Este comando remueve el jugador
             que envía el mensaje de la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="M:ServerCommands.WaitingListAsync">
+        <member name="M:LobbyCommands.WaitingListAsync">
             <summary>
             Implementa el comando 'waitinglist'. Este comando muestra la lista de
             jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="M:ServerCommands.StatusAsync(System.String)">
+        <member name="M:LobbyCommands.StatusAsync(System.String)">
             <summary>
             Implementa el comando 'status'. Este comando muestra el estado
             de un jugador en específico (batallando, esperando o no esperando).

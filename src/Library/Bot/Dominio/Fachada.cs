@@ -144,7 +144,7 @@ public class Fachada
         this.EnviarACanal(canal, mensaje);
     }
 
-    private string CreateBattle(string playerDisplayName, string opponentDisplayName)
+    private void CreateBattle(string playerDisplayName, string opponentDisplayName)
     {
         Entrenador jugador = WaitingList.EncontrarEntrenador(playerDisplayName);
         Entrenador oponente = WaitingList.EncontrarEntrenador(opponentDisplayName);
@@ -153,12 +153,16 @@ public class Fachada
         
         WaitingList.EliminarEntrenador(playerDisplayName);
         WaitingList.EliminarEntrenador(opponentDisplayName);
-        return $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.\n\n" +
-               $"¡Ahora debes elegir 6 pokémon para la batalla!\n" +
-               $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
-               $"Para seleccionar tus pokémon, utiliza el comando: `!agregarPokemon <id1>,<id2>,<id3>,<id4>,<id5>,<id6>`\n" +
-               $"Por ejemplo: `!agregarPokemon 1,2,3,4,5,6`.\n\n" +
-               $"¡Prepárate para la batalla!";
+        string mensaje = $"==================================================================================\n"+
+                         $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.\n" +
+                         $"==================================================================================\n\n" +
+                        $"¡Ahora debes **elegir 6 pokémon** para la batalla!\n" +
+                        $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
+                        $"Para seleccionar tus pokémon, utiliza el comando: `!agregarPokemon <id1>,<id2>,<id3>,<id4>,<id5>,<id6>`\n" +
+                        $"Por ejemplo: `!agregarPokemon 1,2,3,4,5,6`.\n\n" +
+                        $"**¡Prepárate para la batalla!**";
+        this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+        this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
     }
 
     /// <summary>
@@ -167,55 +171,70 @@ public class Fachada
     /// <param name="playerDisplayName">El primer jugador.</param>
     /// <param name="opponentDisplayName">El oponente.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string StartBattle(string playerDisplayName, string? opponentDisplayName)
+    public void ChallengeTrainerToBattle(string playerDisplayName, string? opponentDisplayName, ICanal canal)
     {
         // El símbolo ? luego de Trainer indica que la variable opponent puede
         // referenciar una instancia de Trainer o ser null.
         Entrenador opponent;
+        string mensaje;
         
+        // Si el nombre del oponente es null y no hay nadie esperando
         if (!OpponentProvided() && !SomebodyIsWaiting())
         {
-            return "No hay nadie esperando";
+            mensaje = "No hay nadie esperando";
+            this.EnviarACanal(canal, mensaje);
         }
-        
-        if (!OpponentProvided()) // && SomebodyIsWaiting
+        // No hay nombre del oponente, pero sí hay alguien esperando
+        else if (!OpponentProvided()) // && SomebodyIsWaiting
         {
-            opponent = WaitingList.GetAlguienEsperando();
+            // Si no se escribió un oponente, busca usuarios (que no sean quien envió el comando) en la lista de espera
+            opponent = WaitingList.GetAlguienEsperando(playerDisplayName);
+            mensaje = $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponent.GetNombre()}**.";
+            this.EnviarACanal(canal, mensaje);
+                // El símbolo ! luego de opponent indica que sabemos que esa
+                // variable no es null. Estamos seguros porque SomebodyIsWaiting
+                // retorna true si y solo si hay usuarios esperando y en tal caso
+                // GetAlguienEsperando nunca retorna null.
+                CreateBattle(playerDisplayName, opponent!.GetNombre());
+        }
+        else
+        {
+            // El símbolo ! luego de opponentDisplayName indica que sabemos que esa
+            // variable no es null. Estamos seguros porque OpponentProvided hubiera
+            // retorna false antes y no habríamos llegado hasta aquí.
+            opponent = WaitingList.EncontrarEntrenador(opponentDisplayName!);
             
-            // El símbolo ! luego de opponent indica que sabemos que esa
-            // variable no es null. Estamos seguros porque SomebodyIsWaiting
-            // retorna true si y solo si hay usuarios esperando y en tal caso
-            // GetAnyoneWaiting nunca retorna null.
-            return CreateBattle(playerDisplayName, opponent!.GetNombre());
+            // Si no se encontró al oponente en la lista de espera
+            if (opponent != null && opponent.GetNombre() != playerDisplayName)
+            {
+                mensaje = $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.";
+                this.EnviarACanal(canal, mensaje);
+                this.CreateBattle(playerDisplayName, opponentDisplayName);
+            }
+            else
+            {
+                mensaje = $"{opponentDisplayName} no está esperando";
+                this.EnviarACanal(canal, mensaje);
+            }
         }
-
-        // El símbolo ! luego de opponentDisplayName indica que sabemos que esa
-        // variable no es null. Estamos seguros porque OpponentProvided hubiera
-        // retorna false antes y no habríamos llegado hasta aquí.
-        opponent = WaitingList.EncontrarEntrenador(opponentDisplayName!);
-        
-        if (!OpponentFound())
-        {
-            return $"{opponentDisplayName} no está esperando";
-        }
-        
-        return this.CreateBattle(playerDisplayName, opponent!.GetNombre());
         
         // Funciones locales a continuación para mejorar la legibilidad
-
-        bool OpponentProvided()
+        
+        bool OpponentProvided() // Devuelve true si el nombre del oponente no es null
         {
             return !string.IsNullOrEmpty(opponentDisplayName);
         }
 
-        bool SomebodyIsWaiting()
+        bool SomebodyIsWaiting()    // Devuelve true si hay alguien esperando, que no sea quien se pasa por parámetro
         {
-            return this.WaitingList.Count != 0;
-        }
-
-        bool OpponentFound()
-        {
-            return opponent != null;
+            if (WaitingList.GetAlguienEsperando(playerDisplayName) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
     public string? ListaAtaques(ulong userId)
