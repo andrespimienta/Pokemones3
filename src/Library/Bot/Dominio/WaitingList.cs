@@ -100,7 +100,6 @@ public class WaitingList
         {
             return null;
         }
-
         return this.entrenadores[0];
     }
    

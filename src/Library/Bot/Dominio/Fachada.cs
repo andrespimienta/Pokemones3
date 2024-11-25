@@ -68,6 +68,9 @@ public class Fachada
     /// </summary>
     public void AddTrainerToWaitingList(ulong userId, string displayName, SocketGuildUser user, ICanal canal)
     {
+        //*** FALTA AÑADIR FUNCIONALIDAD DE QUE NO PERMITA UNIRSE A OTRA BATALLA SI YA ESTOY JUGANDO UNA. ***
+        //*** POR AHORA NO ESTÁ AÑADIDA, PORQUE RENDIRSE NO ESTÁ AÑADIDO, Y ESO PUEDE DAR PROBLEMAS AL TESTEAR,***
+        //*** SI EL BOT CONSIDERA QUE ESTOY EN BATALLA Y NO PUEDO SALIR DE ELLA ***
         string mensaje;
         if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
         {
@@ -121,15 +124,24 @@ public class Fachada
     /// </summary>
     /// <param name="displayName">El jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public string TrainerIsWaiting(string displayName)
+    public void TrainerStatus(ulong userId, string displayName, ICanal canal)
     {
+        string mensaje;
         Entrenador? trainer = this.WaitingList.EncontrarEntrenador(displayName);
-        if (trainer == null)
+        /* TODAVÍA NO ES IMPLEMENTABLE HASTA QUE LA LISTA DE BATALLAS SE VACÍE AUTOMÁTICAMENTE
+        if (BattlesList.GetBattle(userId) != null)
         {
-            return $"{displayName} no está esperando";
+            mensaje = $"{displayName} está en una batalla";
         }
-        
-        return $"{displayName} está esperando";
+        else*/ if (trainer == null)
+        {
+            mensaje = $"{displayName} no está esperando";
+        }
+        else
+        {
+            mensaje = $"{displayName} está esperando";
+        }
+        this.EnviarACanal(canal, mensaje);
     }
 
     private string CreateBattle(string playerDisplayName, string opponentDisplayName)

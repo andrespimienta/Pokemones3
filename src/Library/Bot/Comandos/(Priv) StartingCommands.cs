@@ -14,7 +14,7 @@ namespace Ucu.Poo.DiscordBot.Commands;
 /// nombre de un Pokémon dado su identificador.
 /// </summary>
 // ReSharper disable once UnusedType.Global
-public class PokemonNameCommand : ModuleBase<SocketCommandContext>
+public class StartingCommands : ModuleBase<SocketCommandContext>
 { 
     [Command("agregarPokemon")]
 public async Task AgregarPokemonAsync(string numerosIdentificadores)
@@ -102,7 +102,7 @@ public async Task AgregarPokemonAsync(string numerosIdentificadores)
         {
             await ReplyAsync("Has completado tu selección de 6 Pokémon. ¡Estás listo para la batalla!\n\n" +
                              "Pokémon disponibles en tu selección:\n" +
-                             "**Elige uno de tus pokemones con el comando !usar <numero identificador del pokemon de tu lista>**\n");
+                             "**Elige uno de tus pokemones con el comando `!usar <numero identificador del pokemon de tu lista>`**\n");
             
             List<Pokemon> seleccionPokemones = entrenador.seleccionPokemones;
             StringBuilder respuesta = new StringBuilder();
@@ -181,7 +181,7 @@ public async Task AgregarPokemonAsync(string numerosIdentificadores)
             entrenador.pokemonEnUso = pokemonSeleccionado;
 
             await ReplyAsync($"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!\n"+
-                              "**Indica que estás listo para la batalla: Usa el comando !startBattle para confirmar que estás listo para luchar.**");
+                              "**Indica que estás listo para la batalla: Usa el comando `!startBattle` para confirmar que estás listo para luchar.**");
         }
         else
         {
