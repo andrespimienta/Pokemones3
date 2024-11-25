@@ -4,17 +4,6 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.StartingCommands">
-            <summary>
-            Esta clase implementa el comando 'name' del bot. Este comando retorna el
-            nombre de un Pokémon dado su identificador.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.StartingCommands.MostrarCatalogoAsync">
-            <summary>
-            Muestra el catálogo de pokemones al jugador que envíe el comando.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
             <summary>
             Esta clase representa una batalla entre dos jugadores.
@@ -199,6 +188,11 @@
         <member name="T:Ucu.Poo.DiscordBot.Services.IBot">
             <summary>
             La interfaz del Bot de Discord para usar con inyección de dependencias.
+            </summary>
+        </member>
+        <member name="M:StartingCommands.MostrarCatalogoAsync">
+            <summary>
+            Muestra el catálogo de pokemones al jugador que envíe el comando.
             </summary>
         </member>
         <member name="M:LobbyCommands.JoinAsync">

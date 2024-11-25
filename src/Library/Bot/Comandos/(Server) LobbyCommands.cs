@@ -1,9 +1,5 @@
-using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Proyecto_Pokemones_I;
 using Ucu.Poo.DiscordBot.Commands;
 using Ucu.Poo.DiscordBot.Domain;
 

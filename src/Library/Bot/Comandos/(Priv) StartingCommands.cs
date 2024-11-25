@@ -1,19 +1,9 @@
-using System.Net;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json.Nodes;
-using Microsoft.Extensions.Logging;
 using Discord.Commands;
 using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 using Ucu.Poo.DiscordBot.Domain;
+using Ucu.Poo.DiscordBot.Commands;
 
-namespace Ucu.Poo.DiscordBot.Commands;
-
-/// <summary>
-/// Esta clase implementa el comando 'name' del bot. Este comando retorna el
-/// nombre de un Pokémon dado su identificador.
-/// </summary>
 public class StartingCommands : ModuleBase<SocketCommandContext>
 { 
     /// <summary>
