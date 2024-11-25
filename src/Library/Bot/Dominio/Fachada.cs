@@ -21,8 +21,7 @@ public class Fachada
     
     private static Fachada? _instance;
 
-    // Este constructor privado impide que otras clases puedan crear instancias
-    // de esta.
+    // Este constructor privado impide que otras clases puedan crear instancias de esta
     private Fachada()
     {
         this.WaitingList= new WaitingList();
@@ -144,37 +143,13 @@ public class Fachada
         this.EnviarACanal(canal, mensaje);
     }
 
-    private void CreateBattle(string playerDisplayName, string opponentDisplayName)
-    {
-        Entrenador jugador = WaitingList.EncontrarEntrenador(playerDisplayName);
-        Entrenador oponente = WaitingList.EncontrarEntrenador(opponentDisplayName);
-        
-        BattlesList.AddBattle(jugador, oponente);
-        
-        WaitingList.EliminarEntrenador(playerDisplayName);
-        WaitingList.EliminarEntrenador(opponentDisplayName);
-        string mensaje = $"==================================================================================\n"+
-                         $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.\n" +
-                         $"==================================================================================\n\n" +
-                        $"¡Ahora debes **elegir 6 pokémon** para la batalla!\n" +
-                        $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
-                        $"Para seleccionar tus pokémon, utiliza el comando: `!agregarPokemon <id1>,<id2>,<id3>,<id4>,<id5>,<id6>`\n" +
-                        $"Por ejemplo: `!agregarPokemon 1,2,3,4,5,6`.\n\n" +
-                        $"**¡Prepárate para la batalla!**";
-        this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
-        this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
-    }
-
     /// <summary>
-    /// Crea una batalla entre dos jugadores.
+    /// Intenta crear una batalla entre dos jugadores.
     /// </summary>
     /// <param name="playerDisplayName">El primer jugador.</param>
     /// <param name="opponentDisplayName">El oponente.</param>
-    /// <returns>Un mensaje con el resultado.</returns>
     public void ChallengeTrainerToBattle(string playerDisplayName, string? opponentDisplayName, ICanal canal)
     {
-        // El símbolo ? luego de Trainer indica que la variable opponent puede
-        // referenciar una instancia de Trainer o ser null.
         Entrenador opponent;
         string mensaje;
         
@@ -237,6 +212,78 @@ public class Fachada
             }
         }
     }
+    
+    /// <summary>
+    /// Crea efectivamente una instancia de Battle usando los jugadores
+    /// como parámetro, y les avisa por privado que comenzó la batalla.
+    /// </summary>
+    private void CreateBattle(string playerDisplayName, string opponentDisplayName)
+    {
+        Entrenador jugador = WaitingList.EncontrarEntrenador(playerDisplayName);
+        Entrenador oponente = WaitingList.EncontrarEntrenador(opponentDisplayName);
+        
+        BattlesList.AddBattle(jugador, oponente);
+        
+        WaitingList.EliminarEntrenador(playerDisplayName);
+        WaitingList.EliminarEntrenador(opponentDisplayName);
+        string mensaje = $"==================================================================================\n"+
+                         $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.\n" +
+                         $"==================================================================================\n\n" +
+                        $"¡Ahora debes **elegir 6 pokémon** para la batalla!\n" +
+                        $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
+                        $"Para seleccionar tus pokémon, utiliza el comando: `!agregarPokemon <id1>,<id2>,<id3>,<id4>,<id5>,<id6>`\n" +
+                        $"Por ejemplo: `!agregarPokemon 1,2,3,4,5,6`.\n\n" +
+                        $"**¡Prepárate para la batalla!**";
+        this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+        this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
+    }
+
+    public void ShowCatalog(IGuildUser jugador)
+    {
+        // Obtener el catálogo procesado como un string
+        string catalogo = LeerArchivo.ObtenerCatalogoProcesado();
+        string mensaje;
+        
+        // Verificar si el catálogo está vacío
+        if (string.IsNullOrEmpty(catalogo))
+        {
+            mensaje = "No se pudo obtener el catálogo. Está vacío o hubo un error.";
+            this.EnviarAUsuario(jugador, mensaje);
+        }
+        else
+        {
+            mensaje = ($"========================================\n" +
+                       $"**Estos son los pokemones disponibles:**\n" +
+                       $"========================================\n");
+            this.EnviarAUsuario(jugador, mensaje);
+            
+            // Verificar si el catálogo es demasiado largo para enviarlo de una vez
+            const int maxMessageLength = 2000; // Límite de caracteres en un mensaje de Discord
+            if (catalogo.Length > maxMessageLength)
+            {
+                
+                
+                // Si el catálogo es muy largo, dividirlo en partes
+                int startIndex = 0;
+                while (startIndex < catalogo.Length)
+                {
+                    // Enviar la parte del catálogo que no exceda el límite
+                    mensaje = catalogo.Substring(startIndex, Math.Min(maxMessageLength, catalogo.Length - startIndex));
+                    this.EnviarAUsuario(jugador, mensaje);
+                    startIndex += maxMessageLength;
+                }
+            }
+            else
+            {
+                // Si el catálogo cabe en un solo mensaje, enviarlo directamente
+                mensaje = ($"{catalogo}\n");
+                this.EnviarAUsuario(jugador, mensaje);
+            }
+        }
+    }
+
+
+
     public string? ListaAtaques(ulong userId)
     {
         Battle batalla = BattlesList.GetBattle(userId);
