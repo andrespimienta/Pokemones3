@@ -10,7 +10,7 @@ public class Entrenador
     public ulong Id { get; set; } // ID de Discord para identificar al jugador
     private string nombre;
     public Pokemon? pokemonEnUso;
-    public List<Pokemon> seleccionPokemones;
+    private List<Pokemon> seleccionPokemones;
     private int pokemonesVivos;
     private List<IItems> listItems;
     public int TurnosRecargaAtkEspecial { get; set; }
