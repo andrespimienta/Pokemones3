@@ -6,7 +6,7 @@ namespace Proyecto_Pokemones_I;
 public static class LeerArchivo
 {
 
-    public static string RutaCatalogo = "C:\\Users\\Estudiante UCU\\Documents\\Repositorios Prog. II\\Pokemones3\\src\\Program\\Catalogo";
+    public static string RutaCatalogo = "/Users/andrespimienta/Desktop/Facultad/Programación 2/Proyecto/Pokemones3/src/Program/Catalogo";
 
     public static string ObtenerCatalogoProcesado()
     {
@@ -25,8 +25,7 @@ public static class LeerArchivo
 
             // Construir el mensaje del catálogo, agregando los datos de cada Pokémon
             catalogo += "----------------------------------------------------------------------\n" +
-                        $"ID: {datos[0]}, Nombre: {datos[1]}, Tipo: {datos[2]},\n" +
-                        $"Vida: {datos[3]}, Velocidad de Ataque: {datos[4]}\n";
+                       $"➡️ {datos[0]}, 🏷️ {datos[1]}, 🔖 {datos[2]}, ❤️ {datos[3]}, ⚡ {datos[4]}\n";
         }
         catalogo += "----------------------------------------------------------------------";  // Añadir línea final
 

@@ -274,7 +274,7 @@ public class Fachada
                 mensaje += linea + "\n";
                 contadorLineas += 1;
                 
-                if (contadorLineas % 39 == 0)
+                if (contadorLineas % 26 == 0)
                 {
                     await this.EnviarAUsuario(usuario, mensaje);
                     mensaje = "";
