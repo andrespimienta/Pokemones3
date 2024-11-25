@@ -13,7 +13,7 @@ public class Battle
     /// Obtiene un valor que representa el primer jugador.
     /// </summary>
     public Entrenador Player1 { get; }
-    
+
     /// <summary>
     /// Obtiene un valor que representa al oponente.
     /// </summary>
@@ -24,7 +24,9 @@ public class Battle
     /// </summary>
     public Entrenador? Ganador { get; private set; }
 
-    // Constructor:
+    public Entrenador? EntrenadorConTurno {get; set;}
+
+// Constructor:
     /// <summary>
     /// Inicializa una instancia de la clase <see cref="Battle"/> con los
     /// valores recibidos como argumento.

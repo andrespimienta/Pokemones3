@@ -99,10 +99,12 @@ namespace Ucu.Poo.DiscordBot.Commands
             if (pokemonJugador1.GetVelocidadAtaque() > pokemonJugador2.GetVelocidadAtaque())
             {
                 turnoJugador = batalla.Player1.GetNombre();
+                batalla.EntrenadorConTurno = batalla.Player1;
             }
             else if (pokemonJugador2.GetVelocidadAtaque() > pokemonJugador1.GetVelocidadAtaque())
             {
                 turnoJugador = batalla.Player2.GetNombre();
+                batalla.EntrenadorConTurno = batalla.Player2;
             }
             else
             {
@@ -110,6 +112,14 @@ namespace Ucu.Poo.DiscordBot.Commands
                 turnoJugador = new System.Random().Next(2) == 0
                     ? batalla.Player1.GetNombre()
                     : batalla.Player2.GetNombre();
+                if (turnoJugador == batalla.Player1.GetNombre())
+                {
+                    batalla.EntrenadorConTurno = batalla.Player1;
+                }
+                else
+                {
+                    batalla.EntrenadorConTurno = batalla.Player2;
+                }
             }
 
             // Notificar a ambos jugadores sobre quién empieza
