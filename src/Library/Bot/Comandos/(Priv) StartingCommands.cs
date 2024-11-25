@@ -12,20 +12,17 @@ public class StartingCommands : ModuleBase<SocketCommandContext>
     [Command("catalogo")]
     public async Task MostrarCatalogoAsync()
     {
-        string displayName = CommandHelper.GetDisplayName(Context);
-        SocketGuildUser user = CommandHelper.GetUser(Context, displayName);
-
-        Fachada.Instance.ShowCatalog(user);
+        ulong userId = Context.User.Id;  // Obtener el ID del usuario
+        
+        Fachada.Instance.ShowCatalog(userId);
     }
     
     [Command("agregarPokemon")]
     public async Task AgregarPokemonAsync(string numerosIdentificadores)
     {
         ulong userId = Context.User.Id;
-        string displayName = CommandHelper.GetDisplayName(Context);
-        SocketGuildUser? user = CommandHelper.GetUser(Context, displayName);
         
-        Fachada.Instance.AddPokemonToList(userId, user, numerosIdentificadores);
+        Fachada.Instance.AddPokemonToList(userId, numerosIdentificadores);
     }
     
     [Command("usar")]

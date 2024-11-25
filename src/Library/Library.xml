@@ -129,7 +129,7 @@
             como parámetro, y les avisa por privado que comenzó la batalla.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowCatalog(Discord.WebSocket.SocketGuildUser)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowCatalog(System.UInt64)">
             <summary>
             Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
             al chat del jugador que envió el comando.

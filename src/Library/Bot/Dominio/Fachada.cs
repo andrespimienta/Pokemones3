@@ -158,7 +158,7 @@ public class Fachada
         // Si el nombre del oponente es null y no hay nadie esperando
         if (!OpponentProvided() && !SomebodyIsWaiting())
         {
-            mensaje = "No hay nadie esperando";
+            mensaje = "No hay nadie más esperando para batallar";
             this.EnviarACanal(canal, mensaje);
         }
         // No hay nombre del oponente, pero sí hay alguien esperando
@@ -244,38 +244,40 @@ public class Fachada
     /// Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
     /// al chat del jugador que envió el comando.
     /// </summary>
-    public void ShowCatalog(SocketGuildUser jugador)
+    public void ShowCatalog(ulong jugador)
     {
+        Battle batallaActual = BattlesList.GetBattle(jugador);
+        Entrenador entrenadorActual = batallaActual.GetEntrenadorActual(jugador);
+        SocketGuildUser usuario = entrenadorActual.GetSocketGuildUser();
+        
         // Obtener el catálogo procesado como un string
         string catalogo = LeerArchivo.ObtenerCatalogoProcesado();
         string mensaje;
+        
+        mensaje = ("========================================\n" +
+                   "**Estos son los pokemones disponibles:**\n" +
+                   "========================================\n");
+        this.EnviarAUsuario(usuario, mensaje);
         
         // Verificar si el catálogo está vacío
         if (string.IsNullOrEmpty(catalogo))
         {
             mensaje = "No se pudo obtener el catálogo. Está vacío o hubo un error.";
-            this.EnviarAUsuario(jugador, mensaje);
+            this.EnviarAUsuario(usuario, mensaje);
         }
         else
         {
-            mensaje = ($"========================================\n" +
-                       $"**Estos son los pokemones disponibles:**\n" +
-                       $"========================================\n");
-            this.EnviarAUsuario(jugador, mensaje);
-            
             // Verificar si el catálogo es demasiado largo para enviarlo de una vez
             const int maxMessageLength = 2000; // Límite de caracteres en un mensaje de Discord
             if (catalogo.Length > maxMessageLength)
             {
-                
-                
                 // Si el catálogo es muy largo, dividirlo en partes
                 int startIndex = 0;
                 while (startIndex < catalogo.Length)
                 {
                     // Enviar la parte del catálogo que no exceda el límite
                     mensaje = catalogo.Substring(startIndex, Math.Min(maxMessageLength, catalogo.Length - startIndex));
-                    this.EnviarAUsuario(jugador, mensaje);
+                    this.EnviarAUsuario(usuario, mensaje);
                     startIndex += maxMessageLength;
                 }
             }
@@ -283,17 +285,18 @@ public class Fachada
             {
                 // Si el catálogo cabe en un solo mensaje, enviarlo directamente
                 mensaje = ($"{catalogo}\n");
-                this.EnviarAUsuario(jugador, mensaje);
+                this.EnviarAUsuario(usuario, mensaje);
             }
         }
     }
 
-    public void AddPokemonToList(ulong userId, IGuildUser jugador, string numIdentificadores)
+    public void AddPokemonToList(ulong userId, string numIdentificadores)
     {
         string mensaje;
         // Obtiene el objeto entrenador del jugador que envió el comando
         Battle batalla = BattlesList.Instance.GetBattle(userId);
-        Entrenador entrenador = batalla.GetEntrenadorActual(userId); 
+        Entrenador entrenador = batalla.GetEntrenadorActual(userId);
+        SocketGuildUser usuario = entrenador.GetSocketGuildUser();
         
         // Obtiene la lista actual de Pokémon seleccionados por el entrenador
         List<Pokemon> listaDePokemones = entrenador.GetSeleccion();
@@ -302,7 +305,7 @@ public class Fachada
         if (listaDePokemones.Count >= 6)
         {
             mensaje = "Ya has seleccionado el máximo de 6 Pokémon permitidos para la batalla.";
-            this.EnviarAUsuario(jugador, mensaje);
+            this.EnviarAUsuario(usuario, mensaje);
         }
 
         // Separar los números identificadores por coma, eliminar espacios y asegurarse de que no haya duplicados.
@@ -325,13 +328,7 @@ public class Fachada
             if (listaDePokemones.Any(p => p.NumeroIdentificador == numeroIdentificador))
             {
                 mensaje = $"Ya has seleccionado el Pokémon con identificador {numeroIdentificador}, elige otro.";
-                this.EnviarAUsuario(jugador, mensaje);
-            }
-            else if (listaDePokemones.Count >= 6)
-            {
-                mensaje = "¡Ya has completado tu selección de 6 Pokémon!";
-                this.EnviarAUsuario(jugador, mensaje);
-                break;
+                this.EnviarAUsuario(usuario, mensaje);
             }
             else
             {
@@ -342,8 +339,14 @@ public class Fachada
                 {
                     
                     // Añadir el Pokémon al equipo del entrenador
-                    entrenador.AñadirASeleccion(pokemon);
                     pokemonesAgregados.Add(pokemon.GetNombre());
+                    entrenador.AñadirASeleccion(pokemon);
+                    if (listaDePokemones.Count >= 6)
+                    {
+                        mensaje = "¡Ya has completado tu selección de 6 Pokémon!";
+                        this.EnviarAUsuario(usuario, mensaje);
+                        break;
+                    }
                 }
                 else
                 {
@@ -358,7 +361,7 @@ public class Fachada
         {
             mensaje = string.Join(", ", pokemonesAgregados);
             mensaje = $"Los siguientes Pokémon han sido añadidos a tu selección: {mensaje}\n";
-            this.EnviarAUsuario(jugador, mensaje);
+            this.EnviarAUsuario(usuario, mensaje);
         }
 
         // Enviar mensaje de error si hay Pokémon que no se encontraron
@@ -366,7 +369,7 @@ public class Fachada
         {
             mensaje = string.Join(", ", noEncontrados);
             mensaje = $"No se encontraron Pokémon con los identificadores: {mensaje}.";
-            this.EnviarAUsuario(jugador, mensaje);
+            this.EnviarAUsuario(usuario, mensaje);
         }
 
         // Verificar si ya alcanzó el límite de 6 Pokémon
@@ -381,7 +384,7 @@ public class Fachada
             {
                 mensaje += $"{i + 1}) {listaDePokemones[i].GetNombre()}\n";
             }
-            this.EnviarAUsuario(jugador, mensaje);
+            this.EnviarAUsuario(usuario, mensaje);
         }
     }
 
