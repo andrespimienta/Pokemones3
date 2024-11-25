@@ -59,9 +59,9 @@ public class Fachada
         canal.EnviarMensajeAsync(mensaje);
     }
 
-    public void EnviarAUsuario(IGuildUser usuario, string mensaje)
+    public async Task EnviarAUsuario(IGuildUser usuario, string mensaje)
     {
-        usuario.SendMessageAsync(mensaje);
+        await usuario.SendMessageAsync(mensaje);
     }
 
     /// <summary>
@@ -244,7 +244,7 @@ public class Fachada
     /// Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
     /// al chat del jugador que envió el comando.
     /// </summary>
-    public void ShowCatalog(ulong jugador)
+    public async Task ShowCatalog(ulong jugador)
     {
         Battle batallaActual = BattlesList.GetBattle(jugador);
         Entrenador entrenadorActual = batallaActual.GetEntrenadorActual(jugador);
@@ -252,41 +252,35 @@ public class Fachada
         
         // Obtener el catálogo procesado como un string
         string catalogo = LeerArchivo.ObtenerCatalogoProcesado();
-        string mensaje;
-        
-        mensaje = ("========================================\n" +
-                   "**Estos son los pokemones disponibles:**\n" +
-                   "========================================\n");
-        this.EnviarAUsuario(usuario, mensaje);
+        string mensaje = ("========================================\n" +
+                          "**Estos son los pokemones disponibles:**\n" +
+                          "========================================\n");
+        await this.EnviarAUsuario(usuario, mensaje);
         
         // Verificar si el catálogo está vacío
         if (string.IsNullOrEmpty(catalogo))
         {
             mensaje = "No se pudo obtener el catálogo. Está vacío o hubo un error.";
-            this.EnviarAUsuario(usuario, mensaje);
+            await this.EnviarAUsuario(usuario, mensaje);
         }
         else
         {
             // Verificar si el catálogo es demasiado largo para enviarlo de una vez
-            const int maxMessageLength = 2000; // Límite de caracteres en un mensaje de Discord
-            if (catalogo.Length > maxMessageLength)
+            string[] lineas = catalogo.Split('\n');
+            int contadorLineas = 0;
+            mensaje = "";
+            foreach (string linea in lineas)
             {
-                // Si el catálogo es muy largo, dividirlo en partes
-                int startIndex = 0;
-                while (startIndex < catalogo.Length)
+                mensaje += linea + "\n";
+                contadorLineas += 1;
+                
+                if (contadorLineas % 39 == 0)
                 {
-                    // Enviar la parte del catálogo que no exceda el límite
-                    mensaje = catalogo.Substring(startIndex, Math.Min(maxMessageLength, catalogo.Length - startIndex));
-                    this.EnviarAUsuario(usuario, mensaje);
-                    startIndex += maxMessageLength;
+                    await this.EnviarAUsuario(usuario, mensaje);
+                    mensaje = "";
                 }
             }
-            else
-            {
-                // Si el catálogo cabe en un solo mensaje, enviarlo directamente
-                mensaje = ($"{catalogo}\n");
-                this.EnviarAUsuario(usuario, mensaje);
-            }
+            await this.EnviarAUsuario(usuario, mensaje);
         }
     }
 
