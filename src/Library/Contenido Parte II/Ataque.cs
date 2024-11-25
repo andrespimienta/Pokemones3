@@ -37,6 +37,13 @@ public abstract class Ataque
     }
 
     // Constructor:
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="nombreAtaque"></param>
+    /// <param name="tipoAtaque"></param>
+    /// <param name="dañoAtaque"></param>
+    /// <param name="precisionAtaque"></param>
     public Ataque(string nombreAtaque, string tipoAtaque, double dañoAtaque, int precisionAtaque)
     {
         this.nombre = nombreAtaque;
@@ -44,4 +51,6 @@ public abstract class Ataque
         this.daño = dañoAtaque;
         this.precision = precisionAtaque;
     }
+
+    
 }

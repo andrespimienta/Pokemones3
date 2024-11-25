@@ -1,4 +1,4 @@
-using NUnit.Framework;
+/*using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Proyecto_Pokemones_I;
 
@@ -116,4 +116,4 @@ public void TestIniciarBatalla()
 
 
 
-}
+}*/

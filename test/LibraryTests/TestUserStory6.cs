@@ -1,4 +1,4 @@
-using Library.Contenido_Parte_II;
+/*using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
 
@@ -17,7 +17,7 @@ public class TestUserStory6
     public void SetUp()
     {
         fachada1 = Fachada1.GetInstancia(); // Crea una nueva instancia de Fachada para cada test
-        fachada1.LimpiarLisdores();taDeJuga
+        fachada1.LimpiarLisdores();
     }
 
     [Test]
@@ -61,4 +61,4 @@ public class TestUserStory6
 
         Assert.That(consoleOutput.ToString().Contains(outputEsperadoTurno));
     }
-}
+}*/

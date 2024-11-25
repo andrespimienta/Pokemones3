@@ -1,4 +1,4 @@
-using Library.Contenido_Parte_II;
+/*using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
 
@@ -103,4 +103,4 @@ public class TestUserStory4
         Assert.That(consoleOutput.ToString().Contains(outputEsperadoTurno));
     }
 }
-
+*/

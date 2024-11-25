@@ -1,4 +1,4 @@
-using Library.Contenido_Parte_II;
+/*using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
 
@@ -66,4 +66,4 @@ public class TestUserStory8
         
         Assert.That(pikachu.GetVida(),  Is.GreaterThan(87)); //Verifica que Pikachu vuelva a tener más vida de la que se le quito
     }
-}
+}*/

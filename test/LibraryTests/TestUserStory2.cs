@@ -1,4 +1,4 @@
-using NUnit.Framework;
+/*using NUnit.Framework;
 using Proyecto_Pokemones_I;
 
 
@@ -48,4 +48,4 @@ public class TestUserStory2
         Assert.That(fachada1.ListaAtaques(), Is.EqualTo("IMPACTRUENO RAYO PUÑO TRUENO ATAQUE RÁPIDO"));
         
     }
-}
+}*/

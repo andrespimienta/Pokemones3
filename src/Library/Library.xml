@@ -4,16 +4,15 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.BattleCommands.BattleAsync(System.String)">
-            <summary>
-            Implementa el comando 'battle'. Este comando une al jugador que envía el
-            mensaje a la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
         <member name="T:Ucu.Poo.DiscordBot.Commands.StartingCommands">
             <summary>
             Esta clase implementa el comando 'name' del bot. Este comando retorna el
             nombre de un Pokémon dado su identificador.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Commands.StartingCommands.MostrarCatalogoAsync">
+            <summary>
+            Muestra el catálogo de pokemones al jugador que envíe el comando.
             </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
@@ -130,11 +129,16 @@
         </member>
         <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ChallengeTrainerToBattle(System.String,System.String,ICanal)">
             <summary>
-            Crea una batalla entre dos jugadores.
+            Intenta crear una batalla entre dos jugadores.
             </summary>
             <param name="playerDisplayName">El primer jugador.</param>
             <param name="opponentDisplayName">El oponente.</param>
-            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.CreateBattle(System.String,System.String)">
+            <summary>
+            Crea efectivamente una instancia de Battle usando los jugadores
+            como parámetro, y les avisa por privado que comenzó la batalla.
+            </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
             <summary>
@@ -214,6 +218,21 @@
             Implementa el comando 'status'. Este comando muestra el estado
             de un jugador en específico (batallando, esperando o no esperando).
             </summary>
+        </member>
+        <member name="M:LobbyCommands.BattleAsync(System.String)">
+            <summary>
+            Implementa el comando 'battle'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Ataque.#ctor(System.String,System.String,System.Double,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="nombreAtaque"></param>
+            <param name="tipoAtaque"></param>
+            <param name="dañoAtaque"></param>
+            <param name="precisionAtaque"></param>
         </member>
         <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
             <inheritdoc />
