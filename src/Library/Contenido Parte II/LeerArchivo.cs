@@ -25,7 +25,7 @@ public static class LeerArchivo
 
             // Construir el mensaje del catálogo, agregando los datos de cada Pokémon
             catalogo += "----------------------------------------------------------------------\n" +
-                        $"Identificador: {datos[0]}, Nombre: {datos[1]}, Tipo: {datos[2]},\n" +
+                        $"ID: {datos[0]}, Nombre: {datos[1]}, Tipo: {datos[2]},\n" +
                         $"Vida: {datos[3]}, Velocidad de Ataque: {datos[4]}\n";
         }
         catalogo += "----------------------------------------------------------------------";  // Añadir línea final

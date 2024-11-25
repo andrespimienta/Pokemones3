@@ -1,4 +1,5 @@
 using System.Data.SqlTypes;
+using System.Text;
 using Discord;
 using Discord.WebSocket;
 using Proyecto_Pokemones_I;
@@ -13,6 +14,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 /// </summary>
 public class Fachada
 {
+    // Atributos: (todos ellos son clases singleton)
     public WaitingList WaitingList { get; }
     
     private BattlesList BattlesList { get; }
@@ -21,7 +23,7 @@ public class Fachada
     
     private static Fachada? _instance;
 
-    // Este constructor privado impide que otras clases puedan crear instancias de esta
+    // Constructor: (Privado para impedir que otras clases puedan crear instancias de esta)
     private Fachada()
     {
         this.WaitingList= new WaitingList();
@@ -57,9 +59,9 @@ public class Fachada
         canal.EnviarMensajeAsync(mensaje);
     }
 
-    public void EnviarAUsuario(IGuildUser usuario, string mensaje)
+    public async Task EnviarAUsuario(IGuildUser usuario, string mensaje)
     {
-        usuario.SendMessageAsync(mensaje);
+        await usuario.SendMessageAsync(mensaje);
     }
 
     /// <summary>
@@ -156,7 +158,7 @@ public class Fachada
         // Si el nombre del oponente es null y no hay nadie esperando
         if (!OpponentProvided() && !SomebodyIsWaiting())
         {
-            mensaje = "No hay nadie esperando";
+            mensaje = "No hay nadie más esperando para batallar";
             this.EnviarACanal(canal, mensaje);
         }
         // No hay nombre del oponente, pero sí hay alguien esperando
@@ -238,51 +240,147 @@ public class Fachada
         this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
     }
 
-    public void ShowCatalog(IGuildUser jugador)
+    /// <summary>
+    /// Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
+    /// al chat del jugador que envió el comando.
+    /// </summary>
+    public async Task ShowCatalog(ulong jugador)
     {
+        Battle batallaActual = BattlesList.GetBattle(jugador);
+        Entrenador entrenadorActual = batallaActual.GetEntrenadorActual(jugador);
+        SocketGuildUser usuario = entrenadorActual.GetSocketGuildUser();
+        
         // Obtener el catálogo procesado como un string
         string catalogo = LeerArchivo.ObtenerCatalogoProcesado();
-        string mensaje;
+        string mensaje = ("========================================\n" +
+                          "**Estos son los pokemones disponibles:**\n" +
+                          "========================================\n");
+        await this.EnviarAUsuario(usuario, mensaje);
         
         // Verificar si el catálogo está vacío
         if (string.IsNullOrEmpty(catalogo))
         {
             mensaje = "No se pudo obtener el catálogo. Está vacío o hubo un error.";
-            this.EnviarAUsuario(jugador, mensaje);
+            await this.EnviarAUsuario(usuario, mensaje);
         }
         else
         {
-            mensaje = ($"========================================\n" +
-                       $"**Estos son los pokemones disponibles:**\n" +
-                       $"========================================\n");
-            this.EnviarAUsuario(jugador, mensaje);
-            
             // Verificar si el catálogo es demasiado largo para enviarlo de una vez
-            const int maxMessageLength = 2000; // Límite de caracteres en un mensaje de Discord
-            if (catalogo.Length > maxMessageLength)
+            string[] lineas = catalogo.Split('\n');
+            int contadorLineas = 0;
+            mensaje = "";
+            foreach (string linea in lineas)
             {
+                mensaje += linea + "\n";
+                contadorLineas += 1;
                 
-                
-                // Si el catálogo es muy largo, dividirlo en partes
-                int startIndex = 0;
-                while (startIndex < catalogo.Length)
+                if (contadorLineas % 39 == 0)
                 {
-                    // Enviar la parte del catálogo que no exceda el límite
-                    mensaje = catalogo.Substring(startIndex, Math.Min(maxMessageLength, catalogo.Length - startIndex));
-                    this.EnviarAUsuario(jugador, mensaje);
-                    startIndex += maxMessageLength;
+                    await this.EnviarAUsuario(usuario, mensaje);
+                    mensaje = "";
                 }
             }
-            else
-            {
-                // Si el catálogo cabe en un solo mensaje, enviarlo directamente
-                mensaje = ($"{catalogo}\n");
-                this.EnviarAUsuario(jugador, mensaje);
-            }
+            await this.EnviarAUsuario(usuario, mensaje);
         }
     }
 
+    public void AddPokemonToList(ulong userId, string numIdentificadores)
+    {
+        string mensaje;
+        // Obtiene el objeto entrenador del jugador que envió el comando
+        Battle batalla = BattlesList.Instance.GetBattle(userId);
+        Entrenador entrenador = batalla.GetEntrenadorActual(userId);
+        SocketGuildUser usuario = entrenador.GetSocketGuildUser();
+        
+        // Obtiene la lista actual de Pokémon seleccionados por el entrenador
+        List<Pokemon> listaDePokemones = entrenador.GetSeleccion();
+        
+        // Validar si ya ha seleccionado 6 Pokémon
+        if (listaDePokemones.Count >= 6)
+        {
+            mensaje = "Ya has seleccionado el máximo de 6 Pokémon permitidos para la batalla.";
+            this.EnviarAUsuario(usuario, mensaje);
+        }
 
+        // Separar los números identificadores por coma, eliminar espacios y asegurarse de que no haya duplicados.
+        string[] identificadoresArray = numIdentificadores.Split(',')
+        .Select(id => id.Trim()) // Eliminar los espacios alrededor de cada identificador
+        .Where(id => !string.IsNullOrEmpty(id)) // Eliminar cualquier entrada vacía por si hay comas extra
+        .ToArray();
+
+        // Usamos HashSet para garantizar que los identificadores sean únicos
+        HashSet<string> identificadoresUnicos = new HashSet<string>(identificadoresArray);
+
+        // Lista para almacenar Pokémon que no se encontraron
+        List<string> noEncontrados = new List<string>();
+        List<string> pokemonesAgregados = new List<string>();
+
+        // Recorrer los identificadores
+        foreach (string numeroIdentificador in identificadoresUnicos)
+        {
+            // Verificar si el entrenador ya seleccionó ese Pokémon
+            if (listaDePokemones.Any(p => p.NumeroIdentificador == numeroIdentificador))
+            {
+                mensaje = $"Ya has seleccionado el Pokémon con identificador {numeroIdentificador}, elige otro.";
+                this.EnviarAUsuario(usuario, mensaje);
+            }
+            else
+            {
+                // Buscar el Pokémon en el catálogo
+                Pokemon? pokemon = LeerArchivo.EncontrarPokemon(numeroIdentificador);
+
+                if (pokemon != null)
+                {
+                    
+                    // Añadir el Pokémon al equipo del entrenador
+                    pokemonesAgregados.Add(pokemon.GetNombre());
+                    entrenador.AñadirASeleccion(pokemon);
+                    if (listaDePokemones.Count >= 6)
+                    {
+                        mensaje = "¡Ya has completado tu selección de 6 Pokémon!";
+                        this.EnviarAUsuario(usuario, mensaje);
+                        break;
+                    }
+                }
+                else
+                {
+                    // Si no se encontró el Pokémon, agregarlo a la lista de no encontrados
+                    noEncontrados.Add(numeroIdentificador);
+                }
+            }
+        }
+
+        // Enviar un solo mensaje con todos los Pokémon agregados
+        if (pokemonesAgregados.Count > 0)
+        {
+            mensaje = string.Join(", ", pokemonesAgregados);
+            mensaje = $"Los siguientes Pokémon han sido añadidos a tu selección: {mensaje}\n";
+            this.EnviarAUsuario(usuario, mensaje);
+        }
+
+        // Enviar mensaje de error si hay Pokémon que no se encontraron
+        if (noEncontrados.Count > 0)
+        {
+            mensaje = string.Join(", ", noEncontrados);
+            mensaje = $"No se encontraron Pokémon con los identificadores: {mensaje}.";
+            this.EnviarAUsuario(usuario, mensaje);
+        }
+
+        // Verificar si ya alcanzó el límite de 6 Pokémon
+        if (listaDePokemones.Count >= 6)
+        { 
+            mensaje = "¡Estás listo para la batalla!\n\n" +
+                      "Pokémon disponibles en tu selección:\n" +
+                      "**Elige el pokemon con el que empezarás la batalla con el comando `!usar <numero identificador del pokemon de tu lista>`**\n";
+            
+            listaDePokemones = entrenador.GetSeleccion();
+            for (int i = 0; i < listaDePokemones.Count; i++)
+            {
+                mensaje += $"{i + 1}) {listaDePokemones[i].GetNombre()}\n";
+            }
+            this.EnviarAUsuario(usuario, mensaje);
+        }
+    }
 
     public string? ListaAtaques(ulong userId)
     {
