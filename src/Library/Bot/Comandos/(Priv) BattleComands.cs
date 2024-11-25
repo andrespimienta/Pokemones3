@@ -74,8 +74,8 @@ namespace Ucu.Poo.DiscordBot.Commands
             var user2 = batalla.Player2.GetSocketGuildUser();
             Console.WriteLine("Usuario obtenido.2");
 
-            await user1.EnviarMensajeAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
-            await user2.EnviarMensajeAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
+            await user1.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
+            await user2.SendMessageAsync("¡Ambos jugadores están listos! Comenzando la batalla...");
 
             await ChequearQuienEmpieza(batalla);
         }
@@ -115,9 +115,9 @@ namespace Ucu.Poo.DiscordBot.Commands
             // Notificar a ambos jugadores sobre quién empieza
             if (turnoJugador == batalla.Player1.GetNombre())
             {
-                await user2.EnviarMensajeAsync(
+                await user2.SendMessageAsync(
                     $"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.");
-                await user1.EnviarMensajeAsync(
+                await user1.SendMessageAsync(
                     $"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.");
 
                 // Mostrar opciones solo al jugador que tiene el turno
@@ -125,9 +125,9 @@ namespace Ucu.Poo.DiscordBot.Commands
             }
             else
             {
-                await user1.EnviarMensajeAsync(
+                await user1.SendMessageAsync(
                     $"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.");
-                await user2.EnviarMensajeAsync(
+                await user2.SendMessageAsync(
                     $"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.");
 
                 // Mostrar opciones solo al jugador que tiene el turno
@@ -135,49 +135,13 @@ namespace Ucu.Poo.DiscordBot.Commands
             }
         }
 
-        private async Task MostrarOpciones(ICanal jugador)
+        private async Task MostrarOpciones(SocketGuildUser jugador)
         {
-            await jugador.EnviarMensajeAsync("Elige una acción:\n" +
+            await jugador.SendMessageAsync("Elige una acción:\n" +
                                            "(1) Atacar\n" +
                                            "(2) Cambiar de Pokémon\n" +
                                            "(3) Usar poción\n" +
                                            "(4) Rendirse");
-        }
-
-
-        /// <summary>
-        /// Implementa el comando 'battle'. Este comando une al jugador que envía el
-        /// mensaje a la lista de jugadores esperando para jugar.
-        /// </summary>
-        [Command("battle")]
-        [Summary(
-            """
-            Une al jugador que envía el mensaje con el oponente que se recibe
-            como parámetro, si lo hubiera, en una batalla; si no se recibe un
-            oponente, lo une con cualquiera que esté esperando para jugar.
-            """)]
-        // ReSharper disable once UnusedMember.Global
-        public async Task ExecuteAsync(
-            [Remainder] [Summary("Display name del oponente, opcional")]
-            string? opponentDisplayName = null)
-        {
-            string displayName = CommandHelper.GetDisplayName(Context);
-
-            SocketGuildUser? opponentUser = CommandHelper.GetUser(
-                Context, opponentDisplayName);
-
-            string result;
-            if (opponentUser != null)
-            {
-                result = Fachada.Instance.StartBattle(displayName, opponentUser.DisplayName);
-                await Context.Message.Author.SendMessageAsync(result);
-                await opponentUser.SendMessageAsync(result);
-            }
-            else
-            {
-                result = $"No hay un usuario {opponentDisplayName} esperando.";
-            }
-            await ReplyAsync(result);
         }
 
         [Command("Atacar")]

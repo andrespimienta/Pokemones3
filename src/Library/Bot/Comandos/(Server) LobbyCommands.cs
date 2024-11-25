@@ -93,4 +93,25 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
         // Chequea el estatus del usuario indicado (si está en batalla, esperando o no)
         Fachada.Instance.TrainerStatus(userId, userName, canal);
     }
+    
+    /// <summary>
+    /// Implementa el comando 'battle'. Este comando une al jugador que envía el
+    /// mensaje a la lista de jugadores esperando para jugar.
+    /// </summary>
+    [Command("battle")]
+    [Summary(
+        """
+        Une al jugador que envía el mensaje con el oponente que se recibe
+        como parámetro, si lo hubiera, en una batalla; si no se recibe un
+        oponente, lo une con cualquiera que esté esperando para jugar.
+        """)]
+    public async Task BattleAsync(
+        [Remainder] [Summary("Display name del oponente, opcional")] string? opponentDisplayName = null)
+    {
+        string displayName = CommandHelper.GetDisplayName(Context);
+        ICanal canal = new CanalDeDiscord(Context.Channel);
+        
+        // Intenta crear una batalla entre quien envió el comando y el oponente o alguien esperando para batallar
+        Fachada.Instance.ChallengeTrainerToBattle(displayName, opponentDisplayName, canal);
+    }
 }

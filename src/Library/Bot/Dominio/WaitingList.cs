@@ -36,7 +36,7 @@ public class WaitingList
     /// </param>
     /// <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
     /// contrario.</returns>
-    public bool AgregarEntrenador(ulong userId ,string displayName, ICanal canal)
+    public bool AgregarEntrenador(ulong userId ,string displayName, SocketGuildUser user)
     {
         if (string.IsNullOrEmpty(displayName))
         {
@@ -44,7 +44,7 @@ public class WaitingList
         }
         
         if (EncontrarEntrenador(displayName) != null) return false;
-        entrenadores.Add(new Entrenador(displayName,userId,canal));
+        entrenadores.Add(new Entrenador(displayName,userId,user));
         return true;
 
     }
@@ -94,13 +94,24 @@ public class WaitingList
     /// 
     /// </summary>
     /// <returns></returns>
-    public Entrenador? GetAlguienEsperando()
+    public Entrenador? GetAlguienEsperando(string nombreDeQuienBusca)
     {
+        // Si no hay nadie esperando, retorna null
         if (this.entrenadores.Count == 0)
         {
             return null;
         }
-        return this.entrenadores[0];
+        // Sino, busca quienes están esperando
+        foreach (Entrenador trainer in this.entrenadores)
+        {
+            // Si el entrenador encontrado no es el mismo que envió el comando, lo devuelve
+            if (trainer.GetNombre() != nombreDeQuienBusca)
+            {
+                return trainer;
+            }
+        }
+        // Si el único entrenador en lista de espera es quien envió el comando, devuelve null
+        return null;
     }
    
     
