@@ -425,8 +425,6 @@ public class Fachada
 
     public async Task Atacar(ulong userId, string nombreAtaque)
     {
-        // FALTA AGREGAR QUE SOLO LO PUEDA EJECUTAR EL JUGADOR CON TURNO
-        // FALTA NO PERMITIR USAR EL ATAQUE ESPECIAL SI TODAVÍA ESTÁ RECARGÁNDOSE
         Battle batalla = BattlesList.GetBattle(userId);
         Entrenador atacante = batalla.GetEntrenadorActual(userId);
         //SOLO LO PUEDE EJECUTAR EL JUGADOR CON TURNO
@@ -473,7 +471,7 @@ public class Fachada
                         if (ChequeoPantallaFinal(userId, batalla)! != null)// si no hay ganador
                         {
                             CambiarTurno(userId);
-                            ComienzoDeTurno(batalla);
+                            await ComienzoDeTurno(batalla);
                         }
                     }
                 }
@@ -486,12 +484,11 @@ public class Fachada
                 }
                 
             }
-            
         }
         else
         {
-            string mensje = "**NO ES TU TURNO AUN, ESPERA QUE TU CONTRICANTE TERMINE SU TURNO**\n";
-            EnviarAUsuario(atacante.GetSocketGuildUser(), mensje);
+            string mensje = "**NO ES TU TURNO AúN, espera a que tu contrincante termine su turno**\n";
+            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensje);
         }
     }
 
