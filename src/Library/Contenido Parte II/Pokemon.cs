@@ -41,8 +41,6 @@ public class Pokemon
         return this.listadoAtaques;
     }
 
-    
-
     //Constructor:
     public Pokemon(string pokeNombre, string pokeTipo, double pokeVida, double pokeVelAtaque, List<Ataque> ataques,string Identificador)
     {
@@ -64,12 +62,13 @@ public class Pokemon
         this.vida = vida-dañoEspecial;
     }
     
-    public void RecibirDaño(Ataque ataqueRecibido)
+    public string RecibirDaño(Ataque ataqueRecibido)
     {
         List<string> listaDebilidades = DiccionarioTipos.GetDebilContra(this.tipo);
         List<string> listaResistencias = DiccionarioTipos.GetResistenteContra(this.tipo);
         List<string> listaInmunidades = DiccionarioTipos.GetInmuneContra(this.tipo);
         double dañoTotal = 0;
+        string mensaje = "";
 
         // Si el ataque fue preciso (resultado aplicar el Probabilometro a la Precision), calculará el daño:
         if (ProbabilityUtils.Probabilometro(ataqueRecibido.GetPrecision()))   
@@ -77,17 +76,17 @@ public class Pokemon
             if (listaInmunidades.Contains(ataqueRecibido.GetTipo()))    // Si el tipo del ataque está en los tipos a los que es inmune, Daño x0
             {
                 dañoTotal = ataqueRecibido.GetDaño() * 0;
-                Console.WriteLine($"{this.nombre} es inmune a los ataques de tipo {ataqueRecibido.GetTipo()}, no recibió daño");
+                mensaje += $"{this.nombre} es inmune a los ataques de tipo {ataqueRecibido.GetTipo()}, no recibió daño\n";
             }
             else if (listaResistencias.Contains(ataqueRecibido.GetTipo()))  // Si el tipo del ataque está en los tipos a los que es resistente, Daño x0.5
             {
                 dañoTotal = ataqueRecibido.GetDaño() * 0.5;
-                Console.WriteLine($"{this.nombre} es resistente a los ataques de tipo {ataqueRecibido.GetTipo()}, recibió la mitad del daño");
+                mensaje += $"{this.nombre} es resistente a los ataques de tipo {ataqueRecibido.GetTipo()}, recibió la mitad del daño\n";
             }
             else if (listaDebilidades.Contains(ataqueRecibido.GetTipo()))   // Si el tipo del ataque está en los tipos a los que es débil, Daño x2
             {
                 dañoTotal = ataqueRecibido.GetDaño() * 2;
-                Console.WriteLine($"{this.nombre} es débil a los ataques de tipo {ataqueRecibido.GetTipo()}, recibió el doble del daño");
+                mensaje += $"{this.nombre} es débil a los ataques de tipo {ataqueRecibido.GetTipo()}, recibió el doble del daño\n";
             }
             else    // Si el tipo del ataque no pertenece a los tipos a los que es inmune, resistente, ni débil, Daño x1
             {
@@ -99,8 +98,9 @@ public class Pokemon
             if (ProbabilityUtils.Probabilometro(10) && !listaInmunidades.Contains(ataqueRecibido.GetTipo()))
             {
                 dañoTotal = dañoTotal * 1.20;
-                Console.WriteLine($"¡El ataque fue crítico, {this.nombre} recibió daño extra!");
+                mensaje += $"¡El ataque fue crítico, {this.nombre} recibió daño extra!\n";
             }
+            
             this.vida -= dañoTotal; // Cuando se calculó finalmente el daño, se lo resta a la vida
             
 
@@ -112,7 +112,7 @@ public class Pokemon
                 {
                     EfectoActivo = efectoAtaque.Substring(0,efectoAtaque.Length - 1) + "DO";
                     // Aclaración: "Dormi" + "do" | "Paraliza" + "do" | "Envenena" + "do" | "Quema" + "do"
-                    Console.WriteLine($"{this.nombre} ahora está {EfectoActivo}");
+                    mensaje += $"{this.nombre} ahora está {EfectoActivo}\n";
                     
                     // Si el efecto era Dormir, genera una duración de efecto de entre 1 y 4 turnos
                     if (ataqueRecibido.GetEfecto() == "DORMIR")
@@ -122,15 +122,16 @@ public class Pokemon
                 }
                 else
                 {
-                    Console.WriteLine($"El pokemon ya está {EfectoActivo}");
+                    mensaje += $"El pokemon ya está {EfectoActivo}, por lo que no se le aplicó el efecto {efectoAtaque}\n";
                 }
             }
         }
         // Si el ataque no fue preciso, no hace nada (no resta vida ni provoca efecto, lo erra)
         else
         {
-            Console.WriteLine($"¡El ataque fue impreciso, no impactó!");
+            mensaje += "¡El ataque fue impreciso, no impactó!\n";
         }
+        return mensaje;
     }
 
     public void AlterarVida(double hp)

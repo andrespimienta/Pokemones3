@@ -30,6 +30,12 @@ public class Entrenador
     {
         return this.seleccionPokemonesVivos;
     }
+
+    public List<Pokemon> GetListaMuertos()
+    {
+        return this.listaPokemonesMuertos;
+    }
+
     public int GetPokemonesVivos()
     {
         int pokemonesVivos = 0;
@@ -83,6 +89,7 @@ public class Entrenador
         this.nombre = suNombre;
         this.pokemonEnUso = null;
         this.seleccionPokemonesVivos = new List<Pokemon>();
+        this.listaPokemonesMuertos = new List<Pokemon>();
         this.TurnosRecargaAtkEspecial = 2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
         this.listItems = new List<IItems>();
         this.RecargarItems();
@@ -122,20 +129,14 @@ public class Entrenador
 
     public void AgregarAListaMuertos(Pokemon pokemon)
     {
-        if (seleccionPokemonesVivos.Contains(pokemon) && pokemon.GetVida() <= 0)
-        {
             this.seleccionPokemonesVivos.Remove(pokemon);
             this.listaPokemonesMuertos.Add(pokemon);
-        }
     }
 
     public void RemoverDeListaMuertos(Pokemon pokemon)
     {
-        if (listaPokemonesMuertos.Contains(pokemon))
-        {
             this.listaPokemonesMuertos.Remove(pokemon);
             this.seleccionPokemonesVivos.Add(pokemon);
-        }
     }
 
     public void UsarPokemon(Pokemon pokemonAUsar)
