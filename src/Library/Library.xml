@@ -135,6 +135,12 @@
             al chat del jugador que envió el comando.
             </summary>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddPokemonToList(System.UInt64,System.String)">
+            <summary>
+            Agrega uno o más pokemones a la selección del
+            jugador, indicados por su número identificador
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
             <summary>
             Esta clase representa la lista de jugadores esperando para jugar.
@@ -193,6 +199,18 @@
         <member name="M:StartingCommands.MostrarCatalogoAsync">
             <summary>
             Muestra el catálogo de pokemones al jugador que envíe el comando.
+            </summary>
+        </member>
+        <member name="M:StartingCommands.AgregarPokemonAsync(System.String)">
+            <summary>
+            Agrega uno o más pokemones a la selección del jugador,
+            proporcionados por sus números identificadores.
+            </summary>
+        </member>
+        <member name="M:StartingCommands.UsarPokemonAsync(System.String)">
+            <summary>
+            Selecciona cuál de los pokemones de la colección del jugador
+            será el Pokemon en uso para el comienzo de la batalla.
             </summary>
         </member>
         <member name="M:LobbyCommands.JoinAsync">

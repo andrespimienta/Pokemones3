@@ -362,8 +362,8 @@ public class Fachada
         if (listaDePokemones.Count >= 6)
         { 
             mensaje = "¡Estás listo para la batalla!\n\n" +
-                      "Pokémon disponibles en tu selección:\n" +
-                      "**Elige el pokemon con el que empezarás la batalla con el comando `!usar <numero identificador del pokemon de tu lista>`**\n";
+                      "**Elige el pokemon con el que empezarás la batalla** con el comando `!usar <numero identificador del pokemon de tu lista>`\n\n" +
+                      "**Pokémon disponibles en tu selección:**\n";
             
             listaDePokemones = entrenador.GetSeleccion();
             for (int i = 0; i < listaDePokemones.Count; i++)
@@ -560,7 +560,7 @@ public class Fachada
         // Comprobar si ambos jugadores están listos
         if (batalla.EstanListos() == true)
         {
-            ChequearQuienEmpieza(usuarioId);
+            await ChequearQuienEmpieza(usuarioId);
             //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
         }
         else
@@ -656,7 +656,7 @@ public class Fachada
     {
         bool result = false;
         // Pregunta si el jugador sin turno se rindio
-        if(battle.Ganador!=null)
+        if(battle.Ganador == null)
         {
             Entrenador entrenador = battle.GetEntrenadorActual(userId);
             Entrenador oponente = battle.GetEntrenadorOponente(userId);
@@ -684,7 +684,8 @@ public class Fachada
 
             }
            
-        }// Se rindio
+        }
+        // Si Ganador no es null, es porque alguien llamó al método rendirse
         else
         {
             string mensajeGanador=("----------------------------------------------------------------------\n" +
@@ -692,7 +693,7 @@ public class Fachada
                             "\nFin de la partida \n" +
                             "----------------------------------------------------------------------");
             
-            string mensajeRendido = "Te has rendido, sigue practicando. Mucha suerte para las proximas";
+            string mensajeRendido = "Te has rendido, sigue practicando. Mucha suerte en tus próximas batallas";
             
             await EnviarAUsuario(battle.EntrenadorConTurno.GetSocketGuildUser(), mensajeGanador);
             
