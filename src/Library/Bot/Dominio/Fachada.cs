@@ -427,6 +427,7 @@ public class Fachada
     {
         Battle batalla = BattlesList.GetBattle(userId);
         Entrenador atacante = batalla.GetEntrenadorActual(userId);
+        
         //SOLO LO PUEDE EJECUTAR EL JUGADOR CON TURNO
         if(atacante==batalla.EntrenadorConTurno && atacante.GetPokemonEnUso().PuedeAtacar)
         {
@@ -444,6 +445,7 @@ public class Fachada
             else
             {
                 bool EncontroAtaque = false;
+                
                 // Si es el turno del Jugador 1, intentará efectuar el ataque indicado sobre el Pokemon en Uso del Jugador 2
                 foreach (Ataque ataque in pokemonAtacante.GetAtaques())
                 {
@@ -458,7 +460,7 @@ public class Fachada
                         mensaje = pokemonVictima.RecibirDaño(ataque);
                         await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                         await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
-                        await EnviarACanal(CanalConsola.Instance, mensaje);
+                        //await EnviarACanal(CanalConsola.Instance, mensaje);
                         
                         // Si recibió daño
                         if (vidaPrevia > pokemonVictima.GetVida())
@@ -681,6 +683,81 @@ public class Fachada
                          "`!Rendirse`";
         EnviarAUsuario(jugador, mensaje);
     }
+
+    public async Task CambiarPokemon(ulong userId, string nombrePokemon)
+    {
+        Battle batalla = BattlesList.GetBattle(userId);
+        Entrenador atacante = batalla.GetEntrenadorActual(userId);
+        SocketGuildUser user = atacante.GetSocketGuildUser();
+        string mensaje = "";
+        
+        //Mostrar los pokemones disponibles si 
+        if (string.IsNullOrEmpty(nombrePokemon))
+        {
+            mensaje =
+                "**Elige el pokemon que quieres utilizar** con el comando `!CambiarPokemon <nombre del pokemon de tu lista>`\n\n" +
+                "**Pokémon disponibles en tu selección:**\n";
+            // Obtiene la lista actual de Pokémon seleccionados por el entrenador
+            List<Pokemon> listaDePokemones = atacante.GetSeleccion();
+
+            for (int i = 0; i < listaDePokemones.Count; i++)
+            {
+                mensaje += $"{i + 1}) {listaDePokemones[i].GetNombre()}\n";
+            }
+
+            await this.EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+        }
+
+        else //Busca al Pokemon
+        {
+            // FALTA AGREGAR CASO LÍMITE EN QUE SE ELIGE EL MISMO POKEMON QUE YA ESTÁ EN USO
+
+            nombrePokemon = nombrePokemon.ToUpper();
+            bool PokemonEncontrado = false;
+            bool PokemonCambiado = false;
+
+
+            foreach (Pokemon pokemon in
+                     atacante.GetSeleccion()) // Intenta encontrar el Pokemon indicado en la selección del jugador
+            {
+                if (pokemon.GetNombre() == nombrePokemon)
+                {
+                    if (pokemon.GetVida() > 0)
+                    {
+                        // Si encontró al Pokemon y todavía está vivo, realiza el cambio exitosamente
+                        atacante.UsarPokemon(pokemon); // Usar Pokemon ya borra el pokemon que tienes usado.
+                        mensaje = "Ahora tu Pokemon en uso es " + pokemon.GetNombre();
+                        this.EnviarAUsuario(user, mensaje);
+                        PokemonEncontrado = true;
+                        PokemonCambiado = true;
+                    }
+                    else
+                    {
+                        // Si encontró al Pokemon, pero está muerto, cancela el cambio
+                        mensaje = "Ese Pokemon está muerto, no puedes elegirlo";
+                        this.EnviarAUsuario(user, mensaje);
+                        PokemonEncontrado = true;
+                    }
+                }
+            }
+            if (PokemonEncontrado == false)
+            {
+                // Si no encontró el Pokemon en la selección del jugador.
+                mensaje = "No se encontró ese Pokemon en tu selección";
+                this.EnviarAUsuario(user, mensaje);
+            }
+            else if (PokemonEncontrado == true && PokemonCambiado == true)// si encontró el pokemon y lo cambió
+            {
+                CambiarTurno(userId);
+                Entrenador oponente = batalla.GetEntrenadorOponente(userId);
+                mensaje = $"Concluíste tu turno.\n" +
+                          $"ES EL TURNO DE {oponente.GetNombre()}";
+                await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                await ComienzoDeTurno(batalla);
+            }
+        }
+    }
+
 
     private async Task<bool> ChequeoPantallaFinal(ulong userId,Battle battle)
     {

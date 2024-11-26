@@ -19,6 +19,14 @@ namespace Ucu.Poo.DiscordBot.Commands
             ulong usuarioId = Context.User.Id;
             Fachada.Instance.Atacar(usuarioId,attackName);
         }
+        
+        [Command("CambiarPokemon")]
+        public async Task cambiarpokemon([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
+            string? nombrePokemon = null)
+        {
+            ulong usuarioId = Context.User.Id;
+            Fachada.Instance.CambiarPokemon(usuarioId,nombrePokemon);
+        }
     }
 }
 
