@@ -141,6 +141,17 @@
             jugador, indicados por su número identificador
             </summary>
         </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.SelectPokemonInUse(System.UInt64,System.String)">
+            <summary>
+            Selecciona el pokemon indicado como el pokemon
+            en uso del jugador. Será con el que ataque primero.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowPokemonStatus(Proyecto_Pokemones_I.Entrenador)">
+            <summary>
+            Muestra el estado actual de todos tus pokemones
+            </summary>
+        </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
             <summary>
             Esta clase representa la lista de jugadores esperando para jugar.

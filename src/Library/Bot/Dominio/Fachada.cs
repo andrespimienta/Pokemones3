@@ -378,6 +378,10 @@ public class Fachada
         }
     }
 
+    /// <summary>
+    /// Selecciona el pokemon indicado como el pokemon
+    /// en uso del jugador. Será con el que ataque primero.
+    /// </summary>
     public void SelectPokemonInUse(ulong userID, string numEleccion)
     {
         Battle batalla = BattlesList.Instance.GetBattle(userID);
@@ -424,146 +428,6 @@ public class Fachada
         }
     }
 
-    public async Task Atacar(ulong userId, string nombreAtaque)
-    {
-        Battle batalla = BattlesList.GetBattle(userId);
-        Entrenador atacante = batalla.GetEntrenadorActual(userId);
-        
-        //SOLO LO PUEDE EJECUTAR EL JUGADOR CON TURNO
-        if(atacante==batalla.EntrenadorConTurno && atacante.GetPokemonEnUso().PuedeAtacar)
-        {
-            // FALTA NO PERMITIR USAR EL ATAQUE ESPECIAL SI TODAVÍA ESTÁ RECARGÁNDOSE
-           
-            Entrenador oponente = batalla.GetEntrenadorOponente(userId);
-            Pokemon pokemonVictima = oponente.GetPokemonEnUso();
-            Pokemon pokemonAtacante = atacante.GetPokemonEnUso();
-            string mensaje;
-
-            if (string.IsNullOrEmpty(nombreAtaque))
-            {
-                this.MostrarListaAtaques(atacante);
-            }
-            else
-            {
-                bool EncontroAtaque = false;
-                
-                // Si es el turno del Jugador 1, intentará efectuar el ataque indicado sobre el Pokemon en Uso del Jugador 2
-                foreach (Ataque ataque in pokemonAtacante.GetAtaques())
-                {
-                    // Si encontró el ataque especificado en la lista de ataques del Pokemon en uso del jugador, ataca al pokemon en uso del rival
-                    if (ataque.GetNombre() == nombreAtaque)
-                    {
-                        EncontroAtaque = true;
-                        mensaje = "¡Tu oponente decidió atacarte!\n";
-                        await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
-                        double vidaPrevia = pokemonVictima.GetVida();
-                        
-                        mensaje = pokemonVictima.RecibirDaño(ataque);
-                        await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
-                        await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
-                        //await EnviarACanal(CanalConsola.Instance, mensaje);
-                        
-                        // Si recibió daño
-                        if (vidaPrevia > pokemonVictima.GetVida())
-                        {
-                            // Si lo mató
-                            if (pokemonVictima.GetVida() <= 0)
-                            {
-                                pokemonVictima.PuedeAtacar = false;
-                                oponente.AgregarAListaMuertos(pokemonVictima);
-                                mensaje = $"{pokemonVictima.GetNombre()} ha sido vencido\n";
-                                await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
-                                await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
-                                break;
-                            }
-                            else
-                            {
-                                mensaje = 
-                                    $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}\n";
-                                    await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
-                                    await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
-                                    break;
-                            }
-                        }
-                        break;
-                    }
-                }
-                // Si sale del Foreach sin haber retornado antes, es que no encontró el ataque
-                if (EncontroAtaque == false)
-                {
-                    mensaje = "No se encontró el ataque";
-                    await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
-                }
-                    
-                else if (await ChequeoPantallaFinal(userId, batalla) == false)// si no hay ganador
-                {
-                    CambiarTurno(userId);
-                    mensaje = $"Concluíste tu turno.\n" +
-                              $"ES EL TURNO DE {oponente.GetNombre()}";
-                    await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
-                    await ComienzoDeTurno(batalla);
-                }
-            }
-        }
-        else if (atacante.GetListaMuertos().Contains(atacante.GetPokemonEnUso()))
-        {
-            string mensje = "Tu pokemón ya fue vencido.\n"+
-                            "Debes cambiar tu pokemón.\n";
-            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensje);
-        }
-        else if(atacante.GetPokemonEnUso().PuedeAtacar == false)
-        {
-            string mensje = $"Tu pokemón está {atacante.GetPokemonEnUso().EfectoActivo}, **no puede atacar**\n"+
-                            "Debes cambiar tu pokemón.\n";
-            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensje);
-        }
-        else
-        {
-            string mensje = "**NO ES TU TURNO AUN, espera a que tu contrincante termine su turno**\n";
-            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensje); 
-        }
-    }
-
-    public void MostrarListaAtaques(Entrenador entrenador)
-    {
-        // FALTA MOSTRAR UN DIFERENCIADOR O DIRECTAMENTE NO MOSTRAR COMO 
-        // DISPONIBLE EL ATAQUE ESPECIAL, SI AÚN ESTÁ EN TIEMPO DE RECARGA
-        
-        string mensaje = "Estos son los ataques disponibles: ";
-        SocketGuildUser user = entrenador.GetSocketGuildUser();
-        
-        // ************ No vendría nada mal mostrar algún ícono o directamente especificar ************
-        // *** el tipo del ataque para saber cuál elegir para hacerle el mayor daño posible al otro ***
-        
-        foreach (Ataque ataque in entrenador.GetPokemonEnUso().GetAtaques())
-        {
-            mensaje += ataque.GetNombre() + " / "; // Imprime cada nombre separado por una barra y un espacio
-        }
-        mensaje = mensaje.Substring(0,mensaje.Length - 2); // Elimina la última barra y espacio extras
-        this.EnviarAUsuario(user, mensaje);
-        Console.WriteLine(mensaje);
-    }
-    
-    public async Task ComienzoDeTurno(Battle batalla)
-    {
-        Entrenador jugador = batalla.GetEntrenadorConTurno();
-
-        string mensaje = "**ES TU TURNO**\n";
-
-        await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
-        
-        jugador.AceptarVisitorPorTurno(this.visitor);
-        
-        await MostrarOpciones(jugador.GetSocketGuildUser());
-       
-        
-    }
-
-    public void CambiarTurno(ulong userId)
-    {
-        Battle batalla=BattlesList.GetBattle(userId);
-        batalla.CambiarTurno();
-    }
     public async Task StartBattle(ulong usuarioId)
     {
         Battle batalla = BattlesList.GetBattle(usuarioId);
@@ -582,10 +446,10 @@ public class Fachada
         }
 
         // Marcar al entrenador como listo y aumentar el contador
-         entrenador.EstaListo = true;
+        entrenador.EstaListo = true;
 
-         mensaje = $"{entrenador.GetNombre()} está listo para la batalla.";
-         await EnviarAUsuario(user, mensaje);
+        mensaje = $"{entrenador.GetNombre()} está listo para la batalla.";
+        await EnviarAUsuario(user, mensaje);
 
         
 
@@ -603,6 +467,7 @@ public class Fachada
         }
       
     }
+    
     public async Task ChequearQuienEmpieza(ulong userId)
     {
         Battle batalla = this.BattlesList.GetBattle(userId);
@@ -674,16 +539,222 @@ public class Fachada
             await MostrarOpciones(user2);
         }
     }
+    
+    public async Task ComienzoDeTurno(Battle batalla)
+    {
+        Entrenador jugador = batalla.GetEntrenadorConTurno();
+        Entrenador oponente = batalla.GetEntrenadorOponente(jugador.Id);
+        Pokemon pokeOponente = oponente.GetPokemonEnUso();
+
+        string mensaje = "\n__**ES TU TURNO**__\n"+
+                         $"Tu oponente está usando a {pokeOponente.GetNombre()} " +
+                         $"( {DiccionarioTipos.GetEmoji(pokeOponente.GetTipo())} , " +
+                         $"❤️ {pokeOponente.GetVida()} )\n\n";
+        await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+
+        // Calcula todos los efectos y muestra el estado de los pokemones
+        jugador.AceptarVisitorPorTurno(this.visitor);
+        await ShowPokemonStatus(jugador);
+        
+        await MostrarOpciones(jugador.GetSocketGuildUser());
+    }
+
+    /// <summary>
+    /// Muestra el estado actual de todos tus pokemones
+    /// </summary>
+    public async Task ShowPokemonStatus(Entrenador jugador)
+    {
+        List<Pokemon> listaPokemones = jugador.GetSeleccion();
+        List<Pokemon> listaVencidos = jugador.GetListaMuertos();
+
+        string mensaje = "\nEste es el estado de tus pokemones:\n" +
+                         "__**VIVOS:**__\n";
+        foreach (Pokemon pokemon in listaPokemones)
+        {
+            string condición;
+            if (pokemon.EfectoActivo == null)
+            {
+                condición = "👍🏻 SALUDABLE";
+            }
+            else
+            {
+                condición = $"{DiccionarioTipos.GetEmoji(pokemon.EfectoActivo)} " +
+                            $"{pokemon.EfectoActivo}";
+            }
+
+            if (pokemon == jugador.GetPokemonEnUso())
+            {
+                mensaje += $"_**{pokemon.GetNombre()}**," +
+                           $"  {DiccionarioTipos.GetEmoji(pokemon.GetTipo())}," +
+                           $"  {condición}," +
+                           $"  ❤️ {pokemon.GetVida()} (seleccionado)_\n";
+            }
+            else
+            {
+                mensaje += $"{pokemon.GetNombre()}," +
+                           $"  {DiccionarioTipos.GetEmoji(pokemon.GetTipo())}," +
+                           $"  {condición}," +
+                           $"  ❤️ {pokemon.GetVida()}\n";
+            }
+        }
+
+        mensaje += "\n__**VENCIDOS**__\n";
+        if (listaVencidos.Count == 0)
+        {
+            mensaje += "_(Ninguno)_\n";
+        }
+        else
+        {
+            foreach (Pokemon pokemon in listaVencidos)
+            {
+                mensaje += $"_~~{pokemon.GetNombre()}~~_," +
+                           $"  {DiccionarioTipos.GetEmoji(pokemon.GetTipo())}  ❌️\n";
+            }
+
+        }
+
+        await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+    }
 
     public async Task MostrarOpciones(SocketGuildUser jugador)
     {
-        string mensaje = "Elige una acción:\n" +
+        string mensaje = "__**Elige una acción:**__\n" +
                          "`!Atacar`\n" +
                          "`!CambiarPokemon`\n" +
                          "`!UsarPocion`\n" +
                          "`!Rendirse`";
         EnviarAUsuario(jugador, mensaje);
     }
+    
+    public async Task Atacar(ulong userId, string nombreAtaque)
+    {
+        Battle batalla = BattlesList.GetBattle(userId);
+        Entrenador atacante = batalla.GetEntrenadorActual(userId);
+        
+        //SOLO LO PUEDE EJECUTAR EL JUGADOR CON TURNO
+        if(atacante==batalla.EntrenadorConTurno && atacante.GetPokemonEnUso().PuedeAtacar)
+        {
+            // FALTA NO PERMITIR USAR EL ATAQUE ESPECIAL SI TODAVÍA ESTÁ RECARGÁNDOSE
+           
+            Entrenador oponente = batalla.GetEntrenadorOponente(userId);
+            Pokemon pokemonVictima = oponente.GetPokemonEnUso();
+            Pokemon pokemonAtacante = atacante.GetPokemonEnUso();
+            string mensaje;
+
+            if (string.IsNullOrEmpty(nombreAtaque))
+            {
+                this.MostrarListaAtaques(atacante);
+            }
+            else
+            {
+                bool EncontroAtaque = false;
+                
+                // Si es el turno del Jugador 1, intentará efectuar el ataque indicado sobre el Pokemon en Uso del Jugador 2
+                foreach (Ataque ataque in pokemonAtacante.GetAtaques())
+                {
+                    // Si encontró el ataque especificado en la lista de ataques del Pokemon en uso del jugador, ataca al pokemon en uso del rival
+                    if (ataque.GetNombre() == nombreAtaque)
+                    {
+                        EncontroAtaque = true;
+                        mensaje = "**¡Tu oponente decidió atacarte!**\n";
+                        await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
+                        double vidaPrevia = pokemonVictima.GetVida();
+                        
+                        mensaje = pokemonVictima.RecibirDaño(ataque);
+                        await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                        await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
+                        //await EnviarACanal(CanalConsola.Instance, mensaje);
+                        
+                        // Si recibió daño
+                        if (vidaPrevia > pokemonVictima.GetVida())
+                        {
+                            // Si lo mató
+                            if (pokemonVictima.GetVida() <= 0)
+                            {
+                                pokemonVictima.PuedeAtacar = false;
+                                oponente.AgregarAListaMuertos(pokemonVictima);
+                                mensaje = $"{pokemonVictima.GetNombre()} ha sido vencido\n";
+                                await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                                await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
+                                break;
+                            }
+                            else
+                            {
+                                mensaje = 
+                                    $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}\n";
+                                    await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                                    await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
+                                    break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                // Si sale del Foreach sin haber retornado antes, es que no encontró el ataque
+                if (EncontroAtaque == false)
+                {
+                    mensaje = "No se encontró el ataque";
+                    await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                }
+                    
+                else if (await ChequeoPantallaFinal(userId, batalla) == false)// si no hay ganador
+                {
+                    CambiarTurno(userId);
+                    mensaje = $"Concluíste tu turno.\n" +
+                              $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
+                    await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                    await ComienzoDeTurno(batalla);
+                }
+            }
+        }
+        else if (atacante.GetListaMuertos().Contains(atacante.GetPokemonEnUso()))
+        {
+            string mensje = "Tu pokemón ya fue vencido.\n"+
+                            "Debes cambiar tu pokemón.\n";
+            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensje);
+        }
+        else if(atacante.GetPokemonEnUso().PuedeAtacar == false)
+        {
+            string mensje = $"Tu pokemón está {atacante.GetPokemonEnUso().EfectoActivo}, **no puede atacar**\n"+
+                            "Debes cambiar tu pokemón.\n";
+            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensje);
+        }
+        else
+        {
+            string mensje = "**NO ES TU TURNO AUN, espera a que tu contrincante termine su turno**\n";
+            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensje); 
+        }
+    }
+
+    public void MostrarListaAtaques(Entrenador entrenador)
+    {
+        // FALTA MOSTRAR UN DIFERENCIADOR O DIRECTAMENTE NO MOSTRAR COMO 
+        // DISPONIBLE EL ATAQUE ESPECIAL, SI AÚN ESTÁ EN TIEMPO DE RECARGA
+        
+        string mensaje = "Estos son los ataques disponibles: ";
+        SocketGuildUser user = entrenador.GetSocketGuildUser();
+        
+        // ************ No vendría nada mal mostrar algún ícono o directamente especificar ************
+        // *** el tipo del ataque para saber cuál elegir para hacerle el mayor daño posible al otro ***
+        
+        foreach (Ataque ataque in entrenador.GetPokemonEnUso().GetAtaques())
+        {
+            mensaje += ataque.GetNombre() + " / "; // Imprime cada nombre separado por una barra y un espacio
+        }
+        mensaje = mensaje.Substring(0,mensaje.Length - 2); // Elimina la última barra y espacio extras
+        this.EnviarAUsuario(user, mensaje);
+        Console.WriteLine(mensaje);
+    }
+
+    public void CambiarTurno(ulong userId)
+    {
+        Battle batalla=BattlesList.GetBattle(userId);
+        batalla.CambiarTurno();
+    }
+    
+    
+
+    
 
     public async Task CambiarPokemon(ulong userId, string nombrePokemon)
     {
@@ -752,7 +823,7 @@ public class Fachada
                 CambiarTurno(userId);
                 Entrenador oponente = batalla.GetEntrenadorOponente(userId);
                 mensaje = $"Concluíste tu turno.\n" +
-                          $"ES EL TURNO DE {oponente.GetNombre()}";
+                          $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
                 await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                 await ComienzoDeTurno(batalla);
             }
