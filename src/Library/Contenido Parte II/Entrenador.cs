@@ -70,8 +70,8 @@ public class Entrenador
         string resultado = "";
         foreach (var entry in itemCounts)
         {
-            resultado += $"{entry.Key} (x{entry.Value}) ";
-            Console.Write($"{entry.Key} (x{entry.Value}) / ");
+            resultado += $"{entry.Key} (x{entry.Value}) / ";
+            //Console.Write($"{entry.Key} (x{entry.Value}) / ");
         }
 
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena

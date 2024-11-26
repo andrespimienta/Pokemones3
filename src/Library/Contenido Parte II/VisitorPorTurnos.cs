@@ -2,6 +2,16 @@ namespace Proyecto_Pokemones_I;
 
 public class VisitorPorTurno
 {
+    private static VisitorPorTurno instance;
+    public static VisitorPorTurno GetInstancia()
+    {
+        if (instance == null)
+        {
+            instance = new VisitorPorTurno();
+        }
+        return instance;
+    }
+    private VisitorPorTurno(){}
     public void VisitarEntrenador(Entrenador entrenadorVisitado)
     {
         if (entrenadorVisitado.TurnosRecargaAtkEspecial > 0)    // Si el Entrenador tenía turnos de enfriamiento para los ataques especiales, le resta un turno
