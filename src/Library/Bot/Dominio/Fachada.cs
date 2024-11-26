@@ -383,27 +383,6 @@ public class Fachada
         }
     }
 
-    public string? MostrarListaAtaques(ulong userId)
-    {
-        Battle batalla = BattlesList.GetBattle(userId);
-        Entrenador entrenador = batalla.GetEntrenadorActual(userId);
-        if (entrenador != null)
-        {
-            string resultado = "";
-
-            foreach (Ataque ataque in entrenador.GetPokemonEnUso().GetAtaques())
-            {
-                string palabraAux = ataque.GetNombre();
-                Console.Write(palabraAux + " / "); // Imprime cada nombre seguido de un espacio
-                resultado += palabraAux + " "; // Agrega cada nombre a la cadena `resultado` seguido de un espacio
-            }
-
-            return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
-        }
-
-        return null;
-    }
-
     public void Atacar(ulong userId, string nombreAtaque)
     {
         // FALTA AGREGAR QUE SOLO LO PUEDA EJECUTAR EL JUGADOR CON TURNO
@@ -474,7 +453,7 @@ public class Fachada
         }
         mensaje = mensaje.Substring(0,mensaje.Length - 2); // Elimina la última barra y espacio extras
         this.EnviarAUsuario(user, mensaje);
-        Console.WriteLine(mensaje);
+        this.EnviarACanal(CanalConsola.Instance, mensaje);
     }
     
     public void ComienzoDeTurno(ulong userId)
@@ -603,15 +582,13 @@ public class Fachada
 
     public async Task MostrarOpciones(SocketGuildUser jugador)
     {
-          string mensaje = "Elige una acción:\n" +
-                             "(1) Atacar\n" +
-                             "(2) Cambiar de Pokémon\n" +
-                             "(3) Usar poción\n" +
-                             "(4) Rendirse";
-            EnviarAUsuario(jugador, mensaje);
+        string mensaje = "Elige una acción:\n" +
+                         "`!Atacar`\n" +
+                         "`!CambiarPokemon`\n" +
+                         "`!UsarPocion`\n" +
+                         "`!Rendirse`";
+        EnviarAUsuario(jugador, mensaje);
     }
-
-   
 }
 
 

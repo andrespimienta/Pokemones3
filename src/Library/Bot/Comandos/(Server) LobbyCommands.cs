@@ -19,7 +19,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
         SocketGuildUser? user = CommandHelper.GetUser(Context, displayName);
         
         // Solamente en esta instancia se puede obtener el canal. Por ende, es Expert
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
 
         // Agrega al jugador a la lista de espera usando el método existente, fachada no queda acoplada a la plataforma que se use.
         Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user,canal);
@@ -35,7 +35,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
     public async Task LeaveAsync()
     {
         string displayName = CommandHelper.GetDisplayName(Context);
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
         
         // Elimina al jugador de la lista de espera usando el método existente, fachada no queda acoplada a la plataforma que se use.
         Fachada.Instance.RemoveTrainerFromWaitingList(displayName,canal);
@@ -49,7 +49,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
     [Summary("Muestra los usuarios en la lista de espera")]
     public async Task WaitingListAsync()
     {
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
         
         // Muestra los jugadores en lista de espera, si es que los hay.
         Fachada.Instance.GetTrainersWaiting(canal);
@@ -69,7 +69,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
         [Remainder][Summary("El usuario del que tener información, opcional")] string? displayName = null)
     {
         ulong userId = Context.User.Id;
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
         
         // Chequea que el jugador del que se quiere conseguir el status esté activo
         // (solo una clase 'Command' de Discord puede calcular eso, pedirselo a
@@ -105,7 +105,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
         [Remainder] [Summary("Display name del oponente, opcional")] string? opponentDisplayName = null)
     {
         string displayName = CommandHelper.GetDisplayName(Context);
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
         
         // Intenta crear una batalla entre quien envió el comando y el oponente o alguien esperando para batallar
         Fachada.Instance.ChallengeTrainerToBattle(displayName, opponentDisplayName, canal);
