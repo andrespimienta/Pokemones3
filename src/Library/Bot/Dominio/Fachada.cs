@@ -1,7 +1,4 @@
-using System.Data.SqlTypes;
-using System.Text;
 using Discord;
-using Discord.Interactions;
 using Discord.WebSocket;
 using Proyecto_Pokemones_I;
 
@@ -379,14 +376,15 @@ public class Fachada
 
     public void SelectPokemonInUse(ulong userID, string numEleccion)
     {
+        Battle batalla = BattlesList.Instance.GetBattle(userID);
+        Entrenador? entrenador = batalla.GetEntrenadorActual(userID);
+        List<Pokemon> seleccionPokemones = entrenador.GetSeleccion();
+        string mensaje;
+        
         // Exception si el usuario escribe algo que no es un número después de !usar
         try
         {
             int numElegido = int.Parse(numEleccion);
-            Battle batalla = BattlesList.Instance.GetBattle(userID);
-            Entrenador? entrenador = batalla.GetEntrenadorActual(userID);
-            List<Pokemon> seleccionPokemones = entrenador.GetSeleccion();
-            string mensaje;
             
             // Validar que el número ingresado se válido
             if (numElegido < 1 || numElegido > seleccionPokemones.Count)
@@ -408,9 +406,17 @@ public class Fachada
                 this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
             }
         }
-        catch (Exception)
+        catch (FormatException)
         {
-            throw;
+            mensaje = "Error: El string contiene caracteres no numéricos.";
+            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            this.EnviarACanal(CanalConsola.Instance, mensaje);
+        }
+        catch (OverflowException)
+        {
+            mensaje = "Error: El número está fuera del rango permitido para un entero.";
+            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            this.EnviarACanal(CanalConsola.Instance, mensaje);
         }
     }
 
