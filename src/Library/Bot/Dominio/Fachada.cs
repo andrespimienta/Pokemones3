@@ -285,7 +285,7 @@ public class Fachada
     /// Agrega uno o más pokemones a la selección del
     /// jugador, indicados por su número identificador
     /// </summary>
-    public void AddPokemonToList(ulong userID, string numIdentificadores)
+    public async Task AddPokemonToList(ulong userID, string numIdentificadores)
     {
         string mensaje;
         // Obtiene el objeto entrenador del jugador que envió el comando
@@ -314,8 +314,8 @@ public class Fachada
             // Verificar si el entrenador ya seleccionó ese Pokémon
             if (listaDePokemones.Any(p => p.NumeroIdentificador == numeroIdentificador))
             {
-                mensaje = $"Ya has seleccionado el Pokémon con identificador {numeroIdentificador}, elige otro.";
-                this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+                mensaje = $"Ya has seleccionado el Pokémon con identificador {numeroIdentificador}.";
+                await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
             }
             else
             {
@@ -324,14 +324,17 @@ public class Fachada
 
                 if (pokemon != null)
                 {
-                    // Añadir el Pokémon al equipo del entrenador
-                    pokemonesAgregados.Add(pokemon.GetNombre());
-                    entrenador.AñadirASeleccion(pokemon);
                     if (listaDePokemones.Count >= 6)
                     {
                         mensaje = "¡Ya has completado tu selección de 6 Pokémon!";
-                        this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+                        await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
                         break;
+                    }
+                    else
+                    {
+                        // Añadir el Pokémon al equipo del entrenador
+                        pokemonesAgregados.Add(pokemon.GetNombre());
+                        entrenador.AñadirASeleccion(pokemon);
                     }
                 }
                 else
@@ -347,7 +350,7 @@ public class Fachada
         {
             mensaje = string.Join(", ", pokemonesAgregados);
             mensaje = $"Los siguientes Pokémon han sido añadidos a tu selección: {mensaje}\n";
-            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
         }
 
         // Enviar mensaje de error si hay Pokémon que no se encontraron
@@ -355,7 +358,7 @@ public class Fachada
         {
             mensaje = string.Join(", ", noEncontrados);
             mensaje = $"No se encontraron Pokémon con los identificadores: {mensaje}.";
-            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
         }
 
         // Verificar si ya alcanzó el límite de 6 Pokémon
@@ -370,7 +373,7 @@ public class Fachada
             {
                 mensaje += $"{i + 1}) {listaDePokemones[i].GetNombre()}\n";
             }
-            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
         }
     }
 
@@ -408,13 +411,13 @@ public class Fachada
         }
         catch (FormatException)
         {
-            mensaje = "Error: El string contiene caracteres no numéricos.";
+            mensaje = "Error: Has ingresado carácteres no numéricos.";
             this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
             this.EnviarACanal(CanalConsola.Instance, mensaje);
         }
         catch (OverflowException)
         {
-            mensaje = "Error: El número está fuera del rango permitido para un entero.";
+            mensaje = "Error: El número ingresado está fuera del rango permitido para un entero.";
             this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
             this.EnviarACanal(CanalConsola.Instance, mensaje);
         }
