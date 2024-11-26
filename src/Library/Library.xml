@@ -4,17 +4,7 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="T:Ucu.Poo.DiscordBot.Commands.StartingCommands">
-            <summary>
-            Esta clase implementa el comando 'name' del bot. Este comando retorna el
-            nombre de un Pokémon dado su identificador.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Commands.StartingCommands.MostrarCatalogoAsync">
-            <summary>
-            Muestra el catálogo de pokemones al jugador que envíe el comando.
-            </summary>
-        </member>
+
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
             <summary>
             Esta clase representa una batalla entre dos jugadores.
@@ -139,6 +129,7 @@
             Crea efectivamente una instancia de Battle usando los jugadores
             como parámetro, y les avisa por privado que comenzó la batalla.
             </summary>
+
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
             <summary>
@@ -195,6 +186,23 @@
             La interfaz del Bot de Discord para usar con inyección de dependencias.
             </summary>
         </member>
+        <member name="M:StartingCommands.MostrarCatalogoAsync">
+            <summary>
+            Muestra el catálogo de pokemones al jugador que envíe el comando.
+            </summary>
+        </member>
+        <member name="M:StartingCommands.AgregarPokemonAsync(System.String)">
+            <summary>
+            Agrega uno o más pokemones a la selección del jugador,
+            proporcionados por sus números identificadores.
+            </summary>
+        </member>
+        <member name="M:StartingCommands.UsarPokemonAsync(System.String)">
+            <summary>
+            Selecciona cuál de los pokemones de la colección del jugador
+            será el Pokemon en uso para el comienzo de la batalla.
+            </summary>
+        </member>
         <member name="M:LobbyCommands.JoinAsync">
             <summary>
             Implementa el comando 'join'. Este comando une al jugador que envía el
@@ -225,15 +233,7 @@
             mensaje a la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="M:Proyecto_Pokemones_I.Ataque.#ctor(System.String,System.String,System.Double,System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="nombreAtaque"></param>
-            <param name="tipoAtaque"></param>
-            <param name="dañoAtaque"></param>
-            <param name="precisionAtaque"></param>
-        </member>
+
         <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
             <inheritdoc />
         </member>

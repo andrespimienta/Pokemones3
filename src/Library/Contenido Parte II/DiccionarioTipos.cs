@@ -5,6 +5,7 @@ public static class DiccionarioTipos // Clase estática que contiene los datos s
     private static Dictionary<string, List<string>> diccDebilContra = new Dictionary<string, List<string>>();
     private static Dictionary<string, List<string>> diccResistenteContra= new Dictionary<string, List<string>>();
     private static Dictionary<string, List<string>> diccInmuneContra= new Dictionary<string, List<string>>();
+    private static Dictionary<string, string> diccEmojis= new Dictionary<string, string>();
     
     // Métodos:
     public static List<string> GetDebilContra(string tipo)
@@ -18,6 +19,11 @@ public static class DiccionarioTipos // Clase estática que contiene los datos s
     public static List<string> GetInmuneContra(string tipo)
     {
         return diccInmuneContra[tipo];
+    }
+
+    public static string GetEmoji(string tipo)
+    {
+        return diccEmojis[tipo];
     }
 
     // Constructor:
@@ -74,5 +80,26 @@ public static class DiccionarioTipos // Clase estática que contiene los datos s
         diccDebilContra.Add("TIERRA", ["AGUA", "HIELO", "PLANTA", "ROCA", "VENENO"]);
         diccDebilContra.Add("VENENO", ["BICHO", "PSÍQUICO", "TIERRA", "LUCHA", "PLANTA"]);
         diccDebilContra.Add("VOLADOR", ["ELÉCTRICO", "HIELO", "ROCA"]);
+        
+        // Discrod Emojis:
+        diccEmojis.Add("AGUA", "💧");
+        diccEmojis.Add("BICHO", "🪲");
+        diccEmojis.Add("DRAGÓN", "🐉");
+        diccEmojis.Add("ELÉCTRICO", "⚡");
+        diccEmojis.Add("FANTASMA", "👻");
+        diccEmojis.Add("FUEGO", "🔥");
+        diccEmojis.Add("HIELO", "❄️");
+        diccEmojis.Add("LUCHA", "🥊");
+        diccEmojis.Add("NORMAL", "🔘");
+        diccEmojis.Add("PLANTA", "🍃");
+        diccEmojis.Add("PSÍQUICO", "🌀");
+        diccEmojis.Add("ROCA", "🪨");
+        diccEmojis.Add("TIERRA", "⛰️");
+        diccEmojis.Add("VENENO", "💀");
+        diccEmojis.Add("VOLADOR", "🪽");
+        diccEmojis.Add("DORMIDO", "💤");
+        diccEmojis.Add("PARALIZADO", "✨");
+        diccEmojis.Add("ENVENENADO", "🫧");
+        diccEmojis.Add("QUEMADO", "♨️");
     }
 }
