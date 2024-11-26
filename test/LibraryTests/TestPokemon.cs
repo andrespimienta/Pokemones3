@@ -30,8 +30,8 @@ public class TestPokemon
     public void TestDañoPorTurno(double dañoEspecial)
     {
         Pokemon unPokemon = new Pokemon("pikachu", "electrico", 10000, 10978.5,null, "id");
-
-        Assert.That((unPokemon.GetVida() - dañoEspecial), Is.EqualTo((10000 - dañoEspecial)));
+        unPokemon.DañoPorTurno(dañoEspecial);
+        Assert.That((unPokemon.GetVida()), Is.EqualTo((10000 - dañoEspecial)));
         
     }
     [Test]
@@ -41,8 +41,8 @@ public class TestPokemon
     public void TestAlterarVida(double hp)
     {
         Pokemon unPokemon = new Pokemon("pikachu", "electrico", 10000, 10978.5,null, "id");
-
-        Assert.That((unPokemon.GetVida() + hp), Is.EqualTo((10000 + hp)));
+        unPokemon.AlterarVida(hp);
+        Assert.That((unPokemon.GetVida()), Is.EqualTo((10000 + hp)));
         
     }
     [Test]
@@ -62,11 +62,18 @@ public class TestPokemon
     
     public void TestRecibirDaño(string tipoAtaque)
     {
-        Pokemon unPokemon = new Pokemon("pikachu", "ELÉCTRICO", 10000, 10978.5,null, "id");
+        Pokemon pikachu = new Pokemon("pikachu", "ELÉCTRICO", 10000, 10978.5,null, "id");
         Ataque unAtaque = new AtaqueBasico("unAtaque", tipoAtaque, 10, 10);
-        unPokemon.RecibirDaño(unAtaque);
-        Assert.That((unPokemon.GetVida()), Is.EqualTo((10000 - 10.5)));
-        
+        pikachu.RecibirDaño(unAtaque);
+        if (tipoAtaque == "TIERRA")
+        {
+            Assert.That((pikachu.GetVida()), Is.EqualTo(10000.0));           
+        } else if (tipoAtaque == "VOLADOR")
+        {
+            Assert.That((pikachu.GetVida()), Is.EqualTo(9995.0)); 
+        } else if (tipoAtaque == "NORMAL")
+        {
+            Assert.That((pikachu.GetVida()), Is.EqualTo(9995.0));
+        }
     }
-    
 }

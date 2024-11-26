@@ -38,27 +38,64 @@ public class TestEntrenador
     
 
     
-    /*[Test]
-    [TestCase(charmander)]
-    [TestCase(pikachu)]
+    [Test]
+    [TestCase("charmander")]
+    [TestCase("pikachu")]
     
 
-    public void AñadirASeleccionTest(Pokemon pokemon)
+    public void AñadirASeleccionTest(string namePoke)
     {
         Entrenador unEntrenador = new Entrenador("nombre", 23123131, null);
-        unEntrenador.AñadirASeleccion(pokemon);
-        Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo(pokemon.GetNombre()));
-
-    }*/
-    [Test]
-    [TestCase("Ash Ketchup", 12345678901234567890, null)]
-    [TestCase("Misty gonzalez", 12345678901234567890, null)]
-
-    public void TestDeListaDePokemones(string nombre, ulong id, SocketGuildUser guild)
-    {
-        Entrenador unEntrenador = new Entrenador(nombre, id, guild);
-        Assert.That(unEntrenador.GetListaDeItems(), Is.EqualTo("Super Pocion (x4) / Revivir (x1) / Cura total (x2) /"));
-
+        Pokemon unPokemon = new Pokemon(namePoke, "FUEGO", 100, 10978.5,null, "id");
+        unEntrenador.AñadirASeleccion(unPokemon);
+        Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo(namePoke));
 
     }
+    
+    
+    [Test]
+    [TestCase(7)]
+    [TestCase(3)]
+    [TestCase(6)]
+    [TestCase(0)]
+    public void TestDeListaDePokemones(int cantPokesElegir)
+    {
+        Entrenador unEntrenador = new Entrenador("Misty gonzalez", 12345678901234567890, null);
+        int originalCantPokes = cantPokesElegir;
+        while (cantPokesElegir > 0)
+        {
+            Pokemon unPokemon = new Pokemon($"{cantPokesElegir}", "FUEGO", 100, 10978.5,null, "id");
+            unEntrenador.AñadirASeleccion(unPokemon);
+            cantPokesElegir--;
+        }
+
+        switch (originalCantPokes)
+        {
+            case 0:
+                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo(""));
+                break;
+            case 3:
+                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("3 2 1"));
+                break;
+            case 6:
+                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("6 5 4 3 2 1"));
+                break;
+            case 7:
+                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("7 6 5 4 3 2"));
+                break;
+            
+        }
+        
+    }
+    /*[Test]
+
+    public void AceptarVisitorPorTurnoTest()
+    {
+        Entrenador unEntrenador = new Entrenador("nombre", 23123131, null);
+        VisitorPorTurno unVisitor = new VisitorPorTurno();
+        unEntrenador.AceptarVisitorPorTurno(unVisitor);
+        Assert.That();
+
+    } no entiendo como checkear esto*/
+    
 }
