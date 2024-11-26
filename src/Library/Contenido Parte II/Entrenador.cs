@@ -8,7 +8,7 @@ public class Entrenador
     // Atributos:
     public ulong Id { get; set; } // ID de Discord para identificar al jugador
     private string nombre;
-    public Pokemon? pokemonEnUso;
+    private Pokemon? pokemonEnUso;
     private List<Pokemon> seleccionPokemones;
     private int pokemonesVivos;
     private List<IItems> listItems;
@@ -130,20 +130,12 @@ public class Entrenador
         this.pokemonEnUso = null;
     }
 
-    public Pokemon? UsarPokemon(string pokemonAUsar)
+    public void UsarPokemon(Pokemon pokemonAUsar)
     {
-        string aux = pokemonAUsar.ToUpper();
-        Pokemon result = null;
-        foreach (Pokemon pokemon in seleccionPokemones)
+        if (this.seleccionPokemones.Contains(pokemonAUsar))
         {
-            if (pokemon.GetNombre() == aux)
-            {
-                result = pokemon;
-                pokemonEnUso = pokemon;
-            }
+            pokemonEnUso = pokemonAUsar;
         }
-
-        return result;
     }
 
     public string ListaDePokemones()

@@ -1,6 +1,3 @@
-using System.Data.SqlTypes;
-using System.Runtime.CompilerServices;
-using System.Text;
 using Discord;
 using Discord.WebSocket;
 using Proyecto_Pokemones_I;
@@ -68,13 +65,13 @@ public class Fachada
     /// <summary>
     /// Agrega un jugador a la lista de espera.
     /// </summary>
-    public void AddTrainerToWaitingList(ulong userId, string displayName, SocketGuildUser user, ICanal canal)
+    public void AddTrainerToWaitingList(ulong userID, string displayName, SocketGuildUser user, ICanal canal)
     {
         //*** FALTA AÑADIR FUNCIONALIDAD DE QUE NO PERMITA UNIRSE A OTRA BATALLA SI YA ESTOY JUGANDO UNA. ***
         //*** POR AHORA NO ESTÁ AÑADIDA, PORQUE RENDIRSE NO ESTÁ AÑADIDO, Y ESO PUEDE DAR PROBLEMAS AL TESTEAR,***
         //*** SI EL BOT CONSIDERA QUE ESTOY EN BATALLA Y NO PUEDO SALIR DE ELLA ***
         string mensaje;
-        if (this.WaitingList.AgregarEntrenador(userId,displayName,user))
+        if (this.WaitingList.AgregarEntrenador(userID,displayName,user))
         {
             mensaje = $"{displayName} agregado a la lista de espera";
         }
@@ -126,7 +123,7 @@ public class Fachada
     /// </summary>
     /// <param name="displayName">El jugador.</param>
     /// <returns>Un mensaje con el resultado.</returns>
-    public void TrainerStatus(ulong userId, string displayName, ICanal canal)
+    public void TrainerStatus(ulong userID, string displayName, ICanal canal)
     {
         string mensaje;
         Entrenador? trainer = this.WaitingList.EncontrarEntrenador(displayName);
@@ -245,24 +242,23 @@ public class Fachada
     /// Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
     /// al chat del jugador que envió el comando.
     /// </summary>
-    public async Task ShowCatalog(ulong jugador)
+    public async Task ShowCatalog(ulong userID)
     {
-        Battle batallaActual = BattlesList.GetBattle(jugador);
-        Entrenador entrenadorActual = batallaActual.GetEntrenadorActual(jugador);
-        SocketGuildUser usuario = entrenadorActual.GetSocketGuildUser();
+        Battle batallaActual = BattlesList.GetBattle(userID);
+        Entrenador entrenadorActual = batallaActual.GetEntrenadorActual(userID);
         
         // Obtener el catálogo procesado como un string
         string catalogo = LeerArchivo.ObtenerCatalogoProcesado();
         string mensaje = ("========================================\n" +
                           "**Estos son los pokemones disponibles:**\n" +
                           "========================================\n");
-        await this.EnviarAUsuario(usuario, mensaje);
+        await this.EnviarAUsuario(entrenadorActual.GetSocketGuildUser(), mensaje);
         
         // Verificar si el catálogo está vacío
         if (string.IsNullOrEmpty(catalogo))
         {
             mensaje = "No se pudo obtener el catálogo. Está vacío o hubo un error.";
-            await this.EnviarAUsuario(usuario, mensaje);
+            await this.EnviarAUsuario(entrenadorActual.GetSocketGuildUser(), mensaje);
         }
         else
         {
@@ -277,31 +273,27 @@ public class Fachada
                 
                 if (contadorLineas % 26 == 0)
                 {
-                    await this.EnviarAUsuario(usuario, mensaje);
+                    await this.EnviarAUsuario(entrenadorActual.GetSocketGuildUser(), mensaje);
                     mensaje = "";
                 }
             }
-            await this.EnviarAUsuario(usuario, mensaje);
+            await this.EnviarAUsuario(entrenadorActual.GetSocketGuildUser(), mensaje);
         }
     }
 
-    public void AddPokemonToList(ulong userId, string numIdentificadores)
+    /// <summary>
+    /// Agrega uno o más pokemones a la selección del
+    /// jugador, indicados por su número identificador
+    /// </summary>
+    public void AddPokemonToList(ulong userID, string numIdentificadores)
     {
         string mensaje;
         // Obtiene el objeto entrenador del jugador que envió el comando
-        Battle batalla = BattlesList.Instance.GetBattle(userId);
-        Entrenador entrenador = batalla.GetEntrenadorActual(userId);
-        SocketGuildUser usuario = entrenador.GetSocketGuildUser();
+        Battle batalla = BattlesList.Instance.GetBattle(userID);
+        Entrenador entrenador = batalla.GetEntrenadorActual(userID);
         
         // Obtiene la lista actual de Pokémon seleccionados por el entrenador
         List<Pokemon> listaDePokemones = entrenador.GetSeleccion();
-        
-        // Validar si ya ha seleccionado 6 Pokémon
-        if (listaDePokemones.Count >= 6)
-        {
-            mensaje = "Ya has seleccionado el máximo de 6 Pokémon permitidos para la batalla.";
-            this.EnviarAUsuario(usuario, mensaje);
-        }
 
         // Separar los números identificadores por coma, eliminar espacios y asegurarse de que no haya duplicados.
         string[] identificadoresArray = numIdentificadores.Split(',')
@@ -323,7 +315,7 @@ public class Fachada
             if (listaDePokemones.Any(p => p.NumeroIdentificador == numeroIdentificador))
             {
                 mensaje = $"Ya has seleccionado el Pokémon con identificador {numeroIdentificador}, elige otro.";
-                this.EnviarAUsuario(usuario, mensaje);
+                this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
             }
             else
             {
@@ -332,14 +324,13 @@ public class Fachada
 
                 if (pokemon != null)
                 {
-                    
                     // Añadir el Pokémon al equipo del entrenador
                     pokemonesAgregados.Add(pokemon.GetNombre());
                     entrenador.AñadirASeleccion(pokemon);
                     if (listaDePokemones.Count >= 6)
                     {
                         mensaje = "¡Ya has completado tu selección de 6 Pokémon!";
-                        this.EnviarAUsuario(usuario, mensaje);
+                        this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
                         break;
                     }
                 }
@@ -356,7 +347,7 @@ public class Fachada
         {
             mensaje = string.Join(", ", pokemonesAgregados);
             mensaje = $"Los siguientes Pokémon han sido añadidos a tu selección: {mensaje}\n";
-            this.EnviarAUsuario(usuario, mensaje);
+            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
         }
 
         // Enviar mensaje de error si hay Pokémon que no se encontraron
@@ -364,7 +355,7 @@ public class Fachada
         {
             mensaje = string.Join(", ", noEncontrados);
             mensaje = $"No se encontraron Pokémon con los identificadores: {mensaje}.";
-            this.EnviarAUsuario(usuario, mensaje);
+            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
         }
 
         // Verificar si ya alcanzó el límite de 6 Pokémon
@@ -379,7 +370,53 @@ public class Fachada
             {
                 mensaje += $"{i + 1}) {listaDePokemones[i].GetNombre()}\n";
             }
-            this.EnviarAUsuario(usuario, mensaje);
+            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+        }
+    }
+
+    public void SelectPokemonInUse(ulong userID, string numEleccion)
+    {
+        Battle batalla = BattlesList.Instance.GetBattle(userID);
+        Entrenador? entrenador = batalla.GetEntrenadorActual(userID);
+        List<Pokemon> seleccionPokemones = entrenador.GetSeleccion();
+        string mensaje;
+        
+        // Exception si el usuario escribe algo que no es un número después de !usar
+        try
+        {
+            int numElegido = int.Parse(numEleccion);
+            
+            // Validar que el número ingresado se válido
+            if (numElegido < 1 || numElegido > seleccionPokemones.Count)
+            {
+                mensaje = $"Por favor, ingresa un número válido entre 1 y {seleccionPokemones.Count}.";
+                this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            }
+            else
+            {
+                // Seleccionar el Pokémon basado en el número ingresado
+                Pokemon pokemonSeleccionado = seleccionPokemones[numElegido - 1];
+
+                // Usar el Pokémon seleccionado
+                entrenador.UsarPokemon(pokemonSeleccionado);
+
+                mensaje = $"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!\n"+
+                          "**Indica que estás listo para la batalla:** Usa el comando `!startBattle` " +
+                          "para confirmar que estás listo para luchar.";
+                this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            }
+        }
+        catch (FormatException)
+        {
+            mensaje = "Error: El string contiene caracteres no numéricos.";
+            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            this.EnviarACanal(CanalConsola.Instance, mensaje);
+        }
+        catch (OverflowException)
+        {
+            mensaje = "Error: El número está fuera del rango permitido para un entero.";
+            this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            this.EnviarACanal(CanalConsola.Instance, mensaje);
         }
     }
 
@@ -453,9 +490,10 @@ public class Fachada
         }
         mensaje = mensaje.Substring(0,mensaje.Length - 2); // Elimina la última barra y espacio extras
         this.EnviarAUsuario(user, mensaje);
-        this.EnviarACanal(CanalConsola.Instance, mensaje);
+        Console.WriteLine(mensaje);
     }
-    
+
+   
     public void ComienzoDeTurno(ulong userId)
     {
         Battle batalla = BattlesList.GetBattle(userId);
@@ -470,6 +508,7 @@ public class Fachada
         Battle batalla=BattlesList.GetBattle(userId);
         batalla.CambiarTurno();
     }
+    
     public async Task StartBattle(ulong usuarioId)
     {
         Battle batalla = BattlesList.GetBattle(usuarioId);
@@ -582,7 +621,5 @@ public class Fachada
                          "`!Rendirse`";
         EnviarAUsuario(jugador, mensaje);
     }
+
 }
-
-
-

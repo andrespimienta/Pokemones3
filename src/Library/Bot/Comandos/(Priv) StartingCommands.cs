@@ -12,50 +12,33 @@ public class StartingCommands : ModuleBase<SocketCommandContext>
     [Command("catalogo")]
     public async Task MostrarCatalogoAsync()
     {
-        ulong userId = Context.User.Id;  // Obtener el ID del usuario
+        ulong userID = Context.User.Id;  // Obtener el ID del usuario
         
-        Fachada.Instance.ShowCatalog(userId);
+        Fachada.Instance.ShowCatalog(userID);
     }
     
+    /// <summary>
+    /// Agrega uno o más pokemones a la selección del jugador,
+    /// proporcionados por sus números identificadores.
+    /// </summary>
     [Command("agregarPokemon")]
     public async Task AgregarPokemonAsync(string numerosIdentificadores)
     {
-        ulong userId = Context.User.Id;
+        ulong userID = Context.User.Id;
         
-        Fachada.Instance.AddPokemonToList(userId, numerosIdentificadores);
+        Fachada.Instance.AddPokemonToList(userID, numerosIdentificadores);
     }
     
+    /// <summary>
+    /// Selecciona cuál de los pokemones de la colección del jugador
+    /// será el Pokemon en uso para el comienzo de la batalla.
+    /// </summary>
     [Command("usar")]
-    public async Task UsarPokemonAsync(int numero)
+    public async Task UsarPokemonAsync(string numero)
     {
-        ulong userId = Context.User.Id;
-        Battle batalla = BattlesList.Instance.GetBattle(userId);
-        Entrenador? entrenador = batalla.GetEntrenadorActual(userId); 
-
-        if (entrenador != null)
-        {
-            List<Pokemon> seleccionPokemones = entrenador.GetSeleccion();
-
-            // Validar si el número ingresado es válido
-            if (numero < 1 || numero > seleccionPokemones.Count)
-            {
-                await ReplyAsync($"Por favor, ingresa un número válido entre 1 y {seleccionPokemones.Count}.");
-                return;
-            }
-
-            // Seleccionar el Pokémon basado en el número ingresado
-            Pokemon pokemonSeleccionado = seleccionPokemones[numero - 1];
-
-            // Usar el Pokémon seleccionado
-            entrenador.pokemonEnUso = pokemonSeleccionado;
-
-            await ReplyAsync($"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!\n"+
-                              "**Indica que estás listo para la batalla: Usa el comando `!startBattle` para confirmar que estás listo para luchar.**");
-        }
-        else
-        {
-            await ReplyAsync("No se ha encontrado un entrenador asociado a tu cuenta.");
-        }
+        ulong userID = Context.User.Id;
+        
+        Fachada.Instance.SelectPokemonInUse(userID, numero);
     }
     [Command("StartBattle")]
     public async Task BattleAsync()
