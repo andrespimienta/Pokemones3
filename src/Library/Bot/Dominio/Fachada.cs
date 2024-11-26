@@ -461,12 +461,14 @@ public class Fachada
                                 oponente.AgregarAListaMuertos(pokemonVictima);
                                 mensaje = $"{pokemonVictima.GetNombre()} ha sido vencido";
                                 await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                                await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
                             }
                             else
                             {
                                 mensaje =
                                     $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}";
                                     await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                                    await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
                             }
                         }
 
