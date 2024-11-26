@@ -14,7 +14,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
     public async Task JoinAsync()
     {
         // Obtiene los 3 atributos necesarios para crear un objeto Entrenador:
-        ulong userId = Context.User.Id;  // Obtener el ID del usuario
+        ulong userID = Context.User.Id;  // Obtener el ID del usuario
         string displayName = CommandHelper.GetDisplayName(Context); // Obtiene el nombre del usuario/Entrenador
         SocketGuildUser? user = CommandHelper.GetUser(Context, displayName);
         
@@ -22,7 +22,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
         ICanal canal = new CanalDeDiscord(Context.Channel);
 
         // Agrega al jugador a la lista de espera usando el método existente, fachada no queda acoplada a la plataforma que se use.
-        Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user,canal);
+        Fachada.Instance.AddTrainerToWaitingList(userID, displayName,user,canal);
     }
     
     /// <summary>
@@ -68,7 +68,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
     public async Task StatusAsync(
         [Remainder][Summary("El usuario del que tener información, opcional")] string? displayName = null)
     {
-        ulong userId = Context.User.Id;
+        ulong userID = Context.User.Id;
         ICanal canal = new CanalDeDiscord(Context.Channel);
         
         // Chequea que el jugador del que se quiere conseguir el status esté activo
@@ -87,7 +87,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
         string userName = displayName ?? CommandHelper.GetDisplayName(Context);
         
         // Chequea el estatus del usuario indicado (si está en batalla, esperando o no)
-        Fachada.Instance.TrainerStatus(userId, userName, canal);
+        Fachada.Instance.TrainerStatus(userID, userName, canal);
     }
     
     /// <summary>
