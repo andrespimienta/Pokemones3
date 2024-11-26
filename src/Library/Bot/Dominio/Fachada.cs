@@ -493,12 +493,133 @@ public class Fachada
         Console.WriteLine(mensaje);
     }
 
+   
     public void ComienzoDeTurno(ulong userId)
     {
         Battle batalla = BattlesList.GetBattle(userId);
         Entrenador jugador = batalla.GetEntrenadorActual(userId);
+        MostrarOpciones(jugador.GetSocketGuildUser());
         jugador.AceptarVisitorPorTurno(this.visitor);
         
+    }
+
+    public void CambiarTurno(ulong userId)
+    {
+        Battle batalla=BattlesList.GetBattle(userId);
+        batalla.CambiarTurno();
+    }
+    
+    public async Task StartBattle(ulong usuarioId)
+    {
+        Battle batalla = BattlesList.GetBattle(usuarioId);
+        Entrenador? entrenador = batalla.GetEntrenadorActual(usuarioId);
+        
+        // Si el jugador ya está marcado como listo, no se incrementa el contador ni se hace nada más
+        string mensaje;
+        if (entrenador.EstaListo)
+        {
+            mensaje = "Ya estás marcado como listo para la batalla.";
+            await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+        }
+        else
+        {
+            // Marcar al entrenador como listo y aumentar el contador
+            entrenador.EstaListo = true;
+            mensaje = $"{entrenador.GetNombre()} está listo para la batalla.";
+            await EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            
+            // Comprobar si ambos jugadores están listos
+            if (batalla.EstanListos() == true)
+            {
+                ChequearQuienEmpieza(usuarioId);
+                //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
+            }
+            else
+            {
+                // Si solo uno está listo, esperar al oponente
+                mensaje = "Esperando a que tu oponente esté listo...";
+                await EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            }
+        }
+    }
+    public async Task ChequearQuienEmpieza(ulong userId)
+    {
+        Battle batalla = this.BattlesList.GetBattle(userId);
+        var user1 = batalla.Player1.GetSocketGuildUser();
+        var user2 = batalla.Player2.GetSocketGuildUser();
+
+        string mensajeDeComienzo = "¡Ambos jugadores están listos! Comenzando la batalla...";
+        EnviarAUsuario(user1, mensajeDeComienzo);
+        EnviarAUsuario(user2, mensajeDeComienzo);
+
+        Pokemon pokemonJugador1 = batalla.Player1.GetPokemonEnUso();
+        Pokemon pokemonJugador2 = batalla.Player2.GetPokemonEnUso();
+
+        string turnoJugador;
+
+        // Comparar la velocidad de los Pokémon para determinar quién empieza
+        if (pokemonJugador1.GetVelocidadAtaque() > pokemonJugador2.GetVelocidadAtaque())
+        {
+            turnoJugador = batalla.Player1.GetNombre();
+            batalla.EntrenadorConTurno = batalla.Player1;
+        }
+        else if (pokemonJugador2.GetVelocidadAtaque() > pokemonJugador1.GetVelocidadAtaque())
+        {
+            turnoJugador = batalla.Player2.GetNombre();
+            batalla.EntrenadorConTurno = batalla.Player2;
+        }
+        else
+        {
+            // Si la velocidad es igual, se elige al azar
+            turnoJugador = new System.Random().Next(2) == 0
+                ? batalla.Player1.GetNombre()
+                : batalla.Player2.GetNombre();
+            if (turnoJugador == batalla.Player1.GetNombre())
+            {
+                batalla.EntrenadorConTurno = batalla.Player1;
+            }
+            else
+            {
+                batalla.EntrenadorConTurno = batalla.Player2;
+            }
+        }
+
+        // Notificar a ambos jugadores sobre quién empieza
+        if (turnoJugador == batalla.Player1.GetNombre())
+        {
+            string mensaje2 = $"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.";
+            EnviarAUsuario(user2, mensaje2);
+
+            string mensaje1 =
+                $"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.";
+            EnviarAUsuario(user1, mensaje1);
+
+            // Mostrar opciones solo al jugador que tiene el turno
+            await MostrarOpciones(user1);
+        }
+        else
+        {
+            string mensaje1 =
+                $"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.";
+            EnviarAUsuario(user1, mensaje1);
+
+            string mensaje2 =
+                $"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.";
+            EnviarAUsuario(user2, mensaje2);
+
+            // Mostrar opciones solo al jugador que tiene el turno
+            await MostrarOpciones(user2);
+        }
+    }
+
+    public async Task MostrarOpciones(SocketGuildUser jugador)
+    {
+        string mensaje = "Elige una acción:\n" +
+                         "`!Atacar`\n" +
+                         "`!CambiarPokemon`\n" +
+                         "`!UsarPocion`\n" +
+                         "`!Rendirse`";
+        EnviarAUsuario(jugador, mensaje);
     }
 
 }
