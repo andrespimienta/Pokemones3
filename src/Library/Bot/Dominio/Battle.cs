@@ -97,4 +97,16 @@ public class Battle
     {
         this.Ganador = elGanador;
     }
+
+    public void CambiarTurno()
+    {
+        if (EntrenadorConTurno == Player1)
+        {
+            EntrenadorConTurno = Player2;
+        }
+        else
+        {
+            EntrenadorConTurno = Player1;
+        }
+    }
 }

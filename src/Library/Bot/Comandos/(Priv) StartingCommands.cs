@@ -57,4 +57,12 @@ public class StartingCommands : ModuleBase<SocketCommandContext>
             await ReplyAsync("No se ha encontrado un entrenador asociado a tu cuenta.");
         }
     }
+    [Command("StartBattle")]
+    public async Task BattleAsync()
+    {
+        // Obtener el ID del jugador actual usando su ID de Discord
+        ulong usuarioId = Context.User.Id;
+        Fachada.Instance.StartBattle(usuarioId);
+
+    }
 }
