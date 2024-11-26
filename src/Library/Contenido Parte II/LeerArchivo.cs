@@ -1,12 +1,13 @@
 using System.Globalization;
 using Library.Contenido_Parte_II;
 
+
 namespace Proyecto_Pokemones_I;
 
 public static class LeerArchivo
 {
 
-    public static string RutaCatalogo = "/Users/andrespimienta/Desktop/Facultad/Programación 2/Proyecto/Pokemones3/src/Program/Catalogo";
+    public static string RutaCatalogo = "C:\\Users\\Estudiante UCU\\Documents\\Repositorios Prog. II\\Pokemones3\\src\\Program\\Catalogo";
 
     public static string ObtenerCatalogoProcesado()
     {
@@ -22,10 +23,10 @@ public static class LeerArchivo
         for (int indice = 2; indice < lineas.Length; indice++)
         {
             string[] datos = lineas[indice].Split(',');
-
+            string emoji = DiccionarioTipos.GetEmoji(datos[2]);
             // Construir el mensaje del catálogo, agregando los datos de cada Pokémon
             catalogo += "----------------------------------------------------------------------\n" +
-                        $"➡️ {datos[0]}, 🏷️ {datos[1]}, 🔖 {datos[2]}, ❤️ {datos[3]}, ⚡ {datos[4]}\n";
+                        $"➡️ **{datos[0]} |**  🏷️ {datos[1]}  **|**  {emoji} {datos[2]}  **|**  ❤️ {datos[3]}  **|**  ⌛ {datos[4]}  **|**\n";
         }
         catalogo += "----------------------------------------------------------------------";  // Añadir línea final
 
