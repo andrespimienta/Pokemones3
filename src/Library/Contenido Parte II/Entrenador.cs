@@ -141,6 +141,7 @@ public class Entrenador
 
     public void UsarPokemon(Pokemon pokemonAUsar)
     {
+        pokemonEnUso = null;
         if (this.seleccionPokemonesVivos.Contains(pokemonAUsar))
         {
             pokemonEnUso = pokemonAUsar;
