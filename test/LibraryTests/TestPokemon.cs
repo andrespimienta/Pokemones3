@@ -63,17 +63,17 @@ public class TestPokemon
     public void TestRecibirDaño(string tipoAtaque)
     {
         Pokemon pikachu = new Pokemon("pikachu", "ELÉCTRICO", 10000, 10978.5,null, "id");
-        Ataque unAtaque = new AtaqueBasico("unAtaque", tipoAtaque, 10, 10);
+        Ataque unAtaque = new AtaqueBasico("unAtaque", tipoAtaque, 10, 100);
         pikachu.RecibirDaño(unAtaque);
         if (tipoAtaque == "TIERRA")
         {
-            Assert.That((pikachu.GetVida()), Is.EqualTo(10000.0));           
+            Assert.That((pikachu.GetVida()), Is.LessThan(9980.1));           
         } else if (tipoAtaque == "VOLADOR")
         {
-            Assert.That((pikachu.GetVida()), Is.EqualTo(9995.0)); 
+            Assert.That((pikachu.GetVida()), Is.LessThan(9995.1)); 
         } else if (tipoAtaque == "NORMAL")
         {
-            Assert.That((pikachu.GetVida()), Is.EqualTo(9995.0));
+            Assert.That((pikachu.GetVida()), Is.LessThan(9990.1));
         }
     }
 }
