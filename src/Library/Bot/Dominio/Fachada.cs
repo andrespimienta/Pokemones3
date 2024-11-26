@@ -382,7 +382,7 @@ public class Fachada
         }
     }
 
-    public string? ListaAtaques(ulong userId)
+    public string? MostrarListaAtaques(ulong userId)
     {
         Battle batalla = BattlesList.GetBattle(userId);
         Entrenador entrenador = batalla.GetEntrenadorActual(userId);
@@ -405,7 +405,8 @@ public class Fachada
 
     public void Atacar(ulong userId, string nombreAtaque)
     {
-        //agregar que solo entrenador con turno pueda hacerlo
+        // FALTA AGREGAR QUE SOLO LO PUEDA EJECUTAR EL JUGADOR CON TURNO
+        // FALTA NO PERMITIR USAR EL ATAQUE ESPECIAL SI TODAVÍA ESTÁ RECARGÁNDOSE
         Battle batalla = BattlesList.GetBattle(userId);
         Entrenador atacante = batalla.GetEntrenadorActual(userId);
         Entrenador oponente = batalla.GetEntrenadorOponente(userId);
@@ -415,7 +416,7 @@ public class Fachada
 
         if (string.IsNullOrEmpty(nombreAtaque))
         {
-            this.ListaAtaques(atacante);
+            this.MostrarListaAtaques(atacante);
         }
         else
         {
@@ -455,17 +456,22 @@ public class Fachada
         }
     }
 
-    public void ListaAtaques(Entrenador entrenador)
+    public void MostrarListaAtaques(Entrenador entrenador)
     {
+        // FALTA MOSTRAR UN DIFERENCIADOR O DIRECTAMENTE NO MOSTRAR COMO 
+        // DISPONIBLE EL ATAQUE ESPECIAL, SI AÚN ESTÁ EN TIEMPO DE RECARGA
+        
         string mensaje = "Estos son los ataques disponibles: ";
         SocketGuildUser user = entrenador.GetSocketGuildUser();
-
+        
+        // ************ No vendría nada mal mostrar algún ícono o directamente especificar ************
+        // *** el tipo del ataque para saber cuál elegir para hacerle el mayor daño posible al otro ***
+        
         foreach (Ataque ataque in entrenador.GetPokemonEnUso().GetAtaques())
         {
-            mensaje += ataque.GetNombre() + " / "; // Imprime cada nombre seguido de un espacio
+            mensaje += ataque.GetNombre() + " / "; // Imprime cada nombre separado por una barra y un espacio
         }
-
-        mensaje.Trim(); // Elimina el último espacio extra al final de la cadena
+        mensaje = mensaje.Substring(0,mensaje.Length - 2); // Elimina la última barra y espacio extras
         this.EnviarAUsuario(user, mensaje);
         Console.WriteLine(mensaje);
     }
@@ -477,6 +483,5 @@ public class Fachada
         jugador.AceptarVisitorPorTurno(this.visitor);
         
     }
-
 
 }
