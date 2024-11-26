@@ -138,10 +138,10 @@ namespace Ucu.Poo.DiscordBot.Commands
         private async Task MostrarOpciones(SocketGuildUser jugador)
         {
             await jugador.SendMessageAsync("Elige una acción:\n" +
-                                           "(1) Atacar\n" +
-                                           "(2) Cambiar de Pokémon\n" +
-                                           "(3) Usar poción\n" +
-                                           "(4) Rendirse");
+                                           "`!Atacar`\n" +
+                                           "`!CambiarPokémon`\n" +
+                                           "`!UsarPoción`\n" +
+                                           "`!Rendirse`");
         }
 
         [Command("Atacar")]
@@ -149,21 +149,22 @@ namespace Ucu.Poo.DiscordBot.Commands
             string? attackName = null)
         {
             ulong usuarioId = Context.User.Id;
-
-            if (attackName == null)
-            {
-                string? aux = Fachada.Instance.ListaAtaques(usuarioId);
+            Fachada.Instance.Atacar(usuarioId,attackName);
             
-                await Context.Message.Author.SendMessageAsync(aux);
-            }
-            else
-            {
-                string? aux=Fachada.Instance.Atacar(usuarioId,attackName);
-                await Context.Message.Author.SendMessageAsync(aux);
-            }
+
+            //if (attackName == null)
+            //{
+            //    string? aux = Fachada.Instance.ListaAtaques(usuarioId);
+            
+           //     await Context.Message.Author.SendMessageAsync(aux);
+          // }
+           // else
+          //  {
+          //      string? aux=Fachada.Instance.Atacar(usuarioId,attackName);
+          //      await Context.Message.Author.SendMessageAsync(aux);
+          //  }
 
         }
-
     }
 }
 

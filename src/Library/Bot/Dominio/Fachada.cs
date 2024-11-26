@@ -403,41 +403,73 @@ public class Fachada
         return null;
     }
 
-    public string? Atacar(ulong userId, string nombreAtaque)
+    public void Atacar(ulong userId, string nombreAtaque)
     {
+        //agregar que solo entrenador con turno pueda hacerlo
         Battle batalla = BattlesList.GetBattle(userId);
-        Pokemon pokemonVictima = batalla.GetEntrenadorOponente(userId).GetPokemonEnUso();
-        Pokemon pokemonAtacante = batalla.GetEntrenadorActual(userId).GetPokemonEnUso();
-        string result = null;
-        
-        // Si es el turno del Jugador 1, intentará efectuar el ataque indicado sobre el Pokemon en Uso del Jugador 2
-        foreach (Ataque ataque in pokemonAtacante.GetAtaques())
-        {
-            // Si encontró el ataque especificado en la lista de ataques del Pokemon en uso del jugador, ataca al pokemon en uso del rival
-            if (ataque.GetNombre() == nombreAtaque)
-            {
-                double vidaPrevia = pokemonVictima.GetVida();
-                pokemonVictima.RecibirDaño(ataque);
+        Entrenador atacante = batalla.GetEntrenadorActual(userId);
+        Entrenador oponente = batalla.GetEntrenadorOponente(userId);
+        Pokemon pokemonVictima = oponente.GetPokemonEnUso();
+        Pokemon pokemonAtacante = atacante.GetPokemonEnUso();
+        string mensaje;
 
-                if (vidaPrevia > pokemonVictima.GetVida())
+        if (string.IsNullOrEmpty(nombreAtaque))
+        {
+            this.ListaAtaques(atacante);
+        }
+        else
+        {
+            bool EncontroAtaque = false;
+            // Si es el turno del Jugador 1, intentará efectuar el ataque indicado sobre el Pokemon en Uso del Jugador 2
+            foreach (Ataque ataque in pokemonAtacante.GetAtaques())
+            {
+                // Si encontró el ataque especificado en la lista de ataques del Pokemon en uso del jugador, ataca al pokemon en uso del rival
+                if (ataque.GetNombre() == nombreAtaque)
                 {
-                    if (pokemonVictima.GetVida() <= 0)
+                    double vidaPrevia = pokemonVictima.GetVida();
+                    pokemonVictima.RecibirDaño(ataque);
+                    EncontroAtaque = true;
+                    if (vidaPrevia > pokemonVictima.GetVida())
                     {
-                        return result = $"{pokemonVictima.GetNombre()} ha sido vencido";
-                    }
-                    else
-                    {
-                        return result =
-                            $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}";
+                        if (pokemonVictima.GetVida() <= 0)
+                        {
+                            mensaje = $"{pokemonVictima.GetNombre()} ha sido vencido";
+                            this.EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                        }
+                        else
+                        {
+                            mensaje =
+                                $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}";
+                            this.EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                        }
                     }
                 }
+            }
 
+            // Si sale del Foreach sin haber retornado antes, es que no encontró el ataque
+            if (EncontroAtaque == false)
+            {
+                mensaje = "No se encontró el ataque";
+                this.EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
             }
         }
-        // Si sale del Foreach sin haber retornado antes, es que no encontró el ataque
-        return result="No se encontró el ataque";
     }
-    
+
+    public void ListaAtaques(Entrenador entrenador)
+    {
+        string mensaje = "Estos son los ataques disponibles: ";
+        SocketGuildUser user = entrenador.GetSocketGuildUser();
+
+        foreach (Ataque ataque in entrenador.GetPokemonEnUso().GetAtaques())
+        {
+            mensaje += ataque.GetNombre() + " / "; // Imprime cada nombre seguido de un espacio
+        }
+
+        mensaje.Trim(); // Elimina el último espacio extra al final de la cadena
+        this.EnviarAUsuario(user, mensaje);
+        Console.WriteLine(mensaje);
+    }
+
     public void ComienzoDeTurno(ulong userId)
     {
         Battle batalla = BattlesList.GetBattle(userId);
