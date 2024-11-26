@@ -18,20 +18,6 @@ namespace Ucu.Poo.DiscordBot.Commands
         {
             ulong usuarioId = Context.User.Id;
             Fachada.Instance.Atacar(usuarioId,attackName);
-            
-
-            //if (attackName == null)
-            //{
-            //    string? aux = Fachada.Instance.ListaAtaques(usuarioId);
-            
-           //     await Context.Message.Author.SendMessageAsync(aux);
-          // }
-           // else
-          //  {
-          //      string? aux=Fachada.Instance.Atacar(usuarioId,attackName);
-          //      await Context.Message.Author.SendMessageAsync(aux);
-          //  }
-
         }
     }
 }
