@@ -14,15 +14,15 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
     public async Task JoinAsync()
     {
         // Obtiene los 3 atributos necesarios para crear un objeto Entrenador:
-        ulong userID = Context.User.Id;  // Obtener el ID del usuario
+        ulong userId = Context.User.Id;  // Obtener el ID del usuario
         string displayName = CommandHelper.GetDisplayName(Context); // Obtiene el nombre del usuario/Entrenador
         SocketGuildUser? user = CommandHelper.GetUser(Context, displayName);
         
         // Solamente en esta instancia se puede obtener el canal. Por ende, es Expert
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
 
         // Agrega al jugador a la lista de espera usando el método existente, fachada no queda acoplada a la plataforma que se use.
-        Fachada.Instance.AddTrainerToWaitingList(userID, displayName,user,canal);
+        Fachada.Instance.AddTrainerToWaitingList(userId, displayName,user,canal);
     }
     
     /// <summary>
@@ -35,7 +35,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
     public async Task LeaveAsync()
     {
         string displayName = CommandHelper.GetDisplayName(Context);
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
         
         // Elimina al jugador de la lista de espera usando el método existente, fachada no queda acoplada a la plataforma que se use.
         Fachada.Instance.RemoveTrainerFromWaitingList(displayName,canal);
@@ -49,7 +49,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
     [Summary("Muestra los usuarios en la lista de espera")]
     public async Task WaitingListAsync()
     {
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
         
         // Muestra los jugadores en lista de espera, si es que los hay.
         Fachada.Instance.GetTrainersWaiting(canal);
@@ -68,8 +68,8 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
     public async Task StatusAsync(
         [Remainder][Summary("El usuario del que tener información, opcional")] string? displayName = null)
     {
-        ulong userID = Context.User.Id;
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ulong userId = Context.User.Id;
+        ICanal canal = new CanalDiscord(Context.Channel);
         
         // Chequea que el jugador del que se quiere conseguir el status esté activo
         // (solo una clase 'Command' de Discord puede calcular eso, pedirselo a
@@ -87,7 +87,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
         string userName = displayName ?? CommandHelper.GetDisplayName(Context);
         
         // Chequea el estatus del usuario indicado (si está en batalla, esperando o no)
-        Fachada.Instance.TrainerStatus(userID, userName, canal);
+        Fachada.Instance.TrainerStatus(userId, userName, canal);
     }
     
     /// <summary>
@@ -105,7 +105,7 @@ public class LobbyCommands : ModuleBase<SocketCommandContext>
         [Remainder] [Summary("Display name del oponente, opcional")] string? opponentDisplayName = null)
     {
         string displayName = CommandHelper.GetDisplayName(Context);
-        ICanal canal = new CanalDeDiscord(Context.Channel);
+        ICanal canal = new CanalDiscord(Context.Channel);
         
         // Intenta crear una batalla entre quien envió el comando y el oponente o alguien esperando para batallar
         Fachada.Instance.ChallengeTrainerToBattle(displayName, opponentDisplayName, canal);

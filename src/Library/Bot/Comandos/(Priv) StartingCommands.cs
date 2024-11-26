@@ -40,4 +40,12 @@ public class StartingCommands : ModuleBase<SocketCommandContext>
         
         Fachada.Instance.SelectPokemonInUse(userID, numero);
     }
+    [Command("StartBattle")]
+    public async Task BattleAsync()
+    {
+        // Obtener el ID del jugador actual usando su ID de Discord
+        ulong usuarioId = Context.User.Id;
+        Fachada.Instance.StartBattle(usuarioId);
+
+    }
 }
