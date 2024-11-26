@@ -430,7 +430,7 @@ public class Fachada
         Battle batalla = BattlesList.GetBattle(userId);
         Entrenador atacante = batalla.GetEntrenadorActual(userId);
         //SOLO LO PUEDE EJECUTAR EL JUGADOR CON TURNO
-        if(atacante==batalla.EntrenadorConTurno)
+        if(atacante==batalla.EntrenadorConTurno && batalla.EntrenadorConTurno.GetPokemonEnUso().PuedeAtacar)
         {
             // FALTA NO PERMITIR USAR EL ATAQUE ESPECIAL SI TODAVÍA ESTÁ RECARGÁNDOSE
            
@@ -459,6 +459,8 @@ public class Fachada
                         {
                             if (pokemonVictima.GetVida() <= 0)
                             {
+                                pokemonVictima.PuedeAtacar = false;
+                                oponente.AgregarAListaMuertos(pokemonVictima);
                                 mensaje = $"{pokemonVictima.GetNombre()} ha sido vencido";
                                 await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                             }

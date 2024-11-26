@@ -40,6 +40,7 @@ public class Entrenador
                 pokemonesVivos += 1;
             }
         }
+
         return pokemonesVivos;
     }
     public string GetListaDeItems()
@@ -86,6 +87,7 @@ public class Entrenador
         this.listItems = new List<IItems>();
         this.RecargarItems();
         this.userds1 = guild;
+        
         this.EstaListo = false; // Inicialmente no está listo
 
     }
