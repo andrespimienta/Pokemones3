@@ -22,7 +22,7 @@ public class Battle
     /// <summary>
     /// Obtiene un valor que representa al ganador.
     /// </summary>
-    public Entrenador? Ganador { get; private set; }
+    public Entrenador? Ganador { get; set; }
 
     public Entrenador? EntrenadorConTurno {get; set;}
 
@@ -87,6 +87,11 @@ public class Battle
         }
         // Si no se encuentra el entrenador en la batalla, devolvemos null
         return null;
+    }
+
+    public Entrenador? GetEntrenadorConTurno()
+    {
+        return this.EntrenadorConTurno;
     }
 
     /// <summary>
