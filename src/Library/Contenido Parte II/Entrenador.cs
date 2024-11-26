@@ -9,8 +9,8 @@ public class Entrenador
     public ulong Id { get; set; } // ID de Discord para identificar al jugador
     private string nombre;
     private Pokemon? pokemonEnUso;
-    private List<Pokemon> seleccionPokemones;
-    private int pokemonesVivos;
+    private List<Pokemon> seleccionPokemonesVivos;
+    private List<Pokemon> listaPokemonesMuertos;
     private List<IItems> listItems;
     public int TurnosRecargaAtkEspecial { get; set; }
     public bool EstaListo { get; set; } // Agregar el flag para saber si está listo
@@ -28,19 +28,18 @@ public class Entrenador
     }
     public List<Pokemon> GetSeleccion()
     {
-        return this.seleccionPokemones;
+        return this.seleccionPokemonesVivos;
     }
     public int GetPokemonesVivos()
     {
-        pokemonesVivos = 0;
-        foreach (Pokemon pokemon in seleccionPokemones)
+        int pokemonesVivos = 0;
+        foreach (Pokemon pokemon in seleccionPokemonesVivos)
         {
             if (pokemon.GetVida() > 0)
             {
                 pokemonesVivos += 1;
             }
         }
-
         return pokemonesVivos;
     }
     public string GetListaDeItems()
@@ -82,13 +81,11 @@ public class Entrenador
         this.Id = id;
         this.nombre = suNombre;
         this.pokemonEnUso = null;
-        this.seleccionPokemones = new List<Pokemon>();
-        this.pokemonesVivos = 6;
+        this.seleccionPokemonesVivos = new List<Pokemon>();
         this.TurnosRecargaAtkEspecial = 2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
         this.listItems = new List<IItems>();
         this.RecargarItems();
         this.userds1 = guild;
-        
         this.EstaListo = false; // Inicialmente no está listo
 
     }
@@ -115,34 +112,43 @@ public class Entrenador
     // Método para añadir Pokémon y comprobar si está listo
     public void AñadirASeleccion(Pokemon pokemon)
     {
-        if (seleccionPokemones.Count < 6)
+        if (seleccionPokemonesVivos.Count < 6)
         {
-            seleccionPokemones.Add(pokemon);
-            if (seleccionPokemones.Count == 6)
-            {
-              
-            }
+            seleccionPokemonesVivos.Add(pokemon);
         }
     }
 
-    public void GuardarPokemon()
+    public void AgregarAListaMuertos(Pokemon pokemon)
     {
-        this.pokemonEnUso = null;
+        if (seleccionPokemonesVivos.Contains(pokemon) && pokemon.GetVida() <= 0)
+        {
+            this.seleccionPokemonesVivos.Remove(pokemon);
+            this.listaPokemonesMuertos.Add(pokemon);
+        }
+    }
+
+    public void RemoverDeListaMuertos(Pokemon pokemon)
+    {
+        if (listaPokemonesMuertos.Contains(pokemon))
+        {
+            this.listaPokemonesMuertos.Remove(pokemon);
+            this.seleccionPokemonesVivos.Add(pokemon);
+        }
     }
 
     public void UsarPokemon(Pokemon pokemonAUsar)
     {
-        if (this.seleccionPokemones.Contains(pokemonAUsar))
+        if (this.seleccionPokemonesVivos.Contains(pokemonAUsar))
         {
             pokemonEnUso = pokemonAUsar;
         }
     }
 
-    public string ListaDePokemones()
+    public string GetListaDePokemones()
     {
         string resultado = "";
 
-        foreach (Pokemon pokemon in seleccionPokemones)
+        foreach (Pokemon pokemon in seleccionPokemonesVivos)
         {
             if (pokemon.GetVida() > 0) // Tengo que especificar esto para cuando sean vencidos, no lo vuelvan a listas
             {
@@ -155,11 +161,7 @@ public class Entrenador
         Console.WriteLine();
         return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
-
-    public void AgregarsUserDs(SocketGuildUser user)
-    {
-       
-    }
+    
 
     public string? GetStatusPokemonEnUso()
     {
