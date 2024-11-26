@@ -227,7 +227,7 @@ public class Fachada
         WaitingList.EliminarEntrenador(playerDisplayName);
         WaitingList.EliminarEntrenador(opponentDisplayName);
         string mensaje = $"==================================================================================\n"+
-                         $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.\n" +
+                         $"Comienza el enfrentamiento: **{playerDisplayName}** :crossed_swords: **{opponentDisplayName}**.\n" +
                          $"==================================================================================\n\n" +
                         $"¡Ahora debes **elegir 6 pokémon** para la batalla!\n" +
                         $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
@@ -249,9 +249,10 @@ public class Fachada
         
         // Obtener el catálogo procesado como un string
         string catalogo = LeerArchivo.ObtenerCatalogoProcesado();
-        string mensaje = ("========================================\n" +
-                          "**Estos son los pokemones disponibles:**\n" +
-                          "========================================\n");
+        string mensaje = (
+            "===========================================================\n" + 
+            "                         **Estos son los pokemones disponibles:**\n" +
+            "===========================================================\n");
         await this.EnviarAUsuario(entrenadorActual.GetSocketGuildUser(), mensaje);
         
         // Verificar si el catálogo está vacío
@@ -371,7 +372,7 @@ public class Fachada
             listaDePokemones = entrenador.GetSeleccion();
             for (int i = 0; i < listaDePokemones.Count; i++)
             {
-                mensaje += $"{i + 1}) {listaDePokemones[i].GetNombre()}\n";
+                mensaje += $"**{i + 1})** {listaDePokemones[i].GetNombre()} {DiccionarioTipos.GetEmoji(listaDePokemones[i].GetTipo())}\n";
             }
             await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
         }
