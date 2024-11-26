@@ -420,7 +420,7 @@ public class Fachada
         }
     }
 
-    public void Atacar(ulong userId, string nombreAtaque)
+    public async Task Atacar(ulong userId, string nombreAtaque)
     {
         // FALTA AGREGAR QUE SOLO LO PUEDA EJECUTAR EL JUGADOR CON TURNO
         // FALTA NO PERMITIR USAR EL ATAQUE ESPECIAL SI TODAVÍA ESTÁ RECARGÁNDOSE
@@ -457,13 +457,13 @@ public class Fachada
                             if (pokemonVictima.GetVida() <= 0)
                             {
                                 mensaje = $"{pokemonVictima.GetNombre()} ha sido vencido";
-                                this.EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                                await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                             }
                             else
                             {
                                 mensaje =
                                     $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}";
-                                this.EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                                    await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                             }
                         }
 
@@ -479,7 +479,7 @@ public class Fachada
                 if (EncontroAtaque == false)
                 {
                     mensaje = "No se encontró el ataque";
-                    this.EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
+                    await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                 }
                 
             }
@@ -578,8 +578,8 @@ public class Fachada
         var user2 = batalla.Player2.GetSocketGuildUser();
 
         string mensajeDeComienzo = "¡Ambos jugadores están listos! Comenzando la batalla...";
-        EnviarAUsuario(user1, mensajeDeComienzo);
-        EnviarAUsuario(user2, mensajeDeComienzo);
+        await EnviarAUsuario(user1, mensajeDeComienzo);
+        await EnviarAUsuario(user2, mensajeDeComienzo);
 
         Pokemon pokemonJugador1 = batalla.Player1.GetPokemonEnUso();
         Pokemon pokemonJugador2 = batalla.Player2.GetPokemonEnUso();
@@ -617,11 +617,11 @@ public class Fachada
         if (turnoJugador == batalla.Player1.GetNombre())
         {
             string mensaje2 = $"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.";
-            EnviarAUsuario(user2, mensaje2);
+           await EnviarAUsuario(user2, mensaje2);
 
             string mensaje1 =
                 $"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.";
-            EnviarAUsuario(user1, mensaje1);
+            await EnviarAUsuario(user1, mensaje1);
 
             // Mostrar opciones solo al jugador que tiene el turno
             await MostrarOpciones(user1);
@@ -631,11 +631,11 @@ public class Fachada
             string mensaje1 =
                 $"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.\n"+ 
                   "esperando a que tu oponente decida que hacer...";
-            EnviarAUsuario(user1, mensaje1);
+            await EnviarAUsuario(user1, mensaje1);
 
             string mensaje2 =
                 $"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.";
-            EnviarAUsuario(user2, mensaje2);
+            await EnviarAUsuario(user2, mensaje2);
 
             // Mostrar opciones solo al jugador que tiene el turno
             await MostrarOpciones(user2);
