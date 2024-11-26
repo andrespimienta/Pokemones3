@@ -473,42 +473,35 @@ public class Fachada
     public async Task StartBattle(ulong usuarioId)
     {
         Battle batalla = BattlesList.GetBattle(usuarioId);
-       
         Entrenador? entrenador = batalla.GetEntrenadorActual(usuarioId);
-
-        SocketGuildUser user = entrenador.GetSocketGuildUser();
-       
-
+        
         // Si el jugador ya está marcado como listo, no se incrementa el contador ni se hace nada más
         string mensaje;
         if (entrenador.EstaListo)
         {
             mensaje = "Ya estás marcado como listo para la batalla.";
-            await   EnviarAUsuario(user, mensaje);
-            return; // Sale del método si ya está listo
-        }
-
-        // Marcar al entrenador como listo y aumentar el contador
-         entrenador.EstaListo = true;
-
-         mensaje = $"{entrenador.GetNombre()} está listo para la batalla.";
-         await EnviarAUsuario(user, mensaje);
-
-        
-
-        // Comprobar si ambos jugadores están listos
-        if (batalla.EstanListos() == true)
-        {
-            ChequearQuienEmpieza(usuarioId);
-            //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
+            await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
         }
         else
         {
-            // Si solo uno está listo, esperar al oponente
-            mensaje = "Esperando a que tu oponente esté listo...";
-            await  EnviarAUsuario(user, mensaje);
+            // Marcar al entrenador como listo y aumentar el contador
+            entrenador.EstaListo = true;
+            mensaje = $"{entrenador.GetNombre()} está listo para la batalla.";
+            await EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            
+            // Comprobar si ambos jugadores están listos
+            if (batalla.EstanListos() == true)
+            {
+                ChequearQuienEmpieza(usuarioId);
+                //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
+            }
+            else
+            {
+                // Si solo uno está listo, esperar al oponente
+                mensaje = "Esperando a que tu oponente esté listo...";
+                await EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+            }
         }
-      
     }
     public async Task ChequearQuienEmpieza(ulong userId)
     {

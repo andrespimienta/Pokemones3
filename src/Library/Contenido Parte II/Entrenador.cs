@@ -6,7 +6,6 @@ namespace Proyecto_Pokemones_I;
 public class Entrenador
 {
     // Atributos:
-
     public ulong Id { get; set; } // ID de Discord para identificar al jugador
     private string nombre;
     public Pokemon? pokemonEnUso;
