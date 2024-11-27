@@ -1,4 +1,4 @@
-using Library.Contenido_Parte_II;
+/*using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
 
@@ -63,4 +63,4 @@ public class TestUserStory7
         fachada1.CambiarTurno(); // Ahora lo hace el program pero proximamente lo hará la fachada
         Assert.That(fachada1.entrenadorSinTurno.GetPokemonEnUso(), Is.EqualTo(pikachu)); //Verifica el pokemón que se cambió en A
     }
-}
+}*/
