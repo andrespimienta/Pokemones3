@@ -1,3 +1,5 @@
+using Library.Bot.Dominio;
+
 namespace Library.Contenido_Parte_II;
 
 public class VisitorPorTurno
