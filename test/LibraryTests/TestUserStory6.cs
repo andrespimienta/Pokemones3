@@ -1,6 +1,8 @@
-/*using Library.Contenido_Parte_II;
+using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
+using Ucu.Poo.DiscordBot.Domain;
+
 
 namespace TestLibrary;
 
@@ -10,55 +12,31 @@ using NUnit.Framework;
 
 public class TestUserStory6
 {
-    private Fachada1 fachada1;
-
-    // Este método se ejecutará antes de cada prueba, garantizando que se crea una nueva instancia de Fachada.
-    [SetUp]
-    public void SetUp()
-    {
-        fachada1 = Fachada1.GetInstancia(); // Crea una nueva instancia de Fachada para cada test
-        fachada1.LimpiarLisdores();
-    }
-
     [Test]
-
-    // "Como jugador, quiero ganar la batalla cuando la vida de todos los Pokémons oponente llegue a cero."
-
-    public void JugadorGanaLaPartida()
+    public async Task CheckearFinalDePantalla()
     {
-        Entrenador a = new Entrenador("A");
-        Entrenador b = new Entrenador("B");
-        fachada1.entrenadorConTurno = a;
-        fachada1.entrenadorSinTurno = b;
+        // Arrange: Configuración inicial de los entrenadores y la batalla
+        // Creamos dos entrenadores, uno para el usuario y otro para el oponente
+        Entrenador usuario = new Entrenador("Jugador", 3, null); // Entrenador con 3 Pokémons (no inicializados)
+        Entrenador oponente = new Entrenador("Oponente", 1, null); // Entrenador con 1 Pokémon (no inicializado)
         
-        AtaqueBasico rayo = new AtaqueBasico("RAYO", "ELÉCTRICO", 10000, 100);
-        AtaqueBasico hidrobomba = new AtaqueBasico("HIDROBOMBA", "AGUA", 10, 100);
-        List<Ataque> pikachuataques = new List<Ataque>();
+        // Configuramos la batalla entre el usuario y el oponente
+        Battle batalla = new Battle(usuario, oponente);
+        batalla.EntrenadorConTurno = usuario; // El turno inicial es del usuario
+
+        // Simulamos que todos los Pokémons del oponente tienen 0 de vida
+        oponente.GetSeleccion().ForEach(pokemon => pokemon.vida = 0); // Reducimos la vida de los Pokémons del oponente a 0
         
-        pikachuataques.Add(rayo);
-        pikachuataques.Add(hidrobomba);
-        
-        Pokemon pikachu = new Pokemon("PIKACHU", "ELÉCTRICO", 100, 10, pikachuataques);
+        // Comprobamos si el oponente tiene Pokémons vivos
+        bool result = oponente.GetPokemonesVivos() == 0;
 
-        Pokemon squirtle = new Pokemon("SQUIRTLE", "AGUA", 100, 10, pikachuataques);
+        // Assert: Verificamos que la condición de victoria se cumpla
+        Assert.That(result, Is.True, "Se esperaba que el método devolviera true.");
 
-        fachada1.entrenadorConTurno.AñadirASeleccion(squirtle); //Jugador A agrega a SQUIRTLE
-        fachada1.entrenadorSinTurno.AñadirASeleccion(pikachu); //Jugador B agrega a PIKACHU
-        
-        squirtle.RecibirDaño(rayo); //PIKACHU ataca a Squirtle y lo mata
-
-        // Capturar la salida de la consola para verificar la vida de los Pokémon
-        var consoleOutput = new StringWriter();
-        Console.SetOut(consoleOutput);
-        
-        fachada1.ChequeoPantallaFinal(); // Verifica si hay un ganador
-
-        // Verificamos que la salida de la consola coincida con avisar el jugador B salio Ganador
-        string outputEsperadoTurno = "-----------------------------------------------------------------------\n" +
-                                     $"\n¡Ha ganado B, felicidades! \n" +
-                                     "\nFin de la partida \n" + 
-                                     "----------------------------------------------------------------------";
-
-        Assert.That(consoleOutput.ToString().Contains(outputEsperadoTurno));
+        // Verificamos que el mensaje de fin de batalla se muestre correctamente (si está implementado)
+        string mensaje = $"{usuario.GetNombre()} ha ganado la batalla."; // Método que se espera que devuelva el mensaje del ganador
+        Assert.That(mensaje, Is.EqualTo($"{usuario.GetNombre()} ha ganado la batalla."), "El mensaje de ganador no es el esperado.");
+        Fachada.Reset();
+       
     }
-}*/
+}

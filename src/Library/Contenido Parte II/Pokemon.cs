@@ -8,10 +8,10 @@ public class Pokemon
     public string NumeroIdentificador { get; private set; }
     private string nombre;
     private string tipo;
-    private double vida;
+    public double vida;
     private double vidaMax;
     private double velocidadAtaque;
-    private List<Ataque> listadoAtaques;
+    public List<Ataque> listadoAtaques;
     public string EfectoActivo { get; set;}
     public bool PuedeAtacar { get; set; }
     public int TurnosDuracionEfecto { get; set; }
