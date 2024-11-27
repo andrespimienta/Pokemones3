@@ -935,13 +935,13 @@ namespace Library.Bot.Dominio
                                     Item pocion = jugador.RemoverItem("Súper Poción");
                                     pokemonReceptor.AceptarItem(pocion);
 
-                                    mensaje = $"Le diste una **Súper Poción** a **{pokemonReceptor.GetNombre()}** y" +
+                                    mensaje = $"Le diste una **Súper Poción** a **{pokemonReceptor.GetNombre()}** y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()}\n";
                                     await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     
-                                    mensaje = $"**¡Tu oponente decidió darle una Súper Poción a {pokemonReceptor.GetNombre()} y" +
+                                    mensaje = $"**¡Tu oponente decidió darle una Súper Poción a {pokemonReceptor.GetNombre()} y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()} !**\n";
-                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    await this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
                                     
                                     CambiarTurno(userID);
                                     mensaje = $"Concluíste tu turno.\n" +
@@ -970,13 +970,13 @@ namespace Library.Bot.Dominio
                                     Item pocion = jugador.RemoverItem("Cura Total");
                                     pokemonReceptor.AceptarItem(pocion);
                                     
-                                    mensaje = $"Le diste una poción '**Cura Total**' a **{pokemonReceptor.GetNombre()}** y" +
+                                    mensaje = $"Le diste una poción '**Cura Total**' a **{pokemonReceptor.GetNombre()}** y " +
                                               $"ahora está 👍🏻 SALUDABLE\n";
                                     await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     
-                                    mensaje = $"**¡Tu oponente decidió darle una poción 'Cura Total' a {pokemonReceptor.GetNombre()} y" +
+                                    mensaje = $"**¡Tu oponente decidió darle una poción 'Cura Total' a {pokemonReceptor.GetNombre()} y " +
                                               $"ahora está 👍🏻 SALUDABLE !**\n";
-                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    await this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
                                     
                                     CambiarTurno(userID);
                                     mensaje = $"Concluíste tu turno.\n" +
@@ -1000,17 +1000,18 @@ namespace Library.Bot.Dominio
                                 }
                                 else
                                 {
-                                    Pokemon pokemonReceptor = jugador.GetPokemonEnListaVivos(pokemon);
+                                    Pokemon pokemonReceptor = jugador.GetPokemonEnListaMuertos(pokemon);
                                     Item pocion = jugador.RemoverItem("Revivir");
+                                    jugador.RemoverDeListaMuertos(pokemonReceptor);
                                     pokemonReceptor.AceptarItem(pocion);
                                     
-                                    mensaje = $"Le diste una poción '**Revivir**' a **{pokemonReceptor.GetNombre()}** y" +
+                                    mensaje = $"Le diste una poción '**Revivir**' a **{pokemonReceptor.GetNombre()}** y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()}\n";
                                     await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     
-                                    mensaje = $"**¡Tu oponente decidió darle una poción 'Cura Total' a {pokemonReceptor.GetNombre()} y" +
+                                    mensaje = $"**¡Tu oponente decidió darle una poción 'Cura Total' a {pokemonReceptor.GetNombre()} y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()} !**\n";
-                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    await this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
                                     
                                     CambiarTurno(userID);
                                     mensaje = $"Concluíste tu turno.\n" +
@@ -1044,7 +1045,7 @@ namespace Library.Bot.Dominio
             }
 
             // Divide la entrada en dos partes
-            string[] partes = entrada.Split(' ', 1, StringSplitOptions.RemoveEmptyEntries);
+            string[] partes = entrada.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 
             // Verifica si la primera parte es un número
             if (int.TryParse(partes[0], out int numero))

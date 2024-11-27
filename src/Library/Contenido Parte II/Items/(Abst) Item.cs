@@ -2,7 +2,7 @@ namespace Library.Contenido_Parte_II.Items;
 
 public abstract class Item
 {
-    public string Nombre { get; }
+    public string Nombre { get; set; }
 
     public Item()
     {

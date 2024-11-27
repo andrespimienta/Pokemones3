@@ -2,8 +2,6 @@ namespace Library.Contenido_Parte_II.Items;
 
 public class CuraTotal : Item
 {
-    public string Nombre { get; }
-
     public CuraTotal()
     {
         this.Nombre = "Cura Total";

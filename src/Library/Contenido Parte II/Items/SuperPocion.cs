@@ -2,8 +2,6 @@ namespace Library.Contenido_Parte_II.Items;
 
 public class SuperPocion :Item
 {
-    public string Nombre { get; }
-
     public double VidaRegenerada { get; }
 
     public SuperPocion()

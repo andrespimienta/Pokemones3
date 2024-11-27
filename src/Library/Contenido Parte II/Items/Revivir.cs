@@ -2,8 +2,6 @@ namespace Library.Contenido_Parte_II.Items;
 
 public class Revivir:Item
 {
-    public string Nombre { get; }
-
     public Revivir()
     {
         this.Nombre = "Revivir";

@@ -33,6 +33,9 @@ public class TestEntrenador
         Entrenador unEntrenador = new Entrenador(nombre, id, guild);
         unEntrenador.RecargarItems();
         Assert.That(unEntrenador.GetListaItems().Count(), Is.EqualTo(14));
+        
+        int cantidadPociones = unEntrenador.GetCantidadItem("Revivir");
+        Assert.That(cantidadPociones, Is.EqualTo(2));
     }
     
 
@@ -47,7 +50,7 @@ public class TestEntrenador
         Entrenador unEntrenador = new Entrenador("nombre", 23123131, null);
         Pokemon unPokemon = new Pokemon(namePoke, "FUEGO", 100, 10978.5,null, "id");
         unEntrenador.AñadirASeleccion(unPokemon);
-        Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo(namePoke));
+        Assert.That(unEntrenador.GetSeleccion().Contains(unPokemon));
 
     }
     
