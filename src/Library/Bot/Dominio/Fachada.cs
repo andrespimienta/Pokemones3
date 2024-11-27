@@ -13,7 +13,7 @@ namespace Ucu.Poo.DiscordBot.Domain;
 public class Fachada
 {
     // Atributos: (todos ellos son clases singleton)
-    public WaitingList WaitingList { get; }
+    public WaitingList WaitingList { get; set; }
     
     private BattlesList BattlesList { get; }
 
