@@ -1,6 +1,4 @@
-using Library.Contenido_Parte_II;
-
-namespace Proyecto_Pokemones_I;
+namespace Library.Contenido_Parte_II;
 
 public class VisitorPorTurno
 {
