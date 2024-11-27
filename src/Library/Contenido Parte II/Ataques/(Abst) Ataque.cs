@@ -1,4 +1,4 @@
-namespace Library.Contenido_Parte_II;
+namespace Library.Contenido_Parte_II.Ataques;
 
 public abstract class Ataque
 {

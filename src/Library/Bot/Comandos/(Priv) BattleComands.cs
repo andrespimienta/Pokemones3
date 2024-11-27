@@ -1,5 +1,5 @@
 using Discord.Commands;
-using Ucu.Poo.DiscordBot.Domain;
+using Library.Bot.Dominio;
 
 namespace Library.Bot.Comandos
 {
@@ -7,7 +7,7 @@ namespace Library.Bot.Comandos
     {
        
         [Command("Atacar")]
-        public async Task atacar([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
+        public async Task AtacarAsync([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
             string? attackNumber = null)
         {
             ulong usuarioId = Context.User.Id;
@@ -15,11 +15,19 @@ namespace Library.Bot.Comandos
         }
         
         [Command("CambiarPokemon")]
-        public async Task cambiarpokemon([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
+        public async Task CambiarPokemonAsync([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
             string? nombrePokemon = null)
         {
             ulong usuarioId = Context.User.Id;
             Fachada.Instance.CambiarPokemon(usuarioId,nombrePokemon);
+        }
+        
+        [Command("UsarPocion")]
+        public async Task UsarPocionAsync([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
+            string? nombrePokemon = null)
+        {
+            ulong usuarioId = Context.User.Id;
+            Fachada.Instance.UsarPocion(usuarioId,nombrePokemon);
         }
     }
 }

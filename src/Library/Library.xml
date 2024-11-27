@@ -103,6 +103,102 @@
             Asigna un ganador a la batalla.
             </summary>
         </member>
+        <member name="T:Library.Bot.Dominio.BattlesList">
+            <summary>
+            Esta clase representa la lista de batallas en curso.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.BattlesList.Reset">
+            <summary>
+            Inicializa este singleton. Es necesario solo en los tests.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.BattlesList.AddBattle(Library.Contenido_Parte_II.Entrenador,Library.Contenido_Parte_II.Entrenador)">
+            <summary>
+            Crea una nueva batalla entre dos jugadores.
+            </summary>
+            <param name="player1">El primer jugador.</param>
+            <param name="player2">El oponente.</param>
+            <returns>La batalla creada.</returns>
+        </member>
+        <member name="T:Library.Bot.Dominio.Fachada">
+            <summary>
+            Esta clase recibe las acciones y devuelve los resultados que permiten
+            implementar las historias de usuario. Otras clases que implementan el bot
+            usan esta <see cref="T:Library.Bot.Dominio.Fachada"/> pero no conocen el resto de las clases del
+            dominio. Esta clase es un singleton.
+            </summary>
+        </member>
+        <member name="P:Library.Bot.Dominio.Fachada.Instance">
+            <summary>
+            Obtiene la única instancia de la clase <see cref="T:Library.Bot.Dominio.Fachada"/>.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.Reset">
+            <summary>
+            Inicializa este singleton. Es necesario solo en los tests.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser,Library.Bot.Dominio.ICanal)">
+            <summary>
+            Agrega un jugador a la lista de espera.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.RemoveTrainerFromWaitingList(System.String,Library.Bot.Dominio.ICanal)">
+            <summary>
+            Remueve un jugador de la lista de espera.
+            </summary>
+            <param name="displayName">El jugador a remover.</param>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.GetTrainersWaiting(Library.Bot.Dominio.ICanal)">
+            <summary>
+            Obtiene la lista de jugadores esperando.
+            </summary>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.TrainerStatus(System.UInt64,System.String,Library.Bot.Dominio.ICanal)">
+            <summary>
+            Determina si un jugador está esperando para jugar.
+            </summary>
+            <param name="displayName">El jugador.</param>
+            <returns>Un mensaje con el resultado.</returns>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.ChallengeTrainerToBattle(System.String,System.String,Library.Bot.Dominio.ICanal)">
+            <summary>
+            Intenta crear una batalla entre dos jugadores.
+            </summary>
+            <param name="playerDisplayName">El primer jugador.</param>
+            <param name="opponentDisplayName">El oponente.</param>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.CreateBattle(System.String,System.String)">
+            <summary>
+            Crea efectivamente una instancia de Battle usando los jugadores
+            como parámetro, y les avisa por privado que comenzó la batalla.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.ShowCatalog(System.UInt64)">
+            <summary>
+            Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
+            al chat del jugador que envió el comando.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.AddPokemonToList(System.UInt64,System.String)">
+            <summary>
+            Agrega uno o más pokemones a la selección del
+            jugador, indicados por su número identificador
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.SelectPokemonInUse(System.UInt64,System.String)">
+            <summary>
+            Selecciona el pokemon indicado como el pokemon
+            en uso del jugador. Será con el que ataque primero.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.Fachada.ShowPokemonStatus(Library.Contenido_Parte_II.Entrenador)">
+            <summary>
+            Muestra el estado actual de todos tus pokemones
+            </summary>
+        </member>
         <member name="T:Library.Bot.Dominio.WaitingList">
             <summary>
             Esta clase representa la lista de jugadores esperando para jugar.
@@ -158,7 +254,7 @@
             La interfaz del Bot de Discord para usar con inyección de dependencias.
             </summary>
         </member>
-        <member name="M:Library.Contenido_Parte_II.Ataque.#ctor(System.String,System.String,System.Double,System.Int32)">
+        <member name="M:Library.Contenido_Parte_II.Ataques.Ataque.#ctor(System.String,System.String,System.Double,System.Int32)">
             <summary>
             
             </summary>
@@ -167,10 +263,10 @@
             <param name="dañoAtaque"></param>
             <param name="precisionAtaque"></param>
         </member>
-        <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
+        <member name="T:Library.Contenido_Parte_II.Ataques.AtaqueBasico">
             <inheritdoc />
         </member>
-        <member name="M:Library.Contenido_Parte_II.AtaqueBasico.#ctor(System.String,System.String,System.Double,System.Int32)">
+        <member name="M:Library.Contenido_Parte_II.Ataques.AtaqueBasico.#ctor(System.String,System.String,System.Double,System.Int32)">
             <summary>
             Hereda de la clase abstracta "Ataque", sin efectos y esEspecial = false
             </summary>
@@ -179,10 +275,10 @@
             <param name="dañoAtaque"></param>
             <param name="precisionAtaque"></param>
         </member>
-        <member name="T:Library.Contenido_Parte_II.AtaqueEspecial">
+        <member name="T:Library.Contenido_Parte_II.Ataques.AtaqueEspecial">
             <inheritdoc />
         </member>
-        <member name="M:Library.Contenido_Parte_II.AtaqueEspecial.#ctor(System.String,System.String,System.Double,System.Int32,System.String)">
+        <member name="M:Library.Contenido_Parte_II.Ataques.AtaqueEspecial.#ctor(System.String,System.String,System.Double,System.Int32,System.String)">
             <summary>
             Hereda de la clase abstracta "Ataque", con un efecto y esEspecial = true
             </summary>
@@ -192,7 +288,7 @@
             <param name="precisionAtaque"></param>
             <param name="efecto"></param>
         </member>
-        <member name="M:Library.Contenido_Parte_II.Item.DescribirItem">
+        <member name="M:Library.Contenido_Parte_II.Items.Item.DescribirItem">
             <summary>
             Las clases que heredan de Item se comportan
             como visitor para aplicar su comportamiento.
@@ -209,7 +305,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Library.Contenido_Parte_II.Items.CuraTotal.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+        <member name="M:Library.Contenido_Parte_II.Items.CuraTotal.ActivarItem(Library.Contenido_Parte_II.Pokemon)">
             <summary>
             Solo si el pokemon está vivo, le remueve los efectos
             y lo habilita para atacar. La restricción es para que
@@ -224,7 +320,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Library.Contenido_Parte_II.Items.Revivir.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+        <member name="M:Library.Contenido_Parte_II.Items.Revivir.ActivarItem(Library.Contenido_Parte_II.Pokemon)">
             <summary>
             Solo si está muerto, aumenta la vida del
             pokemon al 50% de su vida máxima,
@@ -242,7 +338,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Library.Contenido_Parte_II.Items.SuperPocion.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+        <member name="M:Library.Contenido_Parte_II.Items.SuperPocion.ActivarItem(Library.Contenido_Parte_II.Pokemon)">
             <summary>
             Solo si el pokemon está vivo, le aumenta
             la vida 70 puntos, o hasta la vida máxima.
@@ -251,102 +347,6 @@
             a un pokemon muerto.
             </summary>
             <param name="pokemon"></param>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.BattlesList">
-            <summary>
-            Esta clase representa la lista de batallas en curso.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.Reset">
-            <summary>
-            Inicializa este singleton. Es necesario solo en los tests.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(Library.Contenido_Parte_II.Entrenador,Library.Contenido_Parte_II.Entrenador)">
-            <summary>
-            Crea una nueva batalla entre dos jugadores.
-            </summary>
-            <param name="player1">El primer jugador.</param>
-            <param name="player2">El oponente.</param>
-            <returns>La batalla creada.</returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.Fachada">
-            <summary>
-            Esta clase recibe las acciones y devuelve los resultados que permiten
-            implementar las historias de usuario. Otras clases que implementan el bot
-            usan esta <see cref="T:Ucu.Poo.DiscordBot.Domain.Fachada"/> pero no conocen el resto de las clases del
-            dominio. Esta clase es un singleton.
-            </summary>
-        </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Fachada.Instance">
-            <summary>
-            Obtiene la única instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Fachada"/>.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.Reset">
-            <summary>
-            Inicializa este singleton. Es necesario solo en los tests.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser,Library.Bot.Dominio.ICanal)">
-            <summary>
-            Agrega un jugador a la lista de espera.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.RemoveTrainerFromWaitingList(System.String,Library.Bot.Dominio.ICanal)">
-            <summary>
-            Remueve un jugador de la lista de espera.
-            </summary>
-            <param name="displayName">El jugador a remover.</param>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.GetTrainersWaiting(Library.Bot.Dominio.ICanal)">
-            <summary>
-            Obtiene la lista de jugadores esperando.
-            </summary>
-            <returns>Un mensaje con el resultado.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.TrainerStatus(System.UInt64,System.String,Library.Bot.Dominio.ICanal)">
-            <summary>
-            Determina si un jugador está esperando para jugar.
-            </summary>
-            <param name="displayName">El jugador.</param>
-            <returns>Un mensaje con el resultado.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ChallengeTrainerToBattle(System.String,System.String,Library.Bot.Dominio.ICanal)">
-            <summary>
-            Intenta crear una batalla entre dos jugadores.
-            </summary>
-            <param name="playerDisplayName">El primer jugador.</param>
-            <param name="opponentDisplayName">El oponente.</param>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.CreateBattle(System.String,System.String)">
-            <summary>
-            Crea efectivamente una instancia de Battle usando los jugadores
-            como parámetro, y les avisa por privado que comenzó la batalla.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowCatalog(System.UInt64)">
-            <summary>
-            Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
-            al chat del jugador que envió el comando.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddPokemonToList(System.UInt64,System.String)">
-            <summary>
-            Agrega uno o más pokemones a la selección del
-            jugador, indicados por su número identificador
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.SelectPokemonInUse(System.UInt64,System.String)">
-            <summary>
-            Selecciona el pokemon indicado como el pokemon
-            en uso del jugador. Será con el que ataque primero.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowPokemonStatus(Library.Contenido_Parte_II.Entrenador)">
-            <summary>
-            Muestra el estado actual de todos tus pokemones
-            </summary>
         </member>
     </members>
 </doc>

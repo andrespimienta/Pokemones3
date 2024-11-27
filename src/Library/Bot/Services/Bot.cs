@@ -6,7 +6,6 @@ using Library.Bot.Comandos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Ucu.Poo.DiscordBot.Services;
 
 namespace Library.Bot.Services;
 
