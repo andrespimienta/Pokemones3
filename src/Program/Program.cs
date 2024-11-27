@@ -2,12 +2,10 @@
 
 using Discord;
 using Discord.WebSocket;
-using Proyecto_Pokemones_I;
-using Ucu.Poo.DiscordBot.Domain;
-using Ucu.Poo.DiscordBot.Services;
-using Fachada = Ucu.Poo.DiscordBot.Domain.Fachada;
+using Library.Bot.Services;
+using Fachada = Library.Bot.Dominio.Fachada;
 
-
+namespace Program;
 public class Program
 {
     static void Main()

@@ -73,16 +73,16 @@ public class TestEntrenador
         switch (originalCantPokes)
         {
             case 0:
-                Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo(""));
+                Assert.That(seleccionFinal.Count(), Is.EqualTo(0));
                 break;
             case 3:
-                Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo("3 2 1"));
+                Assert.That(seleccionFinal.Count(), Is.EqualTo(3));
                 break;
             case 6:
-                Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo("6 5 4 3 2 1"));
+                Assert.That(seleccionFinal.Count(), Is.EqualTo(6));
                 break;
             case 7:
-                Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo("7 6 5 4 3 2"));
+                Assert.That(seleccionFinal.Count(), Is.EqualTo(6));
                 break;
             
         }

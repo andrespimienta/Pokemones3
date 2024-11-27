@@ -1,6 +1,5 @@
 using Discord.WebSocket;
 using Library.Contenido_Parte_II.Items;
-using Proyecto_Pokemones_I;
 
 namespace Library.Contenido_Parte_II;
 

@@ -1,7 +1,7 @@
 using Library.Contenido_Parte_II;
+using Library.Contenido_Parte_II.Ataques;
 using Library.Contenido_Parte_II.Items;
 using NUnit.Framework;
-using Proyecto_Pokemones_I;
 
 namespace TestLibrary;
 

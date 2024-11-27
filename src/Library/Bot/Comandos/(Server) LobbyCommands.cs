@@ -1,7 +1,6 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using Library.Bot.Dominio;
-using Ucu.Poo.DiscordBot.Domain;
 
 namespace Library.Bot.Comandos;
 
