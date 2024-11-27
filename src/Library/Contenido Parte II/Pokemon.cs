@@ -7,7 +7,7 @@ public class Pokemon
     public string NumeroIdentificador { get; private set; }
     private string nombre;
     private string tipo;
-    private double vida;
+    public double vida;
     private double vidaMax;
     private double velocidadAtaque;
     public List<Ataque> listadoAtaques;

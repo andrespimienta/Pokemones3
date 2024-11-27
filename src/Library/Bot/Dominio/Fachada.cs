@@ -831,7 +831,7 @@ public class Fachada
     }
 
 
-    private async Task<bool> ChequeoPantallaFinal(ulong userId,Battle battle)
+    public async Task<bool> ChequeoPantallaFinal(ulong userId,Battle battle)
     {
         bool result = false;
         // Pregunta si el jugador sin turno se rindio
