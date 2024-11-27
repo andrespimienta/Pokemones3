@@ -337,7 +337,7 @@ namespace Library.Bot.Dominio
                     {
                         if (listaDePokemones.Count >= 6)
                         {
-                            mensaje = "¡Ya has completado tu selección de 6 Pokémon!";
+                            mensaje = $"¡Ya has completado tu selección de 6 Pokémon!, tus chances de ganar son de {entrenador.ChancesGanar()}";
                             await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
                             break;
                         }

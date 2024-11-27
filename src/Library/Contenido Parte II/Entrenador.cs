@@ -1,4 +1,5 @@
 using Discord.WebSocket;
+using Library.Bot.Dominio;
 using Library.Contenido_Parte_II.Items;
 
 namespace Library.Contenido_Parte_II;
@@ -245,7 +246,8 @@ public class Entrenador
             }
         }
         chancesDeGanarl += chancesPorInfeccion;
-            
+        //Fachada facha = Fachada.Instance; esto en verdad lo hice para mandarle un msj al usuario por privado las chances que tiene pero si lo hago aca lo muestro en cualqueier momento
+        //facha.EnviarAUsuario(this.GetSocketGuildUser(), $"Tus chances de ganar actualmente son de:{chancesDeGanarl}");
         return chancesDeGanarl;
     }
 }
