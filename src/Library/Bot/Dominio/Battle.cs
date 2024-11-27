@@ -125,13 +125,17 @@ public class Battle
         double prob1 = 0; 
         double prob2 = 0;
 
-        //Se trae la cantidad de pokemones vivos del jugador y se multiplican por 10
-        int pokemones1 = player1.GetCantidadPokemonesVivos();
-        prob1 = pokemones1 * 10;
+        //Se hace un foreach con la cantidad de pokemones vivos del jugador y obtiene la cantidad de vida de cada uno
+        foreach (Pokemon pokemon in player1.GetSeleccion())
+        {
+            prob1+= (pokemon.vida * 10) / pokemon.GetVidaMax();
+        }
         
-        int pokemones2 = player2.GetCantidadPokemonesVivos();
-        prob2 = pokemones2 * 10;
-
+        foreach (Pokemon pokemon in player2.GetSeleccion())
+        {
+            prob2+= (pokemon.vida * 10) / pokemon.GetVidaMax();
+        }
+        
         //Se trae la cantidad de Items del jugador y se multiplican por 4.2, que en total suman 30
         int cantidadItems1 = 0;
         foreach (Item i in player1.GetListaItems())

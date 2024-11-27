@@ -49,6 +49,14 @@ public class TestDefensa27novAndresPimienta
         //Como ambos jugadores tienen lo mismo, deberia devolver que ambos tienen la misma probabilidad
         Assert.That(batalla.CalcularProbGanador(), Is.EqualTo("Ambos jugadores tienen la misma probabilidad de ganar"));
 
+        
+        AtaqueBasico ataquecomun = new AtaqueBasico("Giro tornado", "Viento", 50, 100);
+        unPokemon6.RecibirDaño(ataquecomun);
+        
+        //Como un pokemon del jugador 1 recibió daño debería retortnar que el jugador 2 tiene más probabilidad de ganar
+        Assert.That(batalla.CalcularProbGanador(), Is.EqualTo("El jugador más probable de ganar es Player2"));
+        unPokemon6.AlterarVida(unPokemon6.GetVidaMax()-unPokemon6.GetVida());
+        
         unEntrenador.RecargarItems();
         unEntrenador2.RecargarItems();
         
