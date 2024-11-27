@@ -16,7 +16,7 @@ public class Revivir:Item
     /// <returns></returns>
     public override string DescribirItem()
     {
-        string mensaje = "_Revive con el 50% de la vida ❤️ total al pokemon que reciba esta poción._";
+        string mensaje = "_[Revive con el  ❤️ 50% de su Vida Máxima al pokemon que reciba esta poción]_";
         return mensaje;
     }
 

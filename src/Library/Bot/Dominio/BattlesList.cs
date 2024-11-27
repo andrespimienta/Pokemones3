@@ -58,7 +58,16 @@ public class BattlesList
                 return batalla;
             }
         }
+
+        Fachada.Instance.EnviarACanal(CanalConsola.Instance, "No se encontró la batalla en curso");
         return null;
     }
-    
+
+    public void RemoveBattle(Battle batalla)
+    {
+        if (this.battles.Contains(batalla))
+        {
+            this.battles.Remove(batalla);
+        }
+    }
 }

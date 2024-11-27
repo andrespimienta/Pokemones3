@@ -28,7 +28,7 @@ public class TestUserStory6
         oponente.GetSeleccion().ForEach(pokemon => pokemon.vida = 0); // Reducimos la vida de los Pokémons del oponente a 0
         
         // Comprobamos si el oponente tiene Pokémons vivos
-        bool result = oponente.GetPokemonesVivos() == 0;
+        bool result = oponente.GetCantidadPokemonesVivos() == 0;
 
         // Assert: Verificamos que la condición de victoria se cumpla
         Assert.That(result, Is.True, "Se esperaba que el método devolviera true.");

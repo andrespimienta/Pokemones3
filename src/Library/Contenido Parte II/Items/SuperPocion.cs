@@ -19,7 +19,7 @@ public class SuperPocion :Item
     /// <returns></returns>
     public override string DescribirItem()
     {
-        string mensaje = "_Recupera ❤️ 70 del pokemon que reciba esta poción._";
+        string mensaje = "_[Recupera  ❤️ 70 del pokemon que reciba esta poción]_";
         return mensaje;
     }
 

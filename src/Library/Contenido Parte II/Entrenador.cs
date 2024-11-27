@@ -30,63 +30,19 @@ public class Entrenador
     {
         return this.seleccionPokemonesVivos;
     }
-
     public List<Pokemon> GetListaMuertos()
     {
         return this.listaPokemonesMuertos;
     }
-
-    public int GetPokemonesVivos()
-    {
-        int pokemonesVivos = 0;
-        foreach (Pokemon pokemon in seleccionPokemonesVivos)
-        {
-            if (pokemon.GetVida() > 0)
-            {
-                pokemonesVivos += 1;
-            }
-        }
-
-        return pokemonesVivos;
-    }
-
     public List<Item> GetListaItems()
     {
         return this.listaItems;
-    }
-
-    public string GetMensajeListaDeItems()
-    {
-        Dictionary<string, int> itemCounts = new Dictionary<string, int>();
-
-        // Contar la cantidad de cada item en listItems
-        foreach (Item item in listaItems)
-        {
-            if (itemCounts.ContainsKey(item.Nombre))
-            {
-                itemCounts[item.Nombre]++;
-            }
-            else
-            {
-                itemCounts[item.Nombre] = 1;
-            }
-        }
-
-        // Crear la cadena de resultado
-        string resultado = "";
-        foreach (var entry in itemCounts)
-        {
-            resultado += $"{entry.Key} (x{entry.Value}) / ";
-            //Console.Write($"{entry.Key} (x{entry.Value}) / ");
-        }
-
-        return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
     }
     public SocketGuildUser GetSocketGuildUser()
     {
         return this.userds1;
     }
-
+    
 
     // Constructor:
     public Entrenador(string suNombre, ulong id, SocketGuildUser guild )
@@ -106,6 +62,8 @@ public class Entrenador
     }
 
     // Métodos:
+    
+    // Relacionados a Items:
     public void RecargarItems()
     {
         // Agrega 4 Super Poción
@@ -130,13 +88,86 @@ public class Entrenador
 
     }
 
-    // Método para añadir Pokémon y comprobar si está listo
+    public Item? RemoverItem(string nombrePocion)
+    {
+        Item result = null;
+        foreach (Item pocion in this.listaItems)
+        {
+            if (pocion.Nombre == nombrePocion)
+            {
+                result = pocion;
+                this.listaItems.Remove(pocion);
+                break;
+            }
+        }
+
+        return result;
+    }
+    
+    public int GetCantidadItem(string nombreItem)
+    {
+        int cantidadTotal = 0;
+        foreach (Item pocion in this.listaItems)
+        {
+            if (pocion.Nombre == nombreItem)
+            {
+                cantidadTotal += 1;
+            }
+        }
+
+        return cantidadTotal;
+    }
+    
+    
+    // Relacionados a Pokemones:
     public void AñadirASeleccion(Pokemon pokemon)
     {
         if (seleccionPokemonesVivos.Count < 6)
         {
             seleccionPokemonesVivos.Add(pokemon);
         }
+    }
+    
+    public int GetCantidadPokemonesVivos()
+    {
+        int pokemonesVivos = 0;
+        foreach (Pokemon pokemon in seleccionPokemonesVivos)
+        {
+            if (pokemon.GetVida() > 0)
+            {
+                pokemonesVivos += 1;
+            }
+        }
+
+        return pokemonesVivos;
+    }
+
+    public Pokemon? GetPokemonEnListaVivos(string nombrePokemon)
+    {
+        Pokemon result = null;
+        foreach (Pokemon pokemon in this.seleccionPokemonesVivos)
+        {
+            if (pokemon.GetNombre() == nombrePokemon.ToUpper())
+            {
+                result = pokemon;
+            }
+        }
+
+        return result;
+    }
+    
+    public Pokemon? GetPokemonEnListaMuertos(string nombrePokemon)
+    {
+        Pokemon result = null;
+        foreach (Pokemon pokemon in this.listaPokemonesMuertos)
+        {
+            if (pokemon.GetNombre() == nombrePokemon.ToUpper())
+            {
+                result = pokemon;
+            }
+        }
+
+        return result;
     }
 
     public void AgregarAListaMuertos(Pokemon pokemon)
@@ -159,63 +190,7 @@ public class Entrenador
             pokemonEnUso = pokemonAUsar;
         }
     }
-
-    public string GetListaDePokemones()
-    {
-        string resultado = "";
-
-        foreach (Pokemon pokemon in seleccionPokemonesVivos)
-        {
-            if (pokemon.GetVida() > 0) // Tengo que especificar esto para cuando sean vencidos, no lo vuelvan a listas
-            {
-                string nombre = pokemon.GetNombre();
-                Console.Write(nombre + " "); // Imprime cada nombre seguido de un espacio
-                resultado += nombre + " "; // Agrega cada nombre a la cadena `resultado` seguido de un espacio
-            }
-        }
-
-        Console.WriteLine();
-        return resultado.Trim(); // Elimina el último espacio extra al final de la cadena
-    }
     
-
-    public string? GetStatusPokemonEnUso()
-    {
-        Pokemon pokemon = GetPokemonEnUso();
-        return pokemon.EfectoActivo;
-    }
-
-/*
-    public bool UsarItem(string nombreItem)
-    {
-        bool result = false;
-        nombreItem = nombreItem.ToUpper();    // Evito errores por mayúsculas o minúsculas en el parámetro
-
-        IItems item = listItems.FirstOrDefault(i => i.Nombre.Equals(nombreItem, StringComparison.OrdinalIgnoreCase));
-
-        if (item != null)
-        {   item.DescribirItem();
-            //Console.WriteLine("Desea usarlo: s/n");
-            //string aux = Console.ReadLine();
-            string aux = "S"; //aux.ToUpper();// Evito errores por mayúsculas o minúsculas en el parámetro
-            if (aux =="S")
-            {
-                // eliminar el ítem de la lista después de usarlo
-                listItems.Remove(item);
-                item.ActivarItem(this.pokemonEnUso);
-                Console.WriteLine($"El ítem '{item.Nombre}' ha sido usado");
-                result = true;
-            }
-            else result = false;
-        }
-        else
-        {
-            Console.WriteLine($"El ítem '{nombreItem}' no se encontró en la lista.");
-        }
-
-        return result;
-    }
-*/
     public void AceptarVisitorPorTurno(VisitorPorTurno visitor)
     {
         visitor.VisitarEntrenador(this);

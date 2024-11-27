@@ -2,6 +2,7 @@ using Discord;
 using Discord.WebSocket;
 using Library.Contenido_Parte_II;
 using Library.Contenido_Parte_II.Ataques;
+using Library.Contenido_Parte_II.Items;
 
 namespace Library.Bot.Dominio
 {
@@ -233,9 +234,10 @@ namespace Library.Bot.Dominio
 
             WaitingList.EliminarEntrenador(playerDisplayName);
             WaitingList.EliminarEntrenador(opponentDisplayName);
-            string mensaje = $"==================================================================================\n" +
-                             $"Comienza el enfrentamiento: **{playerDisplayName}** :crossed_swords: **{opponentDisplayName}**.\n" +
-                             $"==================================================================================\n\n" +
+            string mensaje = $"====================================================================\n" +
+                             $"                Comienza el enfrentamiento: \n" +
+                             $"                **{playerDisplayName}** :crossed_swords: **{opponentDisplayName}**.\n" +
+                             $"====================================================================\n\n" +
                              $"¡Ahora debes **elegir 6 pokémon** para la batalla!\n" +
                              $"Usa el comando `!catalogo` para ver la lista de pokémon disponibles.\n\n" +
                              $"Para seleccionar tus pokémon, utiliza el comando: `!agregarPokemon <id1>,<id2>,<id3>,<id4>,<id5>,<id6>`\n" +
@@ -873,9 +875,215 @@ namespace Library.Bot.Dominio
             }
         }
 
-        public async Task UsarPocion(ulong userID, string numEleccion)
+        public async Task UsarPocion(ulong userID, string? entrada)
         {
+            Battle batalla = BattlesList.GetBattle(userID);
+            Entrenador jugador = batalla.GetEntrenadorActual(userID);
+            Entrenador oponente = batalla.GetEntrenadorOponente(jugador.Id);
+            var textoIngresado = this.ProcesarEntrada(entrada);
+            int? numEleccion = textoIngresado.numero;
+            string? pokemon = textoIngresado.nombre;
+            string mensaje = "";
 
+            //SOLO LO PUEDE EJECUTAR EL JUGADOR CON TURNO
+            if (jugador == batalla.EntrenadorConTurno)
+            {
+                if (numEleccion == null)
+                {
+                    await this.ShowItemList(jugador);
+                }
+                else if (numEleccion < 1 || numEleccion > 3)
+                {
+                    mensaje = "El número de opción ingresado es inválido. Por favor ingresa un número válido";
+                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                }
+                else
+                {
+                    if (pokemon == null)
+                    {
+                        mensaje = "Elige qué pokemon recibirá la poción. \n" +
+                                  "**Utiliza el comando:** `!UsarPocion <númeroPoción> <pokemonQueRecibe>`\n" +
+                                  "Por ejemplo: `!UsarPocion 1 Pikachu`\n";
+                        await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                    }
+                    else if (jugador.GetPokemonEnListaVivos(pokemon) == null &&
+                             jugador.GetPokemonEnListaMuertos(pokemon) == null)
+                    {
+                        mensaje = "El pokemon ingresado no se encontró entre tus pokemones. Intentalo de nuevo.\n";
+                        await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                    }
+                    else
+                    {
+                        switch (numEleccion)
+                        {
+                            case 1:
+                            {
+                                if (jugador.GetCantidadItem("Súper Poción") <= 0)
+                                {
+                                    mensaje = "No tienes más Súper Pociones. Elige otra poción o intenta otra acción.\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                }
+                                else if (jugador.GetPokemonEnListaVivos(pokemon) == null)
+                                {
+                                    mensaje = "¡No puedes darle una Súper Poción a uno de tus pokemones vencidos! " +
+                                              "Intenta con otro pokemon u otra poción.\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                }
+                                else
+                                {
+                                    Pokemon pokemonReceptor = jugador.GetPokemonEnListaVivos(pokemon);
+                                    Item pocion = jugador.RemoverItem("Súper Poción");
+                                    pokemonReceptor.AceptarItem(pocion);
+
+                                    mensaje = $"Le diste una **Súper Poción** a **{pokemonReceptor.GetNombre()}** y" +
+                                              $"ahora tiene ❤️ {pokemonReceptor.GetVida()}\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    
+                                    mensaje = $"**¡Tu oponente decidió darle una Súper Poción a {pokemonReceptor.GetNombre()} y" +
+                                              $"ahora tiene ❤️ {pokemonReceptor.GetVida()} !**\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    
+                                    CambiarTurno(userID);
+                                    mensaje = $"Concluíste tu turno.\n" +
+                                              $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
+                                    await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    await ComienzoDeTurno(batalla);
+                                }
+                                break;
+                            }
+                            
+                            case 2:
+                                if (jugador.GetCantidadItem("Cura Total") <= 0)
+                                {
+                                    mensaje = "No tienes más pociones 'Cura Total'. Elige otra poción o intenta otra acción.\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                }
+                                else if (jugador.GetPokemonEnListaVivos(pokemon) == null)
+                                {
+                                    mensaje = "¡No puedes darle una poción 'Cura Total' a uno de tus pokemones vencidos! " +
+                                              "Intenta con otro pokemon u otra poción.\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                }
+                                else
+                                {
+                                    Pokemon pokemonReceptor = jugador.GetPokemonEnListaVivos(pokemon);
+                                    Item pocion = jugador.RemoverItem("Cura Total");
+                                    pokemonReceptor.AceptarItem(pocion);
+                                    
+                                    mensaje = $"Le diste una poción '**Cura Total**' a **{pokemonReceptor.GetNombre()}** y" +
+                                              $"ahora está 👍🏻 SALUDABLE\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    
+                                    mensaje = $"**¡Tu oponente decidió darle una poción 'Cura Total' a {pokemonReceptor.GetNombre()} y" +
+                                              $"ahora está 👍🏻 SALUDABLE !**\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    
+                                    CambiarTurno(userID);
+                                    mensaje = $"Concluíste tu turno.\n" +
+                                              $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
+                                    await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    await ComienzoDeTurno(batalla);
+                                }
+                                break;
+                            
+                            case 3:
+                                if (jugador.GetCantidadItem("Revivir") <= 0)
+                                {
+                                    mensaje = "No tienes más pociones 'Revivir'. Elige otra poción o intenta otra acción.\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                }
+                                else if (jugador.GetPokemonEnListaMuertos(pokemon) == null)
+                                {
+                                    mensaje = "¡No puedes darle una poción 'Revivir' a uno de tus pokemones vivos! " +
+                                              "Intenta con otro pokemon u otra poción.\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                }
+                                else
+                                {
+                                    Pokemon pokemonReceptor = jugador.GetPokemonEnListaVivos(pokemon);
+                                    Item pocion = jugador.RemoverItem("Revivir");
+                                    pokemonReceptor.AceptarItem(pocion);
+                                    
+                                    mensaje = $"Le diste una poción '**Revivir**' a **{pokemonReceptor.GetNombre()}** y" +
+                                              $"ahora tiene ❤️ {pokemonReceptor.GetVida()}\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    
+                                    mensaje = $"**¡Tu oponente decidió darle una poción 'Cura Total' a {pokemonReceptor.GetNombre()} y" +
+                                              $"ahora tiene ❤️ {pokemonReceptor.GetVida()} !**\n";
+                                    await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    
+                                    CambiarTurno(userID);
+                                    mensaje = $"Concluíste tu turno.\n" +
+                                              $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
+                                    await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    await ComienzoDeTurno(batalla);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                string mensje = "**NO ES TU TURNO AUN, espera a que tu contrincante termine su turno**\n";
+                await EnviarAUsuario(jugador.GetSocketGuildUser(), mensje);
+            }
+        }
+
+        /// <summary>
+        /// Función interna para subdividir strings que van
+        /// con los comandos en dos datos diferentes.
+        /// </summary>
+        /// <param name="entrada"></param>
+        /// <returns></returns>
+        private (int? numero, string? nombre) ProcesarEntrada(string entrada)
+        {
+            if (string.IsNullOrWhiteSpace(entrada))
+            {
+                return (null, null);
+            }
+
+            // Divide la entrada en dos partes
+            string[] partes = entrada.Split(' ', 1, StringSplitOptions.RemoveEmptyEntries);
+
+            // Verifica si la primera parte es un número
+            if (int.TryParse(partes[0], out int numero))
+            {
+                string nombre;
+                // Si hay más partes, toma la segunda como nombre
+                if (partes.Length > 1)
+                {
+                    nombre = partes[1];
+                }
+                // De lo contrario, el nombre es null
+                else
+                {
+                    nombre = null;
+                }
+                return (numero, nombre);
+            }
+
+            // Si no hay un número inicial, devuelve null
+            return (null, null);
+        }
+        
+        public async Task ShowItemList(Entrenador jugador)
+        {
+            SuperPocion superPocion = new SuperPocion();
+            CuraTotal curaTotal = new CuraTotal();
+            Revivir revivir = new Revivir();
+            string mensaje = $"__**Estas son tus pociones disponibles:**__\n\n" +
+                             $"**1) Súper Poción** (x{jugador.GetCantidadItem("Súper Poción")}):\n" +
+                             $"{superPocion.DescribirItem()}\n\n" +
+                             $"**2) Cura Total** (x{jugador.GetCantidadItem("Cura Total")})\n" +
+                             $"{curaTotal.DescribirItem()}\n\n" +
+                             $"**3) Revivir** (x{jugador.GetCantidadItem("Revivir")})\n" +
+                             $"{revivir.DescribirItem()}\n\n" +
+                             $"\n**Utiliza el comando:** `!UsarPocion <númeroPoción> <pokemonQueLaRecibe>`\n" +
+                             $"Por ejemplo: `!UsarPocion 1 Pikachu`\n";
+            
+            await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+            await this.EnviarACanal(CanalConsola.Instance, mensaje);
         }
 
         public async Task Rendirse(ulong userID)
@@ -889,10 +1097,7 @@ namespace Library.Bot.Dominio
             this.ChequeoPantallaFinal(userID, batalla);
 
         }
-
-
-
-
+        
         public void CambiarTurno(ulong userId)
         {
             Battle batalla = BattlesList.GetBattle(userId);
@@ -908,14 +1113,14 @@ namespace Library.Bot.Dominio
                 Entrenador entrenador = battle.GetEntrenadorActual(userId);
                 Entrenador oponente = battle.GetEntrenadorOponente(userId);
 
-                if (oponente.GetPokemonesVivos() == 0)
+                if (oponente.GetCantidadPokemonesVivos() == 0)
                 {
                     battle.Ganador = entrenador;
                     result = true;
-                    string mensajeGanador = $"Felicitaciones has ganado la batalla, sigue asi!!\n";
+                    string mensajeGanador = $"🎊  **¡¡Felicitaciones has ganado la batalla, sigue asi!!**  🎊\n";
 
                     string mensajeOponente =
-                        $"El entrenado **{battle.Ganador.GetNombre()}**, ha sido el vencedor de este encuentro.\n";
+                        $"El entrenador **{battle.Ganador.GetNombre()}** ha sido el vencedor de este encuentro. 😢\n";
 
                     await EnviarAUsuario(battle.Ganador.GetSocketGuildUser(), mensajeGanador);
 
@@ -927,34 +1132,39 @@ namespace Library.Bot.Dominio
                     {
                         EnviarAUsuario(battle.Player1.GetSocketGuildUser(), mensajeOponente);
                     }
-
+                    
+                    BattlesList.RemoveBattle(battle);
                     return result;
-
                 }
-
             }
 
             // Si Ganador no es null, es porque alguien llamó al método rendirse
             else
             {
-                string mensajeGanador = ("----------------------------------------------------------------------\n" +
-                                         $"\n¡Ha ganado {battle.Ganador.GetNombre()} porque tu oponente se ha rendido, felicidades! \n" +
-                                         "\nFin de la partida \n" +
-                                         "----------------------------------------------------------------------");
-
-                string mensajeRendido = "Te has rendido, sigue practicando. Mucha suerte en tus próximas batallas";
-
-                await EnviarAUsuario(battle.Ganador.GetSocketGuildUser(), mensajeGanador);
-
+                Entrenador perdedor;
                 if (battle.Ganador == battle.Player1)
                 {
-                    await EnviarAUsuario(battle.Player2.GetSocketGuildUser(), mensajeRendido);
+                    perdedor = battle.Player2;
                 }
                 else
                 {
-                    await EnviarAUsuario(battle.Player1.GetSocketGuildUser(), mensajeRendido);
-
+                    perdedor = battle.Player1;
                 }
+                string mensajeGeneral = "====================================================================\n" +
+                                        $"                  🎊  ¡Ha ganado **{battle.Ganador.GetNombre()}** porque **{perdedor.GetNombre()}** se ha rendido!  🎊\n" +
+                                        "\n                                                      **~ Fin de la partida ~**" +
+                                        "\n====================================================================";
+
+                string mensajeGanador = "**¡Tu oponente decidió rendirse, felicitaciones!**\n" + mensajeGeneral;
+
+                string mensajeRendido = "Te has rendido, sigue practicando. Mucha suerte en tus próximas batallas\n" + mensajeGeneral;
+
+                await EnviarAUsuario(battle.Ganador.GetSocketGuildUser(), mensajeGanador);
+                
+                await EnviarAUsuario(perdedor.GetSocketGuildUser(), mensajeRendido);
+                
+                BattlesList.RemoveBattle(battle);
+                result = true;
             }
             return result;
         }

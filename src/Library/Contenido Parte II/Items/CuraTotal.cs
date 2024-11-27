@@ -6,7 +6,7 @@ public class CuraTotal : Item
 
     public CuraTotal()
     {
-        this.Nombre = "Cura total";
+        this.Nombre = "Cura Total";
     }
     
     /// <summary>
@@ -16,8 +16,8 @@ public class CuraTotal : Item
     /// <returns></returns>
     public override string DescribirItem()
     {
-        string mensaje = "_Remueve los efectos negativos (💤 DORMIDO, ✨ PARALIZADO, 🫧 ENVENENADO, ♨️ QUEMADO) " +
-                         "del pokemon que reciba esta poción._";
+        string mensaje = "_[Remueve los efectos negativos  **(** 💤, ✨, 🫧, ♨️ **)**  " +
+                         "del pokemon que reciba esta poción]_";
         return mensaje;
     }
 

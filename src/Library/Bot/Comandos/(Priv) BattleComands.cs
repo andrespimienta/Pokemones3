@@ -23,21 +23,16 @@ namespace Library.Bot.Comandos
             ulong usuarioId = Context.User.Id;
             Fachada.Instance.CambiarPokemon(usuarioId, nombrePokemon);
         }
-
-
+        
         [Command("UsarPocion")]
         public async Task UsarPocionAsync(
             [Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
-            string? nombrePokemon = null)
+            string? numeroYpokemon = null)
         {
             ulong usuarioId = Context.User.Id;
-            Fachada.Instance.UsarPocion(usuarioId, nombrePokemon);
+            Fachada.Instance.UsarPocion(usuarioId, numeroYpokemon);
         }
         
-
-
-
-
         [Command("Rendirse")]
         public async Task Rendirse()
         {
