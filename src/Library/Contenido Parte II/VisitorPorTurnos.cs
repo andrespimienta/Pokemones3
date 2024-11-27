@@ -1,3 +1,5 @@
+using Library.Bot.Dominio;
+
 namespace Library.Contenido_Parte_II;
 
 public class VisitorPorTurno
@@ -12,7 +14,7 @@ public class VisitorPorTurno
         return instance;
     }
     private VisitorPorTurno(){}
-    public void VisitarEntrenador(Entrenador entrenadorVisitado)
+    public async Task VisitarEntrenador(Entrenador entrenadorVisitado)
     {
         if (entrenadorVisitado.TurnosRecargaAtkEspecial > 0)    // Si el Entrenador tenía turnos de enfriamiento para los ataques especiales, le resta un turno
         {
@@ -36,12 +38,14 @@ public class VisitorPorTurno
                         {
                             pokemon.EfectoActivo = null;
                             pokemon.PuedeAtacar = true;
-                            Console.WriteLine($"El Pokemon {pokemon.GetNombre()} se ha despertado");
+                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance, $"El Pokemon **{pokemon.GetNombre()}** se ha despertado\n");
+                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}** se ha despertado\n");
                         }
                         else
                         {
                             pokemon.PuedeAtacar = false;
-                            Console.WriteLine($"El Pokemon {pokemon.GetNombre()} seguirá dormido {pokemon.TurnosDuracionEfecto} turnos más");
+                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance, $"El Pokemon **{pokemon.GetNombre()}** seguirá  💤  dormido {pokemon.TurnosDuracionEfecto} turnos más\n");
+                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}** seguirá  💤  dormido {pokemon.TurnosDuracionEfecto} turnos más\n");
                         }
                         break;
                     }
@@ -52,11 +56,13 @@ public class VisitorPorTurno
                         if (ProbabilityUtils.Probabilometro(33))    
                         {
                             pokemon.PuedeAtacar = true;
-                            Console.WriteLine($"El Pokemon {pokemon.GetNombre()}, a pesar de estar paralizado, puede atacar");
+                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}**, a pesar de estar  ✨  paralizado, podrá atacar en este turno\n");
+                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}**, a pesar de estar  ✨  paralizado, podrá atacar en este turno\n");
                         }
                         else
                         {
-                            Console.WriteLine($"El Pokemon {pokemon.GetNombre()}, está paralizado, no puede atacar");
+                            Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** está  ✨  paralizado, no podrá atacar en este turno\n");
+                            Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** está  ✨  paralizado, no podrá atacar en este turno\n");
                         }
                         break;
                     }
@@ -64,14 +70,16 @@ public class VisitorPorTurno
                     {
                         // Si está quemado, le resta el 10% de la vida en cada turno
                         pokemon.AlterarVida(-pokemon.GetVidaMax() * 0.1);
-                        Console.WriteLine($"El Pokemon {pokemon.GetNombre()} perdió {pokemon.GetVidaMax() * 0.1} puntos de salud por quemadura");
+                        Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.1} por  ♨️  quemadura\n");
+                        Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.1} por  ♨️  quemadura\n");
                         break;
                     }
                     case "ENVENENADO":
                     {
                         // Si está envenenado, le resta el 5% de la vida en cada turno
                         pokemon.AlterarVida(-pokemon.GetVidaMax() * 0.05);
-                        Console.WriteLine($"El Pokemon {pokemon.GetNombre()} perdió {pokemon.GetVidaMax() * 0.05} puntos de salud por envenenamiento");
+                        Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.05} por  🫧  envenenamiento\n");
+                        Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.05} por  🫧  envenenamiento\n");
                         break;
                     }
                 }

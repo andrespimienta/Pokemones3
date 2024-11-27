@@ -98,11 +98,7 @@ public class Battle
     /// Asigna un ganador a la batalla.
     /// </summary>
     // Método para indicar el ganador de la batalla
-    public void HayGanador(Entrenador elGanador)
-    {
-        this.Ganador = elGanador;
-    }
-
+    
     public void CambiarTurno()
     {
         if (EntrenadorConTurno == Player1)
