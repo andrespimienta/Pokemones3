@@ -1,8 +1,7 @@
 using Library.Bot.Dominio;
 using Library.Contenido_Parte_II;
 using NUnit.Framework;
-using Proyecto_Pokemones_I;
-using Ucu.Poo.DiscordBot.Domain;
+//using Proyecto_Pokemones_I;
 
 
 namespace TestLibrary;
