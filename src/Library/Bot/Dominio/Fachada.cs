@@ -26,7 +26,7 @@ public class Fachada
     {
         this.WaitingList= new WaitingList();
         this.BattlesList = BattlesList.Instance;
-        this.visitor = new VisitorPorTurno();
+        this.visitor = VisitorPorTurno.GetInstancia();
     }
 
     /// <summary>

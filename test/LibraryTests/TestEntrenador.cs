@@ -48,7 +48,7 @@ public class TestEntrenador
         Entrenador unEntrenador = new Entrenador("nombre", 23123131, null);
         Pokemon unPokemon = new Pokemon(namePoke, "FUEGO", 100, 10978.5,null, "id");
         unEntrenador.AñadirASeleccion(unPokemon);
-        Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo(namePoke));
+        Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo(namePoke));
 
     }
     
@@ -72,16 +72,16 @@ public class TestEntrenador
         switch (originalCantPokes)
         {
             case 0:
-                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo(""));
+                Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo(""));
                 break;
             case 3:
-                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("3 2 1"));
+                Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo("3 2 1"));
                 break;
             case 6:
-                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("6 5 4 3 2 1"));
+                Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo("6 5 4 3 2 1"));
                 break;
             case 7:
-                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("7 6 5 4 3 2"));
+                Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo("7 6 5 4 3 2"));
                 break;
             
         }

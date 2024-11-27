@@ -1,6 +1,7 @@
-/*using Library.Contenido_Parte_II;
+using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
+using Ucu.Poo.DiscordBot.Domain;
 
 namespace TestLibrary;
 
@@ -11,19 +12,19 @@ public class TestUserStory1
     public void Elige6pokemones()
     {
         // Crear el entrenador
-        Entrenador j1 = new Entrenador("a");
+        Entrenador j1 = new Entrenador("a", 435646547645, null);
 
         // Crear un ataque y una lista de ataques
         AtaqueBasico ataque = new AtaqueBasico("IMPACTRUENO", "ELÉCTRICO", 40, 90);
         List<Ataque> Ataques = new List<Ataque> { ataque };
 
         // Crear 6 Pokémon y añadirlos a la selección del entrenador
-        Pokemon p1 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques);
-        Pokemon p2 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques);
-        Pokemon p3 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques);
-        Pokemon p4 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques);
-        Pokemon p5 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques);
-        Pokemon p6 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques);
+        Pokemon p1 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques, "id1" );
+        Pokemon p2 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques, "id2");
+        Pokemon p3 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques, "id3");
+        Pokemon p4 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques, "id4");
+        Pokemon p5 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques, "id5");
+        Pokemon p6 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, Ataques, "id6");
 
         j1.AñadirASeleccion(p1);
         j1.AñadirASeleccion(p2);
@@ -46,23 +47,23 @@ public class TestUserStory1
     [Test]
     public void Elige6pokemonesProgram()
     {
-        Fachada1 fachada1 = Fachada1.GetInstancia();
-        fachada1.LimpiarListaDeJugadores();
+        Fachada fachada1 = Fachada.Instance;
+        //fachada1.LimpiarListaDeJugadores();
         
-        fachada1.AgregarJugadorALista("A");
-        fachada1.AgregarJugadorALista("B");
-        fachada1.entrenadorConTurno = fachada1.Jugadores[0];
+        fachada1.AddTrainerToWaitingList( 435646547645,"A", null, null);
+        fachada1.AddTrainerToWaitingList( 435646547645, "B", null, null);
+        fachada1.EntrenadorConTurno = fachada1.Jugadores[0];
         
         for (int j = 0; j <= 1; j++)
         {
             // lo repite para los dos jugadores
-            fachada1.ElegirPokemon("Pikachu");
-            fachada1.ElegirPokemon("CHARMANDER");
-            fachada1.ElegirPokemon("BULBASAUR");
-            fachada1.ElegirPokemon("SQUIRTLE");
-            fachada1.ElegirPokemon("EEVEE");
-            fachada1.ElegirPokemon("JIGGLYPUFF");
-            fachada1.CambiarTurno();
+            fachada1.AddPokemonToList(1, "1");
+            fachada1.AddPokemonToList(2, "2");
+            fachada1.AddPokemonToList(3, "3");
+            fachada1.AddPokemonToList(4, "4");
+            fachada1.AddPokemonToList(5, "5");
+            fachada1.AddPokemonToList(6, "6");
+            fachada1.CambiarTurno(1);
         }
         
         // Asegúrate de que hay exactamente 2 jugadores en la lista antes de contar
@@ -87,4 +88,3 @@ public class TestUserStory1
         Assert.That(contadorPokemonesJugador2, Is.EqualTo(6), $"El jugador {fachada1.Jugadores[1].GetNombre()} no tiene 6 Pokémon.");
     }
 }
-*/
