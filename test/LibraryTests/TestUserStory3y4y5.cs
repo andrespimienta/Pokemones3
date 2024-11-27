@@ -66,5 +66,6 @@ public class TestUserStory3y4y5
         
         // Comparación de la salida en consola con las posibles salidas esperadas
         Assert.That(consoleOutput.ToString(), Is.EqualTo(salidaEsperada1).Or.EqualTo(salidaEsperada2)); ///"Verifica que la salida en consola sea una de las dos esperadas"
+        Fachada.Reset();
     }
 }

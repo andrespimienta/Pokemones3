@@ -36,7 +36,7 @@ public class TestUserStory6
         // Verificamos que el mensaje de fin de batalla se muestre correctamente (si está implementado)
         string mensaje = $"{usuario.GetNombre()} ha ganado la batalla."; // Método que se espera que devuelva el mensaje del ganador
         Assert.That(mensaje, Is.EqualTo($"{usuario.GetNombre()} ha ganado la batalla."), "El mensaje de ganador no es el esperado.");
-
+        Fachada.Reset();
        
     }
 }

@@ -15,7 +15,7 @@ public class Fachada
     // Atributos: (todos ellos son clases singleton)
     public WaitingList WaitingList { get; set; }
     
-    private BattlesList BattlesList { get; }
+    public BattlesList BattlesList { get; set;  }
 
     private VisitorPorTurno visitor;
     
@@ -754,8 +754,6 @@ public class Fachada
     
     
 
-    
-
     public async Task CambiarPokemon(ulong userId, string nombrePokemon)
     {
         Battle batalla = BattlesList.GetBattle(userId);
@@ -890,21 +888,6 @@ public class Fachada
         }
 
         return result;
-    }
-
-     private async Task MostrarVidaPokemones(Battle batalla, ulong ID)
-    {
-        string mensaje1 = "";
-        string mensaje2 = "";
-        //mensaje += $"{(batalla.EntrenadorConTurno.GetPokemonEnUso().GetVida())/}";
-        Entrenador user = batalla.GetEntrenadorActual(ID);
-        Entrenador oponente = batalla.GetEntrenadorOponente(ID);
-        double vidaJugador = user.GetPokemonEnUso().GetVida();
-        double vidaOponente = oponente.GetPokemonEnUso().GetVida();
-        mensaje1 = $"{vidaJugador}/{vidaOponente}";
-        await EnviarAUsuario(user.GetSocketGuildUser(), mensaje1);
-        mensaje2 = $"{vidaOponente}/{vidaJugador}";
-        await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje2);
     }
 }
 
