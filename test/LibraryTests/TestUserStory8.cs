@@ -1,6 +1,6 @@
-/*using Library.Contenido_Parte_II;
-using NUnit.Framework;
-using Proyecto_Pokemones_I;
+using Library.Bot.Dominio;
+using Library.Contenido_Parte_II;
+
 
 namespace TestLibrary;
 
@@ -13,49 +13,65 @@ public class TestUserStory8
 
     
     [Test]
-
     // "Como entrenador, quiero poder usar un ítem durante una batalla."
- 
-    public void JugadorUsaItem()
+   public void JugadorUsarItem_TerminaTurno()
     {
-        fachada1.AgregarJugadorALista("A");
-        fachada1.AgregarJugadorALista("B");
-        fachada1.entrenadorConTurno = fachada1.Jugadores[0];
-        
-        AtaqueBasico rayo = new AtaqueBasico("RAYO", "ELÉCTRICO", 10000, 100);
-        AtaqueBasico hidrobomba = new AtaqueBasico("HIDROBOMBA", "AGUA", 10, 99);
-        List<Ataque> pikachuataques = new List<Ataque>();
-        
-        pikachuataques.Add(rayo);
-        pikachuataques.Add(hidrobomba);
-        
-        Pokemon pikachu = new Pokemon("PIKACHU", "ELÉCTRICO", 100, 10, pikachuataques);
+    // Instancia del canal de consola para manejar mensajes al usuario (Singleton)
+    CanalConsola consola = CanalConsola.Instance;
 
-        Pokemon squirtle = new Pokemon("SQUIRTLE", "AGUA", 100, 10, pikachuataques);
+    // Reinicia la fachada para asegurar un estado limpio
+    Fachada.Reset();
 
-        fachada1.entrenadorConTurno.AñadirASeleccion(squirtle); //Jugador A agrega a SQUIRTLE
-        fachada1.entrenadorConTurno.AñadirASeleccion(pikachu); //Jugador A agrega a PIKACHU
-        
-        fachada1.CambiarTurno(); 
+    // Agrega entrenadores a la lista de espera utilizando la fachada
+    Fachada.Instance.AddTrainerToWaitingList(1, "pepe", null, consola);
+    Fachada.Instance.AddTrainerToWaitingList(2, "pepito", null, consola);
 
-        fachada1.entrenadorConTurno.AñadirASeleccion(pikachu); //Jugador B agrega a PIKACHU
-        fachada1.entrenadorConTurno.AñadirASeleccion(squirtle); //Jugador B agrega a SQUIRTLE
+    // Crea una batalla entre los entrenadores agregados
+    Fachada.Instance.ChallengeTrainerToBattle("pepe", "pepito", consola);
 
-        fachada1.CambiarTurno(); 
-        
-        fachada1.CambiarPokemonPor("SQUIRTLE"); //Jugador A elije SQUIRTLE para combatir
-        fachada1.CambiarTurno(); //Ahora el jugador con turno pasa a ser B
-        fachada1.CambiarPokemonPor("PIKACHU"); //Jugador B elije PIKACHU para combatir
-        fachada1.CambiarTurno(); //Ahora el jugador con turno vuelve a ser A
-
-        //Simulamos que inicia el combate
-        
-        Assert.That(pikachu.GetVida(), Is.EqualTo(100)); //Verifica que Pikachu tenga toda la vida
-        pikachu.RecibirDaño(hidrobomba);
-        Assert.That(pikachu.GetVida(), Is.LessThan(100)); //Verifica que el ataque le haya bajado la vida
-        
-        fachada1.entrenadorConTurno.UsarItem("Cura total"); //El jugador usa el item de Cura total
-        
-        Assert.That(pikachu.GetVida(),  Is.GreaterThan(87)); //Verifica que Pikachu vuelva a tener más vida de la que se le quito
+    // Agrega 6 Pokémon a cada entrenador
+    for (ulong entrenadorId = 1; entrenadorId <= 2; entrenadorId++)
+    {
+        for (int i = 1; i <= 6; i++)
+        {
+            string identificador = i.ToString();
+            Fachada.Instance.AddPokemonToList(entrenadorId, identificador);
+        }
     }
-}*/
+
+    // Selecciona el Pokémon en uso para cada entrenador
+    Fachada.Instance.SelectPokemonInUse(1, "1"); // Entrenador 1 usa Pokémon con ID "1"
+    Fachada.Instance.SelectPokemonInUse(2, "2"); // Entrenador 2 usa Pokémon con ID "2"
+
+    // Inicia la batalla
+    Fachada.Instance.StartBattle(1);
+    Fachada.Instance.StartBattle(2);
+    
+    Battle batalla = BattlesList.Instance.GetBattle(1);
+    batalla.EntrenadorConTurno = batalla.Player1;
+
+  
+
+    // Configuración inicial
+    // Para capturar la salida que normalmente iría a la consola
+    var consoleOutput = new StringWriter(); 
+    Console.SetOut(consoleOutput); // Redirigimos la salida estándar a nuestro StringWriter
+    Pokemon pokemonReceptor = batalla.GetEntrenadorActual(1).GetPokemonEnUso();
+    // El entrenador 1 usa una Súper Poción en su Pokémon activo
+    Fachada.Instance.UsarPocion(1, "1 Pikachu");
+
+    // Obtiene la batalla activa para validar el estado
+    
+    
+    Entrenador oponente = batalla.EntrenadorConTurno; // Entrenador contrario
+
+    // Verifica los mensajes enviados a la consola
+    string mensajeEsperado = $"Le diste una **Súper Poción** a **PIKACHU** y ahora tiene ❤️ {pokemonReceptor.vida}";
+   
+
+    // Usamos Assert para verificar que los mensajes salieron por consola
+    Assert.That(consoleOutput.ToString(), Does.Contain(mensajeEsperado));
+    
+}
+
+}

@@ -896,6 +896,7 @@ namespace Library.Bot.Dominio
                 {
                     mensaje = "El número de opción ingresado es inválido. Por favor ingresa un número válido";
                     await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                    
                 }
                 else
                 {
@@ -937,7 +938,9 @@ namespace Library.Bot.Dominio
 
                                     mensaje = $"Le diste una **Súper Poción** a **{pokemonReceptor.GetNombre()}** y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()}\n";
+                                    Console.WriteLine(mensaje);
                                     await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    await this.EnviarACanal(CanalConsola.Instance, mensaje);
                                     
                                     mensaje = $"**¡Tu oponente decidió darle una Súper Poción a {pokemonReceptor.GetNombre()} y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()} !**\n";
@@ -946,7 +949,9 @@ namespace Library.Bot.Dominio
                                     CambiarTurno(userID);
                                     mensaje = $"Concluíste tu turno.\n" +
                                               $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
+                                    Console.WriteLine(mensaje);
                                     await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+                                    
                                     await ComienzoDeTurno(batalla);
                                 }
                                 break;
