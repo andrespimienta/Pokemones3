@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['getataques_0',['GetAtaques',['../class_proyecto___pokemones___i_1_1_pokemon.html#af88b1125f476bd48eed5311ad0c14471',1,'Proyecto_Pokemones_I::Pokemon']]],
+  ['getdaño_1',['GetDaño',['../class_proyecto___pokemones___i_1_1_ataque.html#a16fd953988a8b01723b661d5706e1ffe',1,'Proyecto_Pokemones_I::Ataque']]],
+  ['getefecto_2',['GetEfecto',['../class_proyecto___pokemones___i_1_1_ataque.html#a1265daaaab1eebe72a7fa7a90304abb6',1,'Proyecto_Pokemones_I::Ataque']]],
+  ['getesespecial_3',['GetEsEspecial',['../class_proyecto___pokemones___i_1_1_ataque.html#a36a444711f10cb17dcca380fca9672bb',1,'Proyecto_Pokemones_I::Ataque']]],
+  ['getlistadeitems_4',['GetListaDeItems',['../class_proyecto___pokemones___i_1_1_entrenador.html#a46c0a140c538f1ff3a89b15dcf597129',1,'Proyecto_Pokemones_I::Entrenador']]],
+  ['getnombre_5',['GetNombre',['../class_proyecto___pokemones___i_1_1_ataque.html#a4766016bd835366ada530b37c2e70cdc',1,'Proyecto_Pokemones_I.Ataque.GetNombre()'],['../class_proyecto___pokemones___i_1_1_entrenador.html#aa62e046a807e108c35397e506801c2c9',1,'Proyecto_Pokemones_I.Entrenador.GetNombre()'],['../class_proyecto___pokemones___i_1_1_pokemon.html#aa7c7e072b4617e87e24bd75568a3b262',1,'Proyecto_Pokemones_I.Pokemon.GetNombre()']]],
+  ['getpokemonenuso_6',['GetPokemonEnUso',['../class_proyecto___pokemones___i_1_1_entrenador.html#a4d80e86cd407e5dbc2ffa260f8a174da',1,'Proyecto_Pokemones_I::Entrenador']]],
+  ['getpokemonesvivos_7',['GetPokemonesVivos',['../class_proyecto___pokemones___i_1_1_entrenador.html#a7cb43138b1df9835e9bbf2ae32453498',1,'Proyecto_Pokemones_I::Entrenador']]],
+  ['getprecision_8',['GetPrecision',['../class_proyecto___pokemones___i_1_1_ataque.html#afbbd7fd75587dbe6d3f6e150ce172f1c',1,'Proyecto_Pokemones_I::Ataque']]],
+  ['getseleccion_9',['GetSeleccion',['../class_proyecto___pokemones___i_1_1_entrenador.html#a5a376474b11447eb283974d1720314fa',1,'Proyecto_Pokemones_I::Entrenador']]],
+  ['getsocketguilduser_10',['GetSocketGuildUser',['../class_proyecto___pokemones___i_1_1_entrenador.html#a291bc9e25af53fea50194659a67933d5',1,'Proyecto_Pokemones_I::Entrenador']]],
+  ['getstatuspokemonenuso_11',['GetStatusPokemonEnUso',['../class_proyecto___pokemones___i_1_1_entrenador.html#adc13d1710a4999406fe4c6ac4c580c48',1,'Proyecto_Pokemones_I::Entrenador']]],
+  ['gettipo_12',['GetTipo',['../class_proyecto___pokemones___i_1_1_ataque.html#aff3310c2d902db7a712f55120c2af9f2',1,'Proyecto_Pokemones_I.Ataque.GetTipo()'],['../class_proyecto___pokemones___i_1_1_pokemon.html#a806295266e5481bf92b17b54c2363ecd',1,'Proyecto_Pokemones_I.Pokemon.GetTipo()']]],
+  ['getvelocidadataque_13',['GetVelocidadAtaque',['../class_proyecto___pokemones___i_1_1_pokemon.html#a5008b28c76193dbbe1ad852c628c43b6',1,'Proyecto_Pokemones_I::Pokemon']]],
+  ['getvida_14',['GetVida',['../class_proyecto___pokemones___i_1_1_pokemon.html#a17ba630d5115b68bc33c63673647bd1b',1,'Proyecto_Pokemones_I::Pokemon']]],
+  ['getvidamax_15',['GetVidaMax',['../class_proyecto___pokemones___i_1_1_pokemon.html#a42c3d9347cf9c4393c202862e7bdc002',1,'Proyecto_Pokemones_I::Pokemon']]],
+  ['guardarpokemon_16',['GuardarPokemon',['../class_proyecto___pokemones___i_1_1_entrenador.html#ab8556aa6033687d5f02dc704258f7da1',1,'Proyecto_Pokemones_I::Entrenador']]]
+];

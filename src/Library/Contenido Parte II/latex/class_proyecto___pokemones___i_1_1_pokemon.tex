@@ -1,0 +1,200 @@
+\doxysection{Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon Class Reference}
+\hypertarget{class_proyecto___pokemones___i_1_1_pokemon}{}\label{class_proyecto___pokemones___i_1_1_pokemon}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+
+
+Collaboration diagram for Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon\+:
+% FIG 0
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_aa7c7e072b4617e87e24bd75568a3b262}{Get\+Nombre}} ()
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a806295266e5481bf92b17b54c2363ecd}{Get\+Tipo}} ()
+\item 
+double \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a17ba630d5115b68bc33c63673647bd1b}{Get\+Vida}} ()
+\item 
+double \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a42c3d9347cf9c4393c202862e7bdc002}{Get\+Vida\+Max}} ()
+\item 
+double \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a5008b28c76193dbbe1ad852c628c43b6}{Get\+Velocidad\+Ataque}} ()
+\item 
+List$<$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_ataque}{Ataque}} $>$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_af88b1125f476bd48eed5311ad0c14471}{Get\+Ataques}} ()
+\item 
+\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a1409f67c579a8f48f1337a3175410202}{Pokemon}} (string poke\+Nombre, string poke\+Tipo, double poke\+Vida, double poke\+Vel\+Ataque, List$<$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_ataque}{Ataque}} $>$ ataques, string Identificador)
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a807579fb020d3aa88ff6c74d0aa129b3}{Daño\+Por\+Turno}} (double daño\+Especial)
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a43844db8135b1efa0db7c58f093c0865}{Recibir\+Daño}} (\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_ataque}{Ataque}} ataque\+Recibido)
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_aa4812dc898b6945019dd69e98c62f12d}{Alterar\+Vida}} (double hp)
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a309a3bbb729e9676ff1c340d0d38f3f0}{Revivir}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_af9a7d046ff3e7160f11911c0eae81f9e}{Numero\+Identificador}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, private set\mbox{]}}
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_aacb77ba67a367f6da26300ac86fdc53b}{Efecto\+Activo}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+bool \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a87c01d3f9f3ddd4cba4205d453fa064a}{Puede\+Atacar}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+int \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a862688c09fe5bdfdc7ead7f02bba62a5}{Turnos\+Duracion\+Efecto}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a28800f73a18b5391fccaac26f3f1efcc}{nombre}}
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_a8d5e2a113d8b4d64045136ef30dfbc78}{tipo}}
+\item 
+double \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_af49b68b7d4e063918491e5dee295f58d}{vida}}
+\item 
+double \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_aefa2ee499894e92d3f1497fbceb13c9b}{vida\+Max}}
+\item 
+double \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_ad281fcd32455cd6494d3352fe4014d2e}{velocidad\+Ataque}}
+\item 
+List$<$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_ataque}{Ataque}} $>$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon_ad7ed795132b964d81a29cba2955b100b}{listado\+Ataques}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a1409f67c579a8f48f1337a3175410202}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!Pokemon@{Pokemon}}
+\index{Pokemon@{Pokemon}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{Pokemon()}{Pokemon()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a1409f67c579a8f48f1337a3175410202} 
+Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Pokemon (\begin{DoxyParamCaption}\item[{string}]{poke\+Nombre}{, }\item[{string}]{poke\+Tipo}{, }\item[{double}]{poke\+Vida}{, }\item[{double}]{poke\+Vel\+Ataque}{, }\item[{List$<$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_ataque}{Ataque}} $>$}]{ataques}{, }\item[{string}]{Identificador}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_aa4812dc898b6945019dd69e98c62f12d}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!AlterarVida@{AlterarVida}}
+\index{AlterarVida@{AlterarVida}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{AlterarVida()}{AlterarVida()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_aa4812dc898b6945019dd69e98c62f12d} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Alterar\+Vida (\begin{DoxyParamCaption}\item[{double}]{hp}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a807579fb020d3aa88ff6c74d0aa129b3}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!DañoPorTurno@{DañoPorTurno}}
+\index{DañoPorTurno@{DañoPorTurno}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{DañoPorTurno()}{DañoPorTurno()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a807579fb020d3aa88ff6c74d0aa129b3} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Daño\+Por\+Turno (\begin{DoxyParamCaption}\item[{double}]{daño\+Especial}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_af88b1125f476bd48eed5311ad0c14471}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!GetAtaques@{GetAtaques}}
+\index{GetAtaques@{GetAtaques}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{GetAtaques()}{GetAtaques()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_af88b1125f476bd48eed5311ad0c14471} 
+List$<$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_ataque}{Ataque}} $>$ Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Get\+Ataques (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_aa7c7e072b4617e87e24bd75568a3b262}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!GetNombre@{GetNombre}}
+\index{GetNombre@{GetNombre}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{GetNombre()}{GetNombre()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_aa7c7e072b4617e87e24bd75568a3b262} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Get\+Nombre (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a806295266e5481bf92b17b54c2363ecd}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!GetTipo@{GetTipo}}
+\index{GetTipo@{GetTipo}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{GetTipo()}{GetTipo()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a806295266e5481bf92b17b54c2363ecd} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Get\+Tipo (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a5008b28c76193dbbe1ad852c628c43b6}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!GetVelocidadAtaque@{GetVelocidadAtaque}}
+\index{GetVelocidadAtaque@{GetVelocidadAtaque}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{GetVelocidadAtaque()}{GetVelocidadAtaque()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a5008b28c76193dbbe1ad852c628c43b6} 
+double Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Get\+Velocidad\+Ataque (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a17ba630d5115b68bc33c63673647bd1b}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!GetVida@{GetVida}}
+\index{GetVida@{GetVida}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{GetVida()}{GetVida()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a17ba630d5115b68bc33c63673647bd1b} 
+double Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Get\+Vida (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a42c3d9347cf9c4393c202862e7bdc002}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!GetVidaMax@{GetVidaMax}}
+\index{GetVidaMax@{GetVidaMax}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{GetVidaMax()}{GetVidaMax()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a42c3d9347cf9c4393c202862e7bdc002} 
+double Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Get\+Vida\+Max (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a43844db8135b1efa0db7c58f093c0865}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!RecibirDaño@{RecibirDaño}}
+\index{RecibirDaño@{RecibirDaño}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{RecibirDaño()}{RecibirDaño()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a43844db8135b1efa0db7c58f093c0865} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Recibir\+Daño (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_ataque}{Ataque}}}]{ataque\+Recibido}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a309a3bbb729e9676ff1c340d0d38f3f0}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!Revivir@{Revivir}}
+\index{Revivir@{Revivir}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{Revivir()}{Revivir()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a309a3bbb729e9676ff1c340d0d38f3f0} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Revivir (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_ad7ed795132b964d81a29cba2955b100b}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!listadoAtaques@{listadoAtaques}}
+\index{listadoAtaques@{listadoAtaques}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{listadoAtaques}{listadoAtaques}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_ad7ed795132b964d81a29cba2955b100b} 
+List$<$\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_ataque}{Ataque}}$>$ Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+listado\+Ataques\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a28800f73a18b5391fccaac26f3f1efcc}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!nombre@{nombre}}
+\index{nombre@{nombre}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{nombre}{nombre}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a28800f73a18b5391fccaac26f3f1efcc} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+nombre\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a8d5e2a113d8b4d64045136ef30dfbc78}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!tipo@{tipo}}
+\index{tipo@{tipo}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{tipo}{tipo}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a8d5e2a113d8b4d64045136ef30dfbc78} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+tipo\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_ad281fcd32455cd6494d3352fe4014d2e}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!velocidadAtaque@{velocidadAtaque}}
+\index{velocidadAtaque@{velocidadAtaque}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{velocidadAtaque}{velocidadAtaque}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_ad281fcd32455cd6494d3352fe4014d2e} 
+double Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+velocidad\+Ataque\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_af49b68b7d4e063918491e5dee295f58d}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!vida@{vida}}
+\index{vida@{vida}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{vida}{vida}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_af49b68b7d4e063918491e5dee295f58d} 
+double Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+vida\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_aefa2ee499894e92d3f1497fbceb13c9b}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!vidaMax@{vidaMax}}
+\index{vidaMax@{vidaMax}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{vidaMax}{vidaMax}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_aefa2ee499894e92d3f1497fbceb13c9b} 
+double Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+vida\+Max\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_aacb77ba67a367f6da26300ac86fdc53b}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!EfectoActivo@{EfectoActivo}}
+\index{EfectoActivo@{EfectoActivo}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{EfectoActivo}{EfectoActivo}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_aacb77ba67a367f6da26300ac86fdc53b} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Efecto\+Activo\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_af9a7d046ff3e7160f11911c0eae81f9e}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!NumeroIdentificador@{NumeroIdentificador}}
+\index{NumeroIdentificador@{NumeroIdentificador}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{NumeroIdentificador}{NumeroIdentificador}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_af9a7d046ff3e7160f11911c0eae81f9e} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Numero\+Identificador\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [private set]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a87c01d3f9f3ddd4cba4205d453fa064a}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!PuedeAtacar@{PuedeAtacar}}
+\index{PuedeAtacar@{PuedeAtacar}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{PuedeAtacar}{PuedeAtacar}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a87c01d3f9f3ddd4cba4205d453fa064a} 
+bool Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Puede\+Atacar\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_pokemon_a862688c09fe5bdfdc7ead7f02bba62a5}\index{Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}!TurnosDuracionEfecto@{TurnosDuracionEfecto}}
+\index{TurnosDuracionEfecto@{TurnosDuracionEfecto}!Proyecto\_Pokemones\_I.Pokemon@{Proyecto\_Pokemones\_I.Pokemon}}
+\doxysubsubsection{\texorpdfstring{TurnosDuracionEfecto}{TurnosDuracionEfecto}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_pokemon_a862688c09fe5bdfdc7ead7f02bba62a5} 
+int Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Pokemon.\+Turnos\+Duracion\+Efecto\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_pokemon_8cs}{Pokemon.\+cs}}\end{DoxyCompactItemize}

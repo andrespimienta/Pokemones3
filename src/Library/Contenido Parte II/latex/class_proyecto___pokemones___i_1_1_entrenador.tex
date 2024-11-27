@@ -1,0 +1,227 @@
+\doxysection{Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador Class Reference}
+\hypertarget{class_proyecto___pokemones___i_1_1_entrenador}{}\label{class_proyecto___pokemones___i_1_1_entrenador}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+
+
+Collaboration diagram for Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador\+:
+% FIG 0
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_aa62e046a807e108c35397e506801c2c9}{Get\+Nombre}} ()
+\item 
+\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}} \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a4d80e86cd407e5dbc2ffa260f8a174da}{Get\+Pokemon\+En\+Uso}} ()
+\item 
+List$<$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}} $>$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a5a376474b11447eb283974d1720314fa}{Get\+Seleccion}} ()
+\item 
+int \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a7cb43138b1df9835e9bbf2ae32453498}{Get\+Pokemones\+Vivos}} ()
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a46c0a140c538f1ff3a89b15dcf597129}{Get\+Lista\+De\+Items}} ()
+\item 
+Socket\+Guild\+User \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a291bc9e25af53fea50194659a67933d5}{Get\+Socket\+Guild\+User}} ()
+\item 
+\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a605897c6312247d9be7468cbbf718000}{Entrenador}} (string su\+Nombre, ulong id, Socket\+Guild\+User guild)
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a4aec52b1d90f9f07a3b38993fee00713}{Recargar\+Items}} ()
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_af0fa80964dd182548d2806b8b3dfd205}{Añadir\+ASeleccion}} (\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}} pokemon)
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_ab8556aa6033687d5f02dc704258f7da1}{Guardar\+Pokemon}} ()
+\item 
+\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}}? \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a0674959ff7edf7ab1e09952bc3701a24}{Usar\+Pokemon}} (string pokemon\+AUsar)
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a9aaff7e76b46121836102d08e768cb90}{Lista\+De\+Pokemones}} ()
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a326240fae9932a94b4c54a5c2d0919e8}{Agregars\+User\+Ds}} (Socket\+Guild\+User user)
+\item 
+string? \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_adc13d1710a4999406fe4c6ac4c580c48}{Get\+Status\+Pokemon\+En\+Uso}} ()
+\item 
+void \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a0c43c6c783ae584435e673fd00c33781}{Aceptar\+Visitor\+Por\+Turno}} (\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_visitor_por_turno}{Visitor\+Por\+Turno}} visitor)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}}? \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_aae4b19138e9947baff1b55c679ee26f4}{pokemon\+En\+Uso}}
+\item 
+List$<$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}} $>$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_ac4e4d995f6c14039dab59b99037c0679}{seleccion\+Pokemones}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+ulong \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a98a6ad8b4b9fd2583abbc2159986cd2a}{Id}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+int \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a8474b3d9835a9e49c35f9cd6ddaa74b0}{Turnos\+Recarga\+Atk\+Especial}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+bool \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_add9a53e45e02faf08d2c4de6f5359cc6}{Esta\+Listo}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a99fd7007c7ea4423ea554ddea96ed5a5}{nombre}}
+\item 
+int \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a214bf6c2f1d11cb274a3a9bbc5ddd28f}{pokemones\+Vivos}}
+\item 
+List$<$ \mbox{\hyperlink{interface_proyecto___pokemones___i_1_1_i_items}{IItems}} $>$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a690e6d856f252626e9d61fed14e9575c}{list\+Items}}
+\item 
+Socket\+Guild\+User \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_entrenador_a25a8a4a81e49725263e87b7ce8bc3463}{userds1}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a605897c6312247d9be7468cbbf718000}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!Entrenador@{Entrenador}}
+\index{Entrenador@{Entrenador}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{Entrenador()}{Entrenador()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a605897c6312247d9be7468cbbf718000} 
+Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Entrenador (\begin{DoxyParamCaption}\item[{string}]{su\+Nombre}{, }\item[{ulong}]{id}{, }\item[{Socket\+Guild\+User}]{guild}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_af0fa80964dd182548d2806b8b3dfd205}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!AñadirASeleccion@{AñadirASeleccion}}
+\index{AñadirASeleccion@{AñadirASeleccion}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{AñadirASeleccion()}{AñadirASeleccion()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_af0fa80964dd182548d2806b8b3dfd205} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Añadir\+ASeleccion (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}}}]{pokemon}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a0c43c6c783ae584435e673fd00c33781}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!AceptarVisitorPorTurno@{AceptarVisitorPorTurno}}
+\index{AceptarVisitorPorTurno@{AceptarVisitorPorTurno}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{AceptarVisitorPorTurno()}{AceptarVisitorPorTurno()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a0c43c6c783ae584435e673fd00c33781} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Aceptar\+Visitor\+Por\+Turno (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_visitor_por_turno}{Visitor\+Por\+Turno}}}]{visitor}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a326240fae9932a94b4c54a5c2d0919e8}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!AgregarsUserDs@{AgregarsUserDs}}
+\index{AgregarsUserDs@{AgregarsUserDs}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{AgregarsUserDs()}{AgregarsUserDs()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a326240fae9932a94b4c54a5c2d0919e8} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Agregars\+User\+Ds (\begin{DoxyParamCaption}\item[{Socket\+Guild\+User}]{user}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a46c0a140c538f1ff3a89b15dcf597129}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!GetListaDeItems@{GetListaDeItems}}
+\index{GetListaDeItems@{GetListaDeItems}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{GetListaDeItems()}{GetListaDeItems()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a46c0a140c538f1ff3a89b15dcf597129} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Get\+Lista\+De\+Items (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_aa62e046a807e108c35397e506801c2c9}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!GetNombre@{GetNombre}}
+\index{GetNombre@{GetNombre}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{GetNombre()}{GetNombre()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_aa62e046a807e108c35397e506801c2c9} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Get\+Nombre (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a4d80e86cd407e5dbc2ffa260f8a174da}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!GetPokemonEnUso@{GetPokemonEnUso}}
+\index{GetPokemonEnUso@{GetPokemonEnUso}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{GetPokemonEnUso()}{GetPokemonEnUso()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a4d80e86cd407e5dbc2ffa260f8a174da} 
+\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}} Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Get\+Pokemon\+En\+Uso (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a7cb43138b1df9835e9bbf2ae32453498}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!GetPokemonesVivos@{GetPokemonesVivos}}
+\index{GetPokemonesVivos@{GetPokemonesVivos}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{GetPokemonesVivos()}{GetPokemonesVivos()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a7cb43138b1df9835e9bbf2ae32453498} 
+int Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Get\+Pokemones\+Vivos (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a5a376474b11447eb283974d1720314fa}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!GetSeleccion@{GetSeleccion}}
+\index{GetSeleccion@{GetSeleccion}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{GetSeleccion()}{GetSeleccion()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a5a376474b11447eb283974d1720314fa} 
+List$<$ \mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}} $>$ Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Get\+Seleccion (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a291bc9e25af53fea50194659a67933d5}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!GetSocketGuildUser@{GetSocketGuildUser}}
+\index{GetSocketGuildUser@{GetSocketGuildUser}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{GetSocketGuildUser()}{GetSocketGuildUser()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a291bc9e25af53fea50194659a67933d5} 
+Socket\+Guild\+User Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Get\+Socket\+Guild\+User (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_adc13d1710a4999406fe4c6ac4c580c48}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!GetStatusPokemonEnUso@{GetStatusPokemonEnUso}}
+\index{GetStatusPokemonEnUso@{GetStatusPokemonEnUso}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{GetStatusPokemonEnUso()}{GetStatusPokemonEnUso()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_adc13d1710a4999406fe4c6ac4c580c48} 
+string? Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Get\+Status\+Pokemon\+En\+Uso (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_ab8556aa6033687d5f02dc704258f7da1}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!GuardarPokemon@{GuardarPokemon}}
+\index{GuardarPokemon@{GuardarPokemon}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{GuardarPokemon()}{GuardarPokemon()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_ab8556aa6033687d5f02dc704258f7da1} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Guardar\+Pokemon (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a9aaff7e76b46121836102d08e768cb90}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!ListaDePokemones@{ListaDePokemones}}
+\index{ListaDePokemones@{ListaDePokemones}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{ListaDePokemones()}{ListaDePokemones()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a9aaff7e76b46121836102d08e768cb90} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Lista\+De\+Pokemones (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a4aec52b1d90f9f07a3b38993fee00713}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!RecargarItems@{RecargarItems}}
+\index{RecargarItems@{RecargarItems}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{RecargarItems()}{RecargarItems()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a4aec52b1d90f9f07a3b38993fee00713} 
+void Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Recargar\+Items (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a0674959ff7edf7ab1e09952bc3701a24}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!UsarPokemon@{UsarPokemon}}
+\index{UsarPokemon@{UsarPokemon}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{UsarPokemon()}{UsarPokemon()}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a0674959ff7edf7ab1e09952bc3701a24} 
+\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}}? Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Usar\+Pokemon (\begin{DoxyParamCaption}\item[{string}]{pokemon\+AUsar}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a690e6d856f252626e9d61fed14e9575c}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!listItems@{listItems}}
+\index{listItems@{listItems}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{listItems}{listItems}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a690e6d856f252626e9d61fed14e9575c} 
+List$<$\mbox{\hyperlink{interface_proyecto___pokemones___i_1_1_i_items}{IItems}}$>$ Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+list\+Items\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a99fd7007c7ea4423ea554ddea96ed5a5}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!nombre@{nombre}}
+\index{nombre@{nombre}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{nombre}{nombre}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a99fd7007c7ea4423ea554ddea96ed5a5} 
+string Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+nombre\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_aae4b19138e9947baff1b55c679ee26f4}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!pokemonEnUso@{pokemonEnUso}}
+\index{pokemonEnUso@{pokemonEnUso}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{pokemonEnUso}{pokemonEnUso}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_aae4b19138e9947baff1b55c679ee26f4} 
+\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}}? Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+pokemon\+En\+Uso}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a214bf6c2f1d11cb274a3a9bbc5ddd28f}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!pokemonesVivos@{pokemonesVivos}}
+\index{pokemonesVivos@{pokemonesVivos}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{pokemonesVivos}{pokemonesVivos}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a214bf6c2f1d11cb274a3a9bbc5ddd28f} 
+int Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+pokemones\+Vivos\hspace{0.3cm}{\ttfamily [private]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_ac4e4d995f6c14039dab59b99037c0679}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!seleccionPokemones@{seleccionPokemones}}
+\index{seleccionPokemones@{seleccionPokemones}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{seleccionPokemones}{seleccionPokemones}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_ac4e4d995f6c14039dab59b99037c0679} 
+List$<$\mbox{\hyperlink{class_proyecto___pokemones___i_1_1_pokemon}{Pokemon}}$>$ Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+seleccion\+Pokemones}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a25a8a4a81e49725263e87b7ce8bc3463}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!userds1@{userds1}}
+\index{userds1@{userds1}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{userds1}{userds1}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a25a8a4a81e49725263e87b7ce8bc3463} 
+Socket\+Guild\+User Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+userds1\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Property Documentation}
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_add9a53e45e02faf08d2c4de6f5359cc6}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!EstaListo@{EstaListo}}
+\index{EstaListo@{EstaListo}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{EstaListo}{EstaListo}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_add9a53e45e02faf08d2c4de6f5359cc6} 
+bool Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Esta\+Listo\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a98a6ad8b4b9fd2583abbc2159986cd2a}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!Id@{Id}}
+\index{Id@{Id}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{Id}{Id}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a98a6ad8b4b9fd2583abbc2159986cd2a} 
+ulong Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+\Hypertarget{class_proyecto___pokemones___i_1_1_entrenador_a8474b3d9835a9e49c35f9cd6ddaa74b0}\index{Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}!TurnosRecargaAtkEspecial@{TurnosRecargaAtkEspecial}}
+\index{TurnosRecargaAtkEspecial@{TurnosRecargaAtkEspecial}!Proyecto\_Pokemones\_I.Entrenador@{Proyecto\_Pokemones\_I.Entrenador}}
+\doxysubsubsection{\texorpdfstring{TurnosRecargaAtkEspecial}{TurnosRecargaAtkEspecial}}
+{\footnotesize\ttfamily \label{class_proyecto___pokemones___i_1_1_entrenador_a8474b3d9835a9e49c35f9cd6ddaa74b0} 
+int Proyecto\+\_\+\+Pokemones\+\_\+\+I.\+Entrenador.\+Turnos\+Recarga\+Atk\+Especial\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_entrenador_8cs}{Entrenador.\+cs}}\end{DoxyCompactItemize}

@@ -1174,6 +1174,8 @@ namespace Library.Bot.Dominio
             }
             return result;
         }
+
+        
     }
 }
 

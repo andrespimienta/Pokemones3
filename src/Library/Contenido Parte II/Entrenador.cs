@@ -195,5 +195,58 @@ public class Entrenador
     {
         await visitor.VisitarEntrenador(this);
     }
+    
+    public int ChancesGanar() //lo hago por cada jugador por separado, osea que si quisira fijarme las chances de los dos jugadores tendria que llamar a la funcion dos veces
+    {//items 30ptos, envenenado 10 o 0, pokesvivos 60 dies por cada uno
+        //int chancesDeGanarl = 0;
+        int pokesVivos = this.GetCantidadPokemonesVivos();
+        int chancesDeGanarl = pokesVivos * 10;
+        int cantItems = 0;
+        List<Item> listaItem = this.GetListaItems();
+        foreach (Item item in listaItem)
+        {
+            cantItems++;
+        }
+
+        if (cantItems == 7)//cada entrenador deberia de empezar con 7 items, 4 superPOsicones 2 Posiones y 1 Revivir
+        {
+            chancesDeGanarl += 30;
+        }else if (cantItems == 6)
+        {
+            chancesDeGanarl += 25;
+        }else if (cantItems == 5)
+        {
+            chancesDeGanarl += 20;
+        }else if (cantItems == 4)
+        {
+            chancesDeGanarl += 15;
+        }else if (cantItems == 3)
+        {
+            chancesDeGanarl += 10;
+        }else if (cantItems == 2)
+        {
+            chancesDeGanarl += 5;
+        }else if (cantItems == 1)
+        {
+            chancesDeGanarl += 0;
+        }else if (cantItems == 0)
+        {
+            chancesDeGanarl -= 1;
+        }
+
+        //bool algunoEnvenenado = false;
+        List<Pokemon> listaPokemonesSelect = this.GetSeleccion();
+        int chancesPorInfeccion = 10;
+        foreach (Pokemon poke in listaPokemonesSelect)
+        {
+            if (poke.EfectoActivo != null)
+            {
+                chancesPorInfeccion = 0;
+            }
+        }
+        chancesDeGanarl += chancesPorInfeccion;
+            
+        return chancesDeGanarl;
+    }
 }
 
