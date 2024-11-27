@@ -5,7 +5,7 @@ namespace Library.Contenido_Parte_II;
 public static class LeerArchivo
 {
 
-    public static string RutaCatalogo = "C:\\Users\\Estudiante UCU\\Documents\\Repositorios Prog. II\\Pokemones3\\src\\Program\\Catalogo";
+    public static string RutaCatalogo = "C:\\Repositorios\\Pokemones3\\src\\Program\\Catalogo";
 
     public static string ObtenerCatalogoProcesado()
     {
