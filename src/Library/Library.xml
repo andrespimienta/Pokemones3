@@ -263,6 +263,66 @@
             <param name="dañoAtaque"></param>
             <param name="precisionAtaque"></param>
         </member>
+        <member name="M:Proyecto_Pokemones_I.Item.DescribirItem">
+            <summary>
+            Las clases que heredan de Item se comportan
+            como visitor para aplicar su comportamiento.
+            El pokemon llama al método AceptarItem y se
+            pasa a sí mismo por parámetro, para que el
+            ítem ejecute su comportamiento.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.CuraTotal.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.CuraTotal.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si el pokemon está vivo, le remueve los efectos
+            y lo habilita para atacar. La restricción es para que
+            no se pueda hacer que un pokemon muerto pueda atacar.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.Revivir.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.Revivir.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si está muerto, aumenta la vida del
+            pokemon al 50% de su vida máxima,
+            permitiéndole atacar y removiéndole los
+            efectos negativos viejos. La restricción
+            es para que no cumpla la función de 'Cura Total'
+            aplicándosela a pokemones vivos.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.SuperPocion.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.SuperPocion.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si el pokemon está vivo, le aumenta
+            la vida 70 puntos, o hasta la vida máxima.
+            La restricción es para que esta poción no
+            cumpla la función de 'Revivir' al sumarle vida
+            a un pokemon muerto.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
         <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
             <inheritdoc />
         </member>
