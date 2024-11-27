@@ -745,17 +745,7 @@ public class Fachada
         this.EnviarAUsuario(user, mensaje);
         Console.WriteLine(mensaje);
     }
-
-    public void CambiarTurno(ulong userId)
-    {
-        Battle batalla=BattlesList.GetBattle(userId);
-        batalla.CambiarTurno();
-    }
     
-    
-
-    
-
     public async Task CambiarPokemon(ulong userId, string nombrePokemon)
     {
         Battle batalla = BattlesList.GetBattle(userId);
@@ -830,6 +820,16 @@ public class Fachada
         }
     }
 
+    public async Task UsarPocion(ulong userID, string numEleccion)
+    {
+        
+    }
+
+    public void CambiarTurno(ulong userId)
+    {
+        Battle batalla=BattlesList.GetBattle(userId);
+        batalla.CambiarTurno();
+    }
 
     private async Task<bool> ChequeoPantallaFinal(ulong userId,Battle battle)
     {

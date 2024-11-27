@@ -4,7 +4,6 @@
         <name>Library</name>
     </assembly>
     <members>
-
         <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
             <summary>
             Esta clase representa una batalla entre dos jugadores.
@@ -129,7 +128,29 @@
             Crea efectivamente una instancia de Battle usando los jugadores
             como parámetro, y les avisa por privado que comenzó la batalla.
             </summary>
-
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowCatalog(System.UInt64)">
+            <summary>
+            Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
+            al chat del jugador que envió el comando.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddPokemonToList(System.UInt64,System.String)">
+            <summary>
+            Agrega uno o más pokemones a la selección del
+            jugador, indicados por su número identificador
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.SelectPokemonInUse(System.UInt64,System.String)">
+            <summary>
+            Selecciona el pokemon indicado como el pokemon
+            en uso del jugador. Será con el que ataque primero.
+            </summary>
+        </member>
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowPokemonStatus(Proyecto_Pokemones_I.Entrenador)">
+            <summary>
+            Muestra el estado actual de todos tus pokemones
+            </summary>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
             <summary>
@@ -233,7 +254,75 @@
             mensaje a la lista de jugadores esperando para jugar.
             </summary>
         </member>
-
+        <member name="M:Proyecto_Pokemones_I.Ataque.#ctor(System.String,System.String,System.Double,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="nombreAtaque"></param>
+            <param name="tipoAtaque"></param>
+            <param name="dañoAtaque"></param>
+            <param name="precisionAtaque"></param>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Item.DescribirItem">
+            <summary>
+            Las clases que heredan de Item se comportan
+            como visitor para aplicar su comportamiento.
+            El pokemon llama al método AceptarItem y se
+            pasa a sí mismo por parámetro, para que el
+            ítem ejecute su comportamiento.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.CuraTotal.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.CuraTotal.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si el pokemon está vivo, le remueve los efectos
+            y lo habilita para atacar. La restricción es para que
+            no se pueda hacer que un pokemon muerto pueda atacar.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.Revivir.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.Revivir.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si está muerto, aumenta la vida del
+            pokemon al 50% de su vida máxima,
+            permitiéndole atacar y removiéndole los
+            efectos negativos viejos. La restricción
+            es para que no cumpla la función de 'Cura Total'
+            aplicándosela a pokemones vivos.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.SuperPocion.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Proyecto_Pokemones_I.Items.SuperPocion.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si el pokemon está vivo, le aumenta
+            la vida 70 puntos, o hasta la vida máxima.
+            La restricción es para que esta poción no
+            cumpla la función de 'Revivir' al sumarle vida
+            a un pokemon muerto.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
         <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
             <inheritdoc />
         </member>

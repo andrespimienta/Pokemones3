@@ -1,6 +1,7 @@
 using Library.Contenido_Parte_II;
 using NUnit.Framework;
 using Proyecto_Pokemones_I;
+using Proyecto_Pokemones_I.Items;
 
 namespace TestLibrary;
 
@@ -23,17 +24,7 @@ public class TestPokemon
         Assert.That(unPokemon.NumeroIdentificador, Is.EqualTo(Identificador));
 
     }
-    [Test]
-    [TestCase(50)]
-    [TestCase(1500)]
     
-    public void TestDañoPorTurno(double dañoEspecial)
-    {
-        Pokemon unPokemon = new Pokemon("pikachu", "electrico", 10000, 10978.5,null, "id");
-        unPokemon.DañoPorTurno(dañoEspecial);
-        Assert.That((unPokemon.GetVida()), Is.EqualTo((10000 - dañoEspecial)));
-        
-    }
     [Test]
     [TestCase(50)]
     [TestCase(1500)]
@@ -43,15 +34,6 @@ public class TestPokemon
         Pokemon unPokemon = new Pokemon("pikachu", "electrico", 10000, 10978.5,null, "id");
         unPokemon.AlterarVida(hp);
         Assert.That((unPokemon.GetVida()), Is.EqualTo((10000 + hp)));
-        
-    }
-    [Test]
-    
-    public void TestRevivir()
-    {
-        Pokemon unPokemon = new Pokemon("pikachu", "electrico", 10000, 10978.5,null, "id");
-        unPokemon.Revivir();
-        Assert.That((unPokemon.GetVida() ), Is.EqualTo((unPokemon.GetVidaMax()/2)));
         
     }
     
@@ -75,5 +57,16 @@ public class TestPokemon
         {
             Assert.That((pikachu.GetVida()), Is.LessThan(9990.1));
         }
+    }
+    
+    [Test]
+
+    public void AceptarItem()
+    {
+        Pokemon unPokemon = new Pokemon("nombre", "PLANTA",150, 1.5, null, "id");
+        unPokemon.AlterarVida(-80);
+        SuperPocion pocion = new SuperPocion();
+        unPokemon.AceptarItem(pocion);
+        Assert.That(unPokemon.GetVida(), Is.EqualTo(140));
     }
 }

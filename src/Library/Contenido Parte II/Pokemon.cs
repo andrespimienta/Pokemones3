@@ -57,11 +57,6 @@ public class Pokemon
     }
     
     // Métodos:
-    public void DañoPorTurno(double dañoEspecial)
-    {
-        this.vida = vida-dañoEspecial;
-    }
-    
     public string RecibirDaño(Ataque ataqueRecibido)
     {
         List<string> listaDebilidades = DiccionarioTipos.GetDebilContra(this.tipo);
@@ -139,8 +134,8 @@ public class Pokemon
         this.vida += hp;
     }
 
-    public void Revivir()
+    public void AceptarItem(Item pocion)
     {
-        this.vida = this.vidaMax / 2;
+        pocion.ActivarItem(this);
     }
 }

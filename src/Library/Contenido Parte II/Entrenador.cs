@@ -11,7 +11,7 @@ public class Entrenador
     private Pokemon? pokemonEnUso;
     private List<Pokemon> seleccionPokemonesVivos;
     private List<Pokemon> listaPokemonesMuertos;
-    private List<IItems> listItems;
+    private List<Item> listaItems;
     public int TurnosRecargaAtkEspecial { get; set; }
     public bool EstaListo { get; set; } // Agregar el flag para saber si está listo
     private SocketGuildUser userds1;
@@ -49,12 +49,18 @@ public class Entrenador
 
         return pokemonesVivos;
     }
-    public string GetListaDeItems()
+
+    public List<Item> GetListaItems()
+    {
+        return this.listaItems;
+    }
+
+    public string GetMensajeListaDeItems()
     {
         Dictionary<string, int> itemCounts = new Dictionary<string, int>();
 
         // Contar la cantidad de cada item en listItems
-        foreach (IItems item in listItems)
+        foreach (Item item in listaItems)
         {
             if (itemCounts.ContainsKey(item.Nombre))
             {
@@ -91,7 +97,7 @@ public class Entrenador
         this.seleccionPokemonesVivos = new List<Pokemon>();
         this.listaPokemonesMuertos = new List<Pokemon>();
         this.TurnosRecargaAtkEspecial = 2; // Decidimos que por defecto no se pueda usar el ataque especial en los primeros dos turnos
-        this.listItems = new List<IItems>();
+        this.listaItems = new List<Item>();
         this.RecargarItems();
         this.userds1 = guild;
         
@@ -102,20 +108,26 @@ public class Entrenador
     // Métodos:
     public void RecargarItems()
     {
-        for (int i = 0; i < 4; i++) // Agrega 4 Super Poción
-        {
-            SuperPociones pocion = new SuperPociones();
-            listItems.Add(pocion);
-        }
+        // Agrega 4 Super Poción
+        SuperPocion superPocion1 = new SuperPocion();
+        SuperPocion superPocion2 = new SuperPocion();
+        SuperPocion superPocion3 = new SuperPocion();
+        SuperPocion superPocion4 = new SuperPocion();
+        listaItems.Add(superPocion1);
+        listaItems.Add(superPocion2);
+        listaItems.Add(superPocion3);
+        listaItems.Add(superPocion4);
 
-        Revivir resusitacion = new Revivir(); // Agrega 1 Revivir
-        listItems.Add(resusitacion);
+        // Agrega 1 Revivir
+        Revivir revivir = new Revivir(); 
+        listaItems.Add(revivir);
 
-        for (int i = 0; i < 2; i++)
-        {
-            CuraTotal curaTotal = new CuraTotal(); // Agrega 2 Cura Total
-            listItems.Add(curaTotal);
-        }
+        // Agrega 2 Cura Total
+        CuraTotal curaTotal1 = new CuraTotal(); 
+        CuraTotal curaTotal2 = new CuraTotal();
+        listaItems.Add(curaTotal1);
+        listaItems.Add(curaTotal2);
+
     }
 
     // Método para añadir Pokémon y comprobar si está listo

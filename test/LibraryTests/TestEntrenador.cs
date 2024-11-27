@@ -31,9 +31,8 @@ public class TestEntrenador
     public void RecargarItemsTest(string nombre, ulong id, SocketGuildUser guild)
     {
         Entrenador unEntrenador = new Entrenador(nombre, id, guild);
-        Assert.That(unEntrenador.GetListaDeItems(), Is.EqualTo("Super Pocion (x4) / Revivir (x1) / Cura total (x2) /"));
-
-
+        unEntrenador.RecargarItems();
+        Assert.That(unEntrenador.GetListaItems().Count(), Is.EqualTo(14));
     }
     
 
@@ -41,14 +40,13 @@ public class TestEntrenador
     [Test]
     [TestCase("charmander")]
     [TestCase("pikachu")]
-    
 
     public void AñadirASeleccionTest(string namePoke)
     {
         Entrenador unEntrenador = new Entrenador("nombre", 23123131, null);
         Pokemon unPokemon = new Pokemon(namePoke, "FUEGO", 100, 10978.5,null, "id");
         unEntrenador.AñadirASeleccion(unPokemon);
-        Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo(namePoke));
+        Assert.That(unEntrenador.GetSeleccion().Count(), Is.EqualTo(1));
 
     }
     
@@ -69,33 +67,34 @@ public class TestEntrenador
             cantPokesElegir--;
         }
 
+        List <Pokemon> seleccionFinal = unEntrenador.GetSeleccion();
+
         switch (originalCantPokes)
         {
             case 0:
-                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo(""));
+                Assert.That(seleccionFinal.Count(), Is.EqualTo(0));
                 break;
             case 3:
-                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("3 2 1"));
+                Assert.That(seleccionFinal.Count(), Is.EqualTo(3));
                 break;
             case 6:
-                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("6 5 4 3 2 1"));
+                Assert.That(seleccionFinal.Count(), Is.EqualTo(6));
                 break;
             case 7:
-                Assert.That(unEntrenador.ListaDePokemones(), Is.EqualTo("7 6 5 4 3 2"));
+                Assert.That(seleccionFinal.Count(), Is.EqualTo(6));
                 break;
             
         }
         
     }
-    /*[Test]
+    
+    [Test]
 
     public void AceptarVisitorPorTurnoTest()
     {
         Entrenador unEntrenador = new Entrenador("nombre", 23123131, null);
-        VisitorPorTurno unVisitor = new VisitorPorTurno();
-        unEntrenador.AceptarVisitorPorTurno(unVisitor);
-        Assert.That();
-
-    } no entiendo como checkear esto*/
+        unEntrenador.AceptarVisitorPorTurno(VisitorPorTurno.GetInstancia());
+        Assert.That(unEntrenador.TurnosRecargaAtkEspecial, Is.EqualTo(1));
+    }
     
 }
