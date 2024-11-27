@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Library.Contenido_Parte_II;
 
 namespace Proyecto_Pokemones_I;
 
@@ -57,11 +58,6 @@ public class Pokemon
     }
     
     // Métodos:
-    public void DañoPorTurno(double dañoEspecial)
-    {
-        this.vida = vida-dañoEspecial;
-    }
-    
     public string RecibirDaño(Ataque ataqueRecibido)
     {
         List<string> listaDebilidades = DiccionarioTipos.GetDebilContra(this.tipo);
@@ -90,6 +86,7 @@ public class Pokemon
             }
             else    // Si el tipo del ataque no pertenece a los tipos a los que es inmune, resistente, ni débil, Daño x1
             {
+                mensaje += $"{this.nombre} recibió daño normal\n";
                 dañoTotal = ataqueRecibido.GetDaño();
             }
             
@@ -131,6 +128,11 @@ public class Pokemon
         {
             mensaje += "¡El ataque fue impreciso, no impactó!\n";
         }
+
+        if (mensaje == "")
+        {
+            mensaje = "este metodo no esta funcionando bien";
+        }
         return mensaje;
     }
 
@@ -139,8 +141,8 @@ public class Pokemon
         this.vida += hp;
     }
 
-    public void Revivir()
+    public void AceptarItem(Item pocion)
     {
-        this.vida = this.vidaMax / 2;
+        pocion.ActivarItem(this);
     }
 }

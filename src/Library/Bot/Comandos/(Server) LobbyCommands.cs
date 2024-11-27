@@ -1,7 +1,9 @@
 using Discord.Commands;
 using Discord.WebSocket;
-using Ucu.Poo.DiscordBot.Commands;
+using Library.Bot.Dominio;
 using Ucu.Poo.DiscordBot.Domain;
+
+namespace Library.Bot.Comandos;
 
 public class LobbyCommands : ModuleBase<SocketCommandContext>
 {

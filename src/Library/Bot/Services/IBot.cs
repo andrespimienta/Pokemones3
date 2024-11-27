@@ -1,7 +1,6 @@
-using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ucu.Poo.DiscordBot.Services;
+namespace Library.Bot.Services;
 
 /// <summary>
 /// La interfaz del Bot de Discord para usar con inyección de dependencias.

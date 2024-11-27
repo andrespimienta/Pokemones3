@@ -4,7 +4,54 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
+        <member name="M:Library.Bot.Comandos.StartingCommands.MostrarCatalogoAsync">
+            <summary>
+            Muestra el catálogo de pokemones al jugador que envíe el comando.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.StartingCommands.AgregarPokemonAsync(System.String)">
+            <summary>
+            Agrega uno o más pokemones a la selección del jugador,
+            proporcionados por sus números identificadores.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.StartingCommands.UsarPokemonAsync(System.String)">
+            <summary>
+            Selecciona cuál de los pokemones de la colección del jugador
+            será el Pokemon en uso para el comienzo de la batalla.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.JoinAsync">
+            <summary>
+            Implementa el comando 'join'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar y los empareja automáticamente si hay al menos dos.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.LeaveAsync">
+            <summary>
+            Implementa el comando 'leave' del bot. Este comando remueve el jugador
+            que envía el mensaje de la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.WaitingListAsync">
+            <summary>
+            Implementa el comando 'waitinglist'. Este comando muestra la lista de
+            jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.StatusAsync(System.String)">
+            <summary>
+            Implementa el comando 'status'. Este comando muestra el estado
+            de un jugador en específico (batallando, esperando o no esperando).
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.BattleAsync(System.String)">
+            <summary>
+            Implementa el comando 'battle'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="T:Library.Bot.Dominio.Battle">
             <summary>
             Esta clase representa una batalla entre dos jugadores.
             </summary>
@@ -128,29 +175,7 @@
             Crea efectivamente una instancia de Battle usando los jugadores
             como parámetro, y les avisa por privado que comenzó la batalla.
             </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowCatalog(System.UInt64)">
-            <summary>
-            Llama a LeerArchivo y envía el catálogo de Pokemones ya procesado 
-            al chat del jugador que envió el comando.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddPokemonToList(System.UInt64,System.String)">
-            <summary>
-            Agrega uno o más pokemones a la selección del
-            jugador, indicados por su número identificador
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.SelectPokemonInUse(System.UInt64,System.String)">
-            <summary>
-            Selecciona el pokemon indicado como el pokemon
-            en uso del jugador. Será con el que ataque primero.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowPokemonStatus(Proyecto_Pokemones_I.Entrenador)">
-            <summary>
-            Muestra el estado actual de todos tus pokemones
-            </summary>
+
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
             <summary>
@@ -254,15 +279,7 @@
             mensaje a la lista de jugadores esperando para jugar.
             </summary>
         </member>
-        <member name="M:Proyecto_Pokemones_I.Ataque.#ctor(System.String,System.String,System.Double,System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="nombreAtaque"></param>
-            <param name="tipoAtaque"></param>
-            <param name="dañoAtaque"></param>
-            <param name="precisionAtaque"></param>
-        </member>
+
         <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
             <inheritdoc />
         </member>

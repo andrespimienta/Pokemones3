@@ -1,23 +1,40 @@
-namespace Proyecto_Pokemones_I.Items;
+using Proyecto_Pokemones_I;
 
-public class CuraTotal:IItems
+namespace Library.Contenido_Parte_II.Items;
+
+public class CuraTotal : Item
 {
-    public string Nombre { get; } = "Cura total";
+    public string Nombre { get; }
 
     public CuraTotal()
     {
-        
+        this.Nombre = "Cura total";
     }
     
-    public void DescribirItem()
+    /// <summary>
+    /// Devuelve una breve descripción del
+    /// comportamiento de la poción.
+    /// </summary>
+    /// <returns></returns>
+    public override string DescribirItem()
     {
-        Console.WriteLine("Cura a un Pokémon de efectos de ataques especiales, dormido, paralizado, envenenado, o quemado. "); 
+        string mensaje = "_Remueve los efectos negativos (💤 DORMIDO, ✨ PARALIZADO, 🫧 ENVENENADO, ♨️ QUEMADO) " +
+                         "del pokemon que reciba esta poción._";
+        return mensaje;
     }
 
-    public void ActivarItem(Pokemon pokemon)
+    /// <summary>
+    /// Solo si el pokemon está vivo, le remueve los efectos
+    /// y lo habilita para atacar. La restricción es para que
+    /// no se pueda hacer que un pokemon muerto pueda atacar.
+    /// </summary>
+    /// <param name="pokemon"></param>
+    public override void ActivarItem(Pokemon pokemon)
     {
-        pokemon.EfectoActivo = null;
-        pokemon.PuedeAtacar = true;
+        if (pokemon.GetVida() > 0)
+        {
+            pokemon.EfectoActivo = null;
+            pokemon.PuedeAtacar = true;
+        }
     }
-    
 }
