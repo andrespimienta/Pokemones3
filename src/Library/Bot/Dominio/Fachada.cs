@@ -768,6 +768,7 @@ namespace Library.Bot.Dominio
             Console.WriteLine(mensaje);
         }
     
+
         public async Task CambiarPokemon(ulong userId, string nombrePokemon)
         {
         
@@ -859,7 +860,29 @@ namespace Library.Bot.Dominio
         public async Task UsarPocion(ulong userID, string numEleccion)
         {
         
+    }
+    
+    public async Task Rendirse(ulong userID)
+    {
+        Battle batalla = BattlesList.GetBattle(userID);
+        Entrenador atacante = batalla.GetEntrenadorActual(userID);
+        Entrenador oponente = batalla.GetEntrenadorOponente(userID);
+        SocketGuildUser user = atacante.GetSocketGuildUser();
+        if (atacante == batalla.EntrenadorConTurno)
+        {
+            batalla.Ganador = oponente;
+            this.ChequeoPantallaFinal(userID, batalla);
         }
+        else
+        {
+            string mensaje = "**NO ES TU TURNO AUN, espera a que tu contrincante termine su turno**\n";
+            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje); 
+        }
+        
+    }
+    
+    
+
 
         public void CambiarTurno(ulong userId)
         {
@@ -923,6 +946,30 @@ namespace Library.Bot.Dominio
 
                 result = true;
                 return result;
+
+            }
+           
+        }
+        // Si Ganador no es null, es porque alguien llamó al método rendirse
+        else
+        {
+            string mensajeGanador=("----------------------------------------------------------------------\n" +
+                            $"\n¡Ha ganado {battle.Ganador.GetNombre()} porque tu oponente se ha rendido, felicidades! \n" +
+                            "\nFin de la partida \n" +
+                            "----------------------------------------------------------------------");
+            
+            string mensajeRendido = "Te has rendido, sigue practicando. Mucha suerte en tus próximas batallas";
+            
+            await EnviarAUsuario(battle.Ganador.GetSocketGuildUser(), mensajeGanador);
+            
+            if (battle.Ganador == battle.Player1)
+            {
+                await EnviarAUsuario(battle.Player2.GetSocketGuildUser(), mensajeRendido);
+            }
+            else
+            {
+                await EnviarAUsuario(battle.Player1.GetSocketGuildUser(), mensajeRendido);
+
             }
 
             return result;

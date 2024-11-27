@@ -15,19 +15,32 @@ namespace Library.Bot.Comandos
         }
         
         [Command("CambiarPokemon")]
-        public async Task CambiarPokemonAsync([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
+        public async Task cambiarpokemon([Remainder] [Summary("Si no es null, usa dicho pokemon. De lo contrario muesta la lista de pokemones.")]
+
             string? nombrePokemon = null)
         {
             ulong usuarioId = Context.User.Id;
             Fachada.Instance.CambiarPokemon(usuarioId,nombrePokemon);
         }
         
+
         [Command("UsarPocion")]
         public async Task UsarPocionAsync([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
             string? nombrePokemon = null)
         {
             ulong usuarioId = Context.User.Id;
             Fachada.Instance.UsarPocion(usuarioId,nombrePokemon);
+        
+        
+        
+        
+        [Command("Rendirse")]
+        public async Task Rendirse()
+        {
+            ulong userID = Context.User.Id;  // Obtener el ID del usuario
+        
+            Fachada.Instance.Rendirse(userID);
+
         }
     }
 }
