@@ -636,7 +636,7 @@ namespace Library.Bot.Dominio
                              "`!Atacar`\n" +
                              "`!CambiarPokemon`\n" +
                              "`!UsarPocion`\n" +
-                             "`!Rendirse`"+
+                             "`!Rendirse`\n"+
                              "`!ProbabilidadGanador`";
             EnviarAUsuario(jugador, mensaje);
         }
