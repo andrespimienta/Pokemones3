@@ -1,5 +1,7 @@
 #nullable enable
+using System.Transactions;
 using Library.Contenido_Parte_II;
+using Library.Contenido_Parte_II.Items;
 
 namespace Library.Bot.Dominio;
 
@@ -109,5 +111,86 @@ public class Battle
         {
             EntrenadorConTurno = Player1;
         }
+        this.CalcularProbGanador(); //Se calcula la probabilidad del ganador cada vez que se efectua el turno
+    }
+    
+    // Método para calcular que jugador tiene más probabilidad de ganar. DEFENSA 27 DE NOVIEMBRE.
+    public string CalcularProbGanador()
+    {
+        string posibleGanador = "";
+        Entrenador player1 = this.Player1;
+        Entrenador player2 = this.Player2;
+
+        //Se crea una variable que guarde los puntos de probabilidad de cada jugador
+        double prob1 = 0; 
+        double prob2 = 0;
+
+        //Se trae la cantidad de pokemones vivos del jugador y se multiplican por 10
+        int pokemones1 = player1.GetCantidadPokemonesVivos();
+        prob1 = pokemones1 * 10;
+        
+        int pokemones2 = player2.GetCantidadPokemonesVivos();
+        prob2 = pokemones2 * 10;
+
+        //Se trae la cantidad de Items del jugador y se multiplican por 4.2, que en total suman 30
+        int cantidadItems1 = 0;
+        foreach (Item i in player1.GetListaItems())
+        {
+            cantidadItems1 += 1;
+        }
+        prob1 += cantidadItems1 * 4.2;
+        
+        int cantidadItems2 = 0;
+        foreach (Item i in player2.GetListaItems())
+        {
+            cantidadItems2 += 1;
+        }
+        prob2 += cantidadItems2 * 4.2;
+
+        //Se busca si el jugador tiene pokemones afectados
+        bool p1Afectado = false;
+        foreach (Pokemon pokemon in player1.GetSeleccion())
+        {
+            if (pokemon.EfectoActivo != null)
+            {
+                p1Afectado = true;
+            }
+        }
+
+        if (p1Afectado = true)
+        {
+            prob1 -= 10;
+        }
+        
+        
+        bool p2Afectado = false;
+        foreach (Pokemon pokemon in player2.GetSeleccion())
+        {
+            if (pokemon.EfectoActivo != null)
+            {
+                p2Afectado = true;
+            }
+        }
+
+        if (p2Afectado = true)
+        {
+            prob2 -= 10;
+        }
+
+        //Se verifica que jugador tiene más probabilidad de ganar y se retorna la string
+        if (prob1 > prob2)
+        {
+            posibleGanador=$"El jugador más probable de ganar es {player1.GetNombre()}";
+        }
+        else if(prob1 <prob2)
+        {
+            posibleGanador=$"El jugador más probable de ganar es {player2.GetNombre()}";
+        }
+        else
+        {
+            posibleGanador=$"Ambos jugadores tienen la misma probabilidad de ganar";
+        }
+
+        return posibleGanador;
     }
 }
