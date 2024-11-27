@@ -1,6 +1,9 @@
-/*using Library.Contenido_Parte_II;
+using System.Diagnostics;
+using Library.Bot.Dominio;
+using Library.Contenido_Parte_II;
 using NUnit.Framework;
-using Proyecto_Pokemones_I;
+// Proyecto_Pokemones_I;
+//using Ucu.Poo.DiscordBot.Domain;
 
 namespace TestLibrary;
 
@@ -10,57 +13,31 @@ using NUnit.Framework;
 
 public class TestUserStory7
 {
-    private Fachada1 fachada1;
-
-    // Este método se ejecutará antes de cada prueba, garantizando que se crea una nueva instancia de Fachada.
-    [SetUp]
-    public void SetUp()
-    {
-        fachada1 = Fachada1.GetInstancia(); // Crea una nueva instancia de Fachada para cada test
-        fachada1.LimpiarListaDeJugadores();
-    }
-
     [Test]
-
-    // "Como jugador, quiero poder cambiar de Pokémon durante una batalla."
- 
-    public void JugadorCambiaPokemon()
+    public void CambiarPokemon()
     {
-        fachada1.AgregarJugadorALista("A");
-        fachada1.AgregarJugadorALista("B");
-        fachada1.entrenadorConTurno = fachada1.Jugadores[0];
+        // Inicialización de la fachada y los entrenadores
+        Fachada fachada = Fachada.Instance; ///"Obtiene la instancia de la fachada para gestionar las operaciones de la batalla"
+        Entrenador usuario = new Entrenador("Jugador", 3, null); ///"Crea el entrenador jugador con ID 3"
+        Entrenador oponente = new Entrenador("Oponente", 1, null); ///"Crea el entrenador oponente con ID 1"
         
-        AtaqueBasico rayo = new AtaqueBasico("RAYO", "ELÉCTRICO", 10000, 100);
-        AtaqueBasico hidrobomba = new AtaqueBasico("HIDROBOMBA", "AGUA", 10, 100);
-        List<Ataque> pikachuataques = new List<Ataque>();
-        
-        pikachuataques.Add(rayo);
-        pikachuataques.Add(hidrobomba);
-        
-        Pokemon pikachu = new Pokemon("PIKACHU", "ELÉCTRICO", 100, 10, pikachuataques);
+        // Creación de Pokémon y asignación al jugador
+        Pokemon p1 = new Pokemon("PIKACHU", "ELÉCTRICO", 35, 1.5, null, "id1"); ///"Crea a Pikachu con tipo ELÉCTRICO y vida inicial de 35"
+        Pokemon p2 = new Pokemon("CHARMANDER", "FUEGO", 35, 1.5, null, "id2"); ///"Crea a Charmander con tipo FUEGO y vida inicial de 35"
+        usuario.AñadirASeleccion(p1); ///"Agrega a Pikachu al equipo del jugador"
+        usuario.AñadirASeleccion(p2); ///"Agrega a Charmander al equipo del jugador"
+        usuario.UsarPokemon(p1); ///"Selecciona a Pikachu como el Pokémon inicial en uso"
 
-        Pokemon squirtle = new Pokemon("SQUIRTLE", "AGUA", 100, 10, pikachuataques);
+        // Configuración de la batalla
+        BattlesList.Instance.AddBattle(usuario, oponente); ///"Registra la batalla entre el jugador y el oponente en la lista de batallas activas"
+        Battle batalla = BattlesList.Instance.GetBattle(3); ///"Recupera la batalla específica en la que participa el jugador con ID 3"
+        batalla.EntrenadorConTurno = usuario; ///"Define que el turno inicial es del jugador"
 
-        fachada1.entrenadorConTurno.AñadirASeleccion(squirtle); //Jugador A agrega a SQUIRTLE
-        fachada1.entrenadorConTurno.AñadirASeleccion(pikachu); //Jugador A agrega a PIKACHU
-        
-        fachada1.CambiarTurno(); 
+        // Cambio de Pokémon durante el turno
+        fachada.CambiarPokemon(usuario.Id, "CHARMANDER"); ///"El jugador usa la fachada para cambiar su Pokémon activo a Charmander"
 
-        fachada1.entrenadorConTurno.AñadirASeleccion(pikachu); //Jugador B agrega a PIKACHU
-        fachada1.entrenadorConTurno.AñadirASeleccion(squirtle); //Jugador B agrega a SQUIRTLE
-
-        fachada1.CambiarTurno(); 
-        
-        fachada1.CambiarPokemonPor("SQUIRTLE"); //Jugador A elije SQUIRTLE para combatir
-        fachada1.CambiarTurno(); //Ahora el jugador con turno pasa a ser B
-        fachada1.CambiarPokemonPor("PIKACHU"); //Jugador B elije PIKACHU para combatir
-        fachada1.CambiarTurno(); //Ahora el jugador con turno vuelve a ser A
-
-        //Simulamos que inicia el combate
-        
-        Assert.That(fachada1.entrenadorConTurno.GetPokemonEnUso(), Is.EqualTo(squirtle));  //Verifica el pokemón que está en uso de A
-        fachada1.CambiarPokemonPor("PIKACHU"); //El jugador elige cambiar a su otro pokemon
-        fachada1.CambiarTurno(); // Ahora lo hace el program pero proximamente lo hará la fachada
-        Assert.That(fachada1.entrenadorSinTurno.GetPokemonEnUso(), Is.EqualTo(pikachu)); //Verifica el pokemón que se cambió en A
+        // Verificaciones
+        Assert.That(usuario.GetPokemonEnUso().GetNombre(), Is.EqualTo("CHARMANDER")); ///"Verifica que el Pokémon en uso del jugador se haya cambiado correctamente a Charmander"
+        Assert.That(batalla.GetEntrenadorConTurno().GetNombre(), Is.EqualTo("Oponente")); ///"Verifica que al cambiar de Pokémon, el turno haya pasado automáticamente al oponente"
     }
-}*/
+}

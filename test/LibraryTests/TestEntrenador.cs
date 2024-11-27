@@ -1,7 +1,8 @@
 using Discord.WebSocket;
 using Library.Contenido_Parte_II;
 using NUnit.Framework;
-using Proyecto_Pokemones_I;
+//using Proyecto_Pokemones_I;
+//using Proyecto_Pokemones_I.Items;
 
 namespace TestLibrary;
 
@@ -39,13 +40,14 @@ public class TestEntrenador
     [Test]
     [TestCase("charmander")]
     [TestCase("pikachu")]
+    
 
     public void AñadirASeleccionTest(string namePoke)
     {
         Entrenador unEntrenador = new Entrenador("nombre", 23123131, null);
         Pokemon unPokemon = new Pokemon(namePoke, "FUEGO", 100, 10978.5,null, "id");
         unEntrenador.AñadirASeleccion(unPokemon);
-        Assert.That(unEntrenador.GetSeleccion().Count(), Is.EqualTo(1));
+        Assert.That(unEntrenador.GetListaDePokemones(), Is.EqualTo(namePoke));
 
     }
     

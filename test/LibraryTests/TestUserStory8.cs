@@ -10,16 +10,8 @@ using NUnit.Framework;
 
 public class TestUserStory8
 {
-    private Fachada1 fachada1;
 
-    // Este método se ejecutará antes de cada prueba, garantizando que se crea una nueva instancia de Fachada.
-    [SetUp]
-    public void SetUp()
-    {
-        fachada1 = Fachada1.GetInstancia(); // Crea una nueva instancia de Fachada para cada test
-        fachada1.LimpiarListaDeJugadores();
-    }
-
+    
     [Test]
 
     // "Como entrenador, quiero poder usar un ítem durante una batalla."
