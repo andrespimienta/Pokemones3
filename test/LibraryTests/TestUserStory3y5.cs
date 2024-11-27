@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using Proyecto_Pokemones_I;
 
 /*namespace TestLibrary;
 

@@ -1,7 +1,7 @@
 using Discord.WebSocket;
-using Proyecto_Pokemones_I.Items;
+using Library.Contenido_Parte_II.Items;
 
-namespace Proyecto_Pokemones_I;
+namespace Library.Contenido_Parte_II;
 
 public class Entrenador
 {

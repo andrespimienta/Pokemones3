@@ -1,5 +1,6 @@
 using Discord;
 
+namespace Library.Bot.Dominio;
 public class CanalDiscord : ICanal
 {
     private readonly IMessageChannel canalDiscord;

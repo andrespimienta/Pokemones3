@@ -1,13 +1,11 @@
-using System;
 using System.Reflection;
-using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Ucu.Poo.DiscordBot.Services
+namespace Library.Bot.Services
 {
     public static class BotLoader
     {

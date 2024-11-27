@@ -1,4 +1,5 @@
 using Library.Contenido_Parte_II;
+using Library.Contenido_Parte_II.Ataques;
 using NUnit.Framework;
 
 namespace TestLibrary;

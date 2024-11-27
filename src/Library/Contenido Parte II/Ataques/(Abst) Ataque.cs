@@ -1,4 +1,4 @@
-namespace Proyecto_Pokemones_I;
+namespace Library.Contenido_Parte_II.Ataques;
 
 public abstract class Ataque
 {

@@ -1,6 +1,7 @@
-using System.Runtime.CompilerServices;
+using Library.Contenido_Parte_II.Ataques;
+using Library.Contenido_Parte_II.Items;
 
-namespace Proyecto_Pokemones_I;
+namespace Library.Contenido_Parte_II;
 
 public class Pokemon
 {

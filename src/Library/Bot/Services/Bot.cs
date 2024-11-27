@@ -1,13 +1,13 @@
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Ucu.Poo.DiscordBot.Commands;
+using Library.Bot.Comandos;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-namespace Ucu.Poo.DiscordBot.Services;
+namespace Library.Bot.Services;
 
 /// <summary>
 /// Esta clase implementa el bot de Discord.

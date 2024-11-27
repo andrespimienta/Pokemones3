@@ -1,8 +1,7 @@
-using System.Collections.ObjectModel;
 using Discord.WebSocket;
-using Proyecto_Pokemones_I;
+using Library.Contenido_Parte_II;
 
-namespace Ucu.Poo.DiscordBot.Domain;
+namespace Library.Bot.Dominio;
 
 /// <summary>
 /// Esta clase representa la lista de jugadores esperando para jugar.

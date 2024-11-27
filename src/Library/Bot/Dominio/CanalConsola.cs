@@ -1,4 +1,4 @@
-namespace Ucu.Poo.DiscordBot.Domain;
+namespace Library.Bot.Dominio;
 
 public class CanalConsola : ICanal
 {

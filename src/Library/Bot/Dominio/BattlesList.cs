@@ -1,7 +1,6 @@
-using Proyecto_Pokemones_I;
-using System.Linq;
+using Library.Contenido_Parte_II;
 
-namespace Ucu.Poo.DiscordBot.Domain;
+namespace Library.Bot.Dominio;
 
 /// <summary>
 /// Esta clase representa la lista de batallas en curso.

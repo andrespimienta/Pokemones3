@@ -1,7 +1,5 @@
 #nullable enable
-using Proyecto_Pokemones_I;
-
-namespace Library.Contenido_Parte_II;
+namespace Library.Contenido_Parte_II.Ataques;
 
 /// <inheritdoc />
 public class AtaqueBasico:Ataque

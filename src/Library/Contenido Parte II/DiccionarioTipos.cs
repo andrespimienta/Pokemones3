@@ -1,4 +1,4 @@
-namespace Proyecto_Pokemones_I;
+namespace Library.Contenido_Parte_II;
 
 public static class DiccionarioTipos // Clase estática que contiene los datos sobre los tipos
 {

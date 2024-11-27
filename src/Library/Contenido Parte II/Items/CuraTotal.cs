@@ -1,4 +1,4 @@
-namespace Proyecto_Pokemones_I.Items;
+namespace Library.Contenido_Parte_II.Items;
 
 public class CuraTotal : Item
 {

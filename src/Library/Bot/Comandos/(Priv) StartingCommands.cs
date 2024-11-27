@@ -1,8 +1,7 @@
 using Discord.Commands;
-using Discord.WebSocket;
-using Proyecto_Pokemones_I;
-using Ucu.Poo.DiscordBot.Domain;
-using Ucu.Poo.DiscordBot.Commands;
+using Library.Bot.Dominio;
+
+namespace Library.Bot.Comandos;
 
 public class StartingCommands : ModuleBase<SocketCommandContext>
 { 
@@ -41,7 +40,7 @@ public class StartingCommands : ModuleBase<SocketCommandContext>
         Fachada.Instance.SelectPokemonInUse(userID, numero);
     }
     [Command("StartBattle")]
-    public async Task BattleAsync()
+    public async Task StartBattleAsync()
     {
         // Obtener el ID del jugador actual usando su ID de Discord
         ulong usuarioId = Context.User.Id;
