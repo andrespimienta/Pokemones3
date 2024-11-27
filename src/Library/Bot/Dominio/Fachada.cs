@@ -636,7 +636,8 @@ namespace Library.Bot.Dominio
                              "`!Atacar`\n" +
                              "`!CambiarPokemon`\n" +
                              "`!UsarPocion`\n" +
-                             "`!Rendirse`";
+                             "`!Rendirse`"+
+                             "`!ProbabilidadGanador`";
             EnviarAUsuario(jugador, mensaje);
         }
 
@@ -1102,6 +1103,17 @@ namespace Library.Bot.Dominio
             batalla.Ganador = oponente; 
             this.ChequeoPantallaFinal(userID, batalla);
 
+        }
+
+        public async Task ProbabilidadGanador(ulong userID)
+        {
+            Battle batalla = BattlesList.GetBattle(userID);
+            Entrenador atacante = batalla.GetEntrenadorActual(userID);
+            Entrenador oponente = batalla.GetEntrenadorOponente(userID);
+            SocketGuildUser user = atacante.GetSocketGuildUser();
+
+            string mensaje = batalla.CalcularProbGanador();
+            await this.EnviarAUsuario(user, mensaje);
         }
         
         public void CambiarTurno(ulong userId)

@@ -138,14 +138,30 @@ public class Battle
         {
             cantidadItems1 += 1;
         }
-        prob1 += cantidadItems1 * 4.2;
+
+        if (cantidadItems1 == 7)
+        {
+            prob1 += 30;
+        }
+        else
+        {
+            prob1 += cantidadItems1 * 4.2;
+        }
         
         int cantidadItems2 = 0;
         foreach (Item i in player2.GetListaItems())
         {
             cantidadItems2 += 1;
         }
-        prob2 += cantidadItems2 * 4.2;
+        
+        if (cantidadItems2 == 7)
+        {
+            prob2 += 30;
+        }
+        else
+        {
+            prob2 += cantidadItems2 * 4.2;
+        }
 
         //Se busca si el jugador tiene pokemones afectados
         bool p1Afectado = false;

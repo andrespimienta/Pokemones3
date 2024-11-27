@@ -40,6 +40,15 @@ namespace Library.Bot.Comandos
 
             Fachada.Instance.Rendirse(userID);
         }
+        
+        
+        [Command("ProbabilidadGanador")] // Comando para consultar que jugador tiene mas probabilidad de ganar
+        public async Task ProbabilidadGanador()
+        {
+            ulong userID = Context.User.Id; // Obtener el ID del usuario
+
+            Fachada.Instance.ProbabilidadGanador(userID);
+        }
     }
 }
 
