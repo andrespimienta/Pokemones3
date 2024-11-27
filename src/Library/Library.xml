@@ -4,57 +4,253 @@
         <name>Library</name>
     </assembly>
     <members>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.Battle">
+        <member name="M:Library.Bot.Comandos.StartingCommands.MostrarCatalogoAsync">
+            <summary>
+            Muestra el catálogo de pokemones al jugador que envíe el comando.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.StartingCommands.AgregarPokemonAsync(System.String)">
+            <summary>
+            Agrega uno o más pokemones a la selección del jugador,
+            proporcionados por sus números identificadores.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.StartingCommands.UsarPokemonAsync(System.String)">
+            <summary>
+            Selecciona cuál de los pokemones de la colección del jugador
+            será el Pokemon en uso para el comienzo de la batalla.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.JoinAsync">
+            <summary>
+            Implementa el comando 'join'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar y los empareja automáticamente si hay al menos dos.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.LeaveAsync">
+            <summary>
+            Implementa el comando 'leave' del bot. Este comando remueve el jugador
+            que envía el mensaje de la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.WaitingListAsync">
+            <summary>
+            Implementa el comando 'waitinglist'. Este comando muestra la lista de
+            jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.StatusAsync(System.String)">
+            <summary>
+            Implementa el comando 'status'. Este comando muestra el estado
+            de un jugador en específico (batallando, esperando o no esperando).
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Comandos.LobbyCommands.BattleAsync(System.String)">
+            <summary>
+            Implementa el comando 'battle'. Este comando une al jugador que envía el
+            mensaje a la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="T:Library.Bot.Dominio.Battle">
             <summary>
             Esta clase representa una batalla entre dos jugadores.
             </summary>
         </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Player1">
+        <member name="P:Library.Bot.Dominio.Battle.Player1">
             <summary>
             Obtiene un valor que representa el primer jugador.
             </summary>
         </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Player2">
+        <member name="P:Library.Bot.Dominio.Battle.Player2">
             <summary>
             Obtiene un valor que representa al oponente.
             </summary>
         </member>
-        <member name="P:Ucu.Poo.DiscordBot.Domain.Battle.Ganador">
+        <member name="P:Library.Bot.Dominio.Battle.Ganador">
             <summary>
             Obtiene un valor que representa al ganador.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.#ctor(Proyecto_Pokemones_I.Entrenador,Proyecto_Pokemones_I.Entrenador)">
+        <member name="M:Library.Bot.Dominio.Battle.#ctor(Library.Contenido_Parte_II.Entrenador,Library.Contenido_Parte_II.Entrenador)">
             <summary>
-            Inicializa una instancia de la clase <see cref="T:Ucu.Poo.DiscordBot.Domain.Battle"/> con los
+            Inicializa una instancia de la clase <see cref="T:Library.Bot.Dominio.Battle"/> con los
             valores recibidos como argumento.
             </summary>
             <param name="player1">El primer jugador.</param>
             <param name="player2">El oponente.</param>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.EstanListos">
+        <member name="M:Library.Bot.Dominio.Battle.EstanListos">
             <summary>
             Chequea que ambos jugadores estén preparados.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.GetEntrenadorActual(System.UInt64)">
+        <member name="M:Library.Bot.Dominio.Battle.GetEntrenadorActual(System.UInt64)">
             <summary>
             Busca si alguno de los entrenadores de esta batalla tiene el ID del parámetro, y si es así, lo devuelve.
             </summary>
             <param name="userId">El ID del usuario.</param>
             <returns>El entrenador si se encuentra, o null si no se encuentra.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.GetEntrenadorOponente(System.UInt64)">
+        <member name="M:Library.Bot.Dominio.Battle.GetEntrenadorOponente(System.UInt64)">
             <summary>
             Busca si alguno de los entrenadores de esta batalla tiene el ID del parámetro, y si es así, lo devuelve.
             </summary>
             <param name="userId">El ID del usuario.</param>
             <returns>El entrenador si se encuentra, o null si no se encuentra.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Battle.HayGanador(Proyecto_Pokemones_I.Entrenador)">
+        <member name="M:Library.Bot.Dominio.Battle.HayGanador(Library.Contenido_Parte_II.Entrenador)">
             <summary>
             Asigna un ganador a la batalla.
             </summary>
+        </member>
+        <member name="T:Library.Bot.Dominio.WaitingList">
+            <summary>
+            Esta clase representa la lista de jugadores esperando para jugar.
+            </summary>
+        </member>
+        <member name="M:Library.Bot.Dominio.WaitingList.AgregarEntrenador(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser)">
+            <summary>
+            Agrega un jugador a la lista de espera.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord en el servidor
+            del bot a agregar.
+            </param>
+            <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
+            contrario.</returns>
+        </member>
+        <member name="M:Library.Bot.Dominio.WaitingList.EliminarEntrenador(System.String)">
+            <summary>
+            Remueve un jugador de la lista de espera.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord en el servidor
+            del bot a remover.
+            </param>
+            <returns><c>true</c> si se remueve el usuario; <c>false</c> en caso
+            contrario.</returns>
+        </member>
+        <member name="M:Library.Bot.Dominio.WaitingList.EncontrarEntrenador(System.String)">
+            <summary>
+            Busca un jugador por el nombre de usuario de Discord en el servidor del
+            bot.
+            </summary>
+            <param name="displayName">El nombre de usuario de Discord en el servidor
+            del bot a buscar.
+            </param>
+            <returns>El jugador encontrado o <c>null</c> en caso contrario.
+            </returns>
+        </member>
+        <member name="M:Library.Bot.Dominio.WaitingList.GetAlguienEsperando(System.String)">
+            <summary>
+            Retorna un jugador cualquiera esperando para jugar. En esta
+            implementación provista no es cualquiera, sino el primero. En la
+            implementación definitiva, debería ser uno aleatorio.
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Library.Bot.Services.Bot">
+            <summary>
+            Esta clase implementa el bot de Discord.
+            </summary>
+        </member>
+        <member name="T:Library.Bot.Services.IBot">
+            <summary>
+            La interfaz del Bot de Discord para usar con inyección de dependencias.
+            </summary>
+        </member>
+        <member name="M:Library.Contenido_Parte_II.Ataque.#ctor(System.String,System.String,System.Double,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="nombreAtaque"></param>
+            <param name="tipoAtaque"></param>
+            <param name="dañoAtaque"></param>
+            <param name="precisionAtaque"></param>
+        </member>
+        <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
+            <inheritdoc />
+        </member>
+        <member name="M:Library.Contenido_Parte_II.AtaqueBasico.#ctor(System.String,System.String,System.Double,System.Int32)">
+            <summary>
+            Hereda de la clase abstracta "Ataque", sin efectos y esEspecial = false
+            </summary>
+            <param name="nombreAtaque"></param>
+            <param name="tipoAtaque"></param>
+            <param name="dañoAtaque"></param>
+            <param name="precisionAtaque"></param>
+        </member>
+        <member name="T:Library.Contenido_Parte_II.AtaqueEspecial">
+            <inheritdoc />
+        </member>
+        <member name="M:Library.Contenido_Parte_II.AtaqueEspecial.#ctor(System.String,System.String,System.Double,System.Int32,System.String)">
+            <summary>
+            Hereda de la clase abstracta "Ataque", con un efecto y esEspecial = true
+            </summary>
+            <param name="nombreAtaque"></param>
+            <param name="tipoAtaque"></param>
+            <param name="dañoAtaque"></param>
+            <param name="precisionAtaque"></param>
+            <param name="efecto"></param>
+        </member>
+        <member name="M:Library.Contenido_Parte_II.Item.DescribirItem">
+            <summary>
+            Las clases que heredan de Item se comportan
+            como visitor para aplicar su comportamiento.
+            El pokemon llama al método AceptarItem y se
+            pasa a sí mismo por parámetro, para que el
+            ítem ejecute su comportamiento.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Contenido_Parte_II.Items.CuraTotal.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Contenido_Parte_II.Items.CuraTotal.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si el pokemon está vivo, le remueve los efectos
+            y lo habilita para atacar. La restricción es para que
+            no se pueda hacer que un pokemon muerto pueda atacar.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
+        <member name="M:Library.Contenido_Parte_II.Items.Revivir.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Contenido_Parte_II.Items.Revivir.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si está muerto, aumenta la vida del
+            pokemon al 50% de su vida máxima,
+            permitiéndole atacar y removiéndole los
+            efectos negativos viejos. La restricción
+            es para que no cumpla la función de 'Cura Total'
+            aplicándosela a pokemones vivos.
+            </summary>
+            <param name="pokemon"></param>
+        </member>
+        <member name="M:Library.Contenido_Parte_II.Items.SuperPocion.DescribirItem">
+            <summary>
+            Devuelve una breve descripción del
+            comportamiento de la poción.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Library.Contenido_Parte_II.Items.SuperPocion.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
+            <summary>
+            Solo si el pokemon está vivo, le aumenta
+            la vida 70 puntos, o hasta la vida máxima.
+            La restricción es para que esta poción no
+            cumpla la función de 'Revivir' al sumarle vida
+            a un pokemon muerto.
+            </summary>
+            <param name="pokemon"></param>
         </member>
         <member name="T:Ucu.Poo.DiscordBot.Domain.BattlesList">
             <summary>
@@ -66,7 +262,7 @@
             Inicializa este singleton. Es necesario solo en los tests.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(Proyecto_Pokemones_I.Entrenador,Proyecto_Pokemones_I.Entrenador)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.BattlesList.AddBattle(Library.Contenido_Parte_II.Entrenador,Library.Contenido_Parte_II.Entrenador)">
             <summary>
             Crea una nueva batalla entre dos jugadores.
             </summary>
@@ -92,31 +288,31 @@
             Inicializa este singleton. Es necesario solo en los tests.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser,ICanal)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.AddTrainerToWaitingList(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser,Library.Bot.Dominio.ICanal)">
             <summary>
             Agrega un jugador a la lista de espera.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.RemoveTrainerFromWaitingList(System.String,ICanal)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.RemoveTrainerFromWaitingList(System.String,Library.Bot.Dominio.ICanal)">
             <summary>
             Remueve un jugador de la lista de espera.
             </summary>
             <param name="displayName">El jugador a remover.</param>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.GetTrainersWaiting(ICanal)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.GetTrainersWaiting(Library.Bot.Dominio.ICanal)">
             <summary>
             Obtiene la lista de jugadores esperando.
             </summary>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.TrainerStatus(System.UInt64,System.String,ICanal)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.TrainerStatus(System.UInt64,System.String,Library.Bot.Dominio.ICanal)">
             <summary>
             Determina si un jugador está esperando para jugar.
             </summary>
             <param name="displayName">El jugador.</param>
             <returns>Un mensaje con el resultado.</returns>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ChallengeTrainerToBattle(System.String,System.String,ICanal)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ChallengeTrainerToBattle(System.String,System.String,Library.Bot.Dominio.ICanal)">
             <summary>
             Intenta crear una batalla entre dos jugadores.
             </summary>
@@ -147,206 +343,10 @@
             en uso del jugador. Será con el que ataque primero.
             </summary>
         </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowPokemonStatus(Proyecto_Pokemones_I.Entrenador)">
+        <member name="M:Ucu.Poo.DiscordBot.Domain.Fachada.ShowPokemonStatus(Library.Contenido_Parte_II.Entrenador)">
             <summary>
             Muestra el estado actual de todos tus pokemones
             </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Domain.WaitingList">
-            <summary>
-            Esta clase representa la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.AgregarEntrenador(System.UInt64,System.String,Discord.WebSocket.SocketGuildUser)">
-            <summary>
-            Agrega un jugador a la lista de espera.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord en el servidor
-            del bot a agregar.
-            </param>
-            <returns><c>true</c> si se agrega el usuario; <c>false</c> en caso
-            contrario.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.EliminarEntrenador(System.String)">
-            <summary>
-            Remueve un jugador de la lista de espera.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord en el servidor
-            del bot a remover.
-            </param>
-            <returns><c>true</c> si se remueve el usuario; <c>false</c> en caso
-            contrario.</returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.EncontrarEntrenador(System.String)">
-            <summary>
-            Busca un jugador por el nombre de usuario de Discord en el servidor del
-            bot.
-            </summary>
-            <param name="displayName">El nombre de usuario de Discord en el servidor
-            del bot a buscar.
-            </param>
-            <returns>El jugador encontrado o <c>null</c> en caso contrario.
-            </returns>
-        </member>
-        <member name="M:Ucu.Poo.DiscordBot.Domain.WaitingList.GetAlguienEsperando(System.String)">
-            <summary>
-            Retorna un jugador cualquiera esperando para jugar. En esta
-            implementación provista no es cualquiera, sino el primero. En la
-            implementación definitiva, debería ser uno aleatorio.
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Services.Bot">
-            <summary>
-            Esta clase implementa el bot de Discord.
-            </summary>
-        </member>
-        <member name="T:Ucu.Poo.DiscordBot.Services.IBot">
-            <summary>
-            La interfaz del Bot de Discord para usar con inyección de dependencias.
-            </summary>
-        </member>
-        <member name="M:StartingCommands.MostrarCatalogoAsync">
-            <summary>
-            Muestra el catálogo de pokemones al jugador que envíe el comando.
-            </summary>
-        </member>
-        <member name="M:StartingCommands.AgregarPokemonAsync(System.String)">
-            <summary>
-            Agrega uno o más pokemones a la selección del jugador,
-            proporcionados por sus números identificadores.
-            </summary>
-        </member>
-        <member name="M:StartingCommands.UsarPokemonAsync(System.String)">
-            <summary>
-            Selecciona cuál de los pokemones de la colección del jugador
-            será el Pokemon en uso para el comienzo de la batalla.
-            </summary>
-        </member>
-        <member name="M:LobbyCommands.JoinAsync">
-            <summary>
-            Implementa el comando 'join'. Este comando une al jugador que envía el
-            mensaje a la lista de jugadores esperando para jugar y los empareja automáticamente si hay al menos dos.
-            </summary>
-        </member>
-        <member name="M:LobbyCommands.LeaveAsync">
-            <summary>
-            Implementa el comando 'leave' del bot. Este comando remueve el jugador
-            que envía el mensaje de la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:LobbyCommands.WaitingListAsync">
-            <summary>
-            Implementa el comando 'waitinglist'. Este comando muestra la lista de
-            jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:LobbyCommands.StatusAsync(System.String)">
-            <summary>
-            Implementa el comando 'status'. Este comando muestra el estado
-            de un jugador en específico (batallando, esperando o no esperando).
-            </summary>
-        </member>
-        <member name="M:LobbyCommands.BattleAsync(System.String)">
-            <summary>
-            Implementa el comando 'battle'. Este comando une al jugador que envía el
-            mensaje a la lista de jugadores esperando para jugar.
-            </summary>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Ataque.#ctor(System.String,System.String,System.Double,System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="nombreAtaque"></param>
-            <param name="tipoAtaque"></param>
-            <param name="dañoAtaque"></param>
-            <param name="precisionAtaque"></param>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Item.DescribirItem">
-            <summary>
-            Las clases que heredan de Item se comportan
-            como visitor para aplicar su comportamiento.
-            El pokemon llama al método AceptarItem y se
-            pasa a sí mismo por parámetro, para que el
-            ítem ejecute su comportamiento.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Items.CuraTotal.DescribirItem">
-            <summary>
-            Devuelve una breve descripción del
-            comportamiento de la poción.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Items.CuraTotal.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
-            <summary>
-            Solo si el pokemon está vivo, le remueve los efectos
-            y lo habilita para atacar. La restricción es para que
-            no se pueda hacer que un pokemon muerto pueda atacar.
-            </summary>
-            <param name="pokemon"></param>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Items.Revivir.DescribirItem">
-            <summary>
-            Devuelve una breve descripción del
-            comportamiento de la poción.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Items.Revivir.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
-            <summary>
-            Solo si está muerto, aumenta la vida del
-            pokemon al 50% de su vida máxima,
-            permitiéndole atacar y removiéndole los
-            efectos negativos viejos. La restricción
-            es para que no cumpla la función de 'Cura Total'
-            aplicándosela a pokemones vivos.
-            </summary>
-            <param name="pokemon"></param>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Items.SuperPocion.DescribirItem">
-            <summary>
-            Devuelve una breve descripción del
-            comportamiento de la poción.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Proyecto_Pokemones_I.Items.SuperPocion.ActivarItem(Proyecto_Pokemones_I.Pokemon)">
-            <summary>
-            Solo si el pokemon está vivo, le aumenta
-            la vida 70 puntos, o hasta la vida máxima.
-            La restricción es para que esta poción no
-            cumpla la función de 'Revivir' al sumarle vida
-            a un pokemon muerto.
-            </summary>
-            <param name="pokemon"></param>
-        </member>
-        <member name="T:Library.Contenido_Parte_II.AtaqueBasico">
-            <inheritdoc />
-        </member>
-        <member name="M:Library.Contenido_Parte_II.AtaqueBasico.#ctor(System.String,System.String,System.Double,System.Int32)">
-            <summary>
-            Hereda de la clase abstracta "Ataque", sin efectos y esEspecial = false
-            </summary>
-            <param name="nombreAtaque"></param>
-            <param name="tipoAtaque"></param>
-            <param name="dañoAtaque"></param>
-            <param name="precisionAtaque"></param>
-        </member>
-        <member name="T:Library.Contenido_Parte_II.AtaqueEspecial">
-            <inheritdoc />
-        </member>
-        <member name="M:Library.Contenido_Parte_II.AtaqueEspecial.#ctor(System.String,System.String,System.Double,System.Int32,System.String)">
-            <summary>
-            Hereda de la clase abstracta "Ataque", con un efecto y esEspecial = true
-            </summary>
-            <param name="nombreAtaque"></param>
-            <param name="tipoAtaque"></param>
-            <param name="dañoAtaque"></param>
-            <param name="precisionAtaque"></param>
-            <param name="efecto"></param>
         </member>
     </members>
 </doc>

@@ -1,5 +1,7 @@
 using Proyecto_Pokemones_I;
 using System.Linq;
+using Library.Bot.Dominio;
+using Library.Contenido_Parte_II;
 
 namespace Ucu.Poo.DiscordBot.Domain;
 

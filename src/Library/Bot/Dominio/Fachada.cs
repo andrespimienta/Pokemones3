@@ -1,5 +1,7 @@
 using Discord;
 using Discord.WebSocket;
+using Library.Bot.Dominio;
+using Library.Contenido_Parte_II;
 using Proyecto_Pokemones_I;
 
 namespace Ucu.Poo.DiscordBot.Domain;

@@ -1,7 +1,8 @@
 #nullable enable
+using Library.Contenido_Parte_II;
 using Proyecto_Pokemones_I;
 
-namespace Ucu.Poo.DiscordBot.Domain;
+namespace Library.Bot.Dominio;
 
 /// <summary>
 /// Esta clase representa una batalla entre dos jugadores.

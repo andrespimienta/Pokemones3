@@ -1,8 +1,6 @@
-using System.Globalization;
-using Library.Contenido_Parte_II;
+using Proyecto_Pokemones_I;
 
-
-namespace Proyecto_Pokemones_I;
+namespace Library.Contenido_Parte_II;
 
 public static class LeerArchivo
 {

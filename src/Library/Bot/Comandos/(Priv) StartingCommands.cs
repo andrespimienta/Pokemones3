@@ -1,8 +1,7 @@
 using Discord.Commands;
-using Discord.WebSocket;
-using Proyecto_Pokemones_I;
 using Ucu.Poo.DiscordBot.Domain;
-using Ucu.Poo.DiscordBot.Commands;
+
+namespace Library.Bot.Comandos;
 
 public class StartingCommands : ModuleBase<SocketCommandContext>
 { 

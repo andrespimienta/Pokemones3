@@ -1,4 +1,6 @@
-namespace Proyecto_Pokemones_I.Items;
+using Proyecto_Pokemones_I;
+
+namespace Library.Contenido_Parte_II.Items;
 
 public class Revivir:Item
 {

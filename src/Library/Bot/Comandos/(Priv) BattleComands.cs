@@ -1,13 +1,7 @@
 using Discord.Commands;
-using Discord.WebSocket;
-using Proyecto_Pokemones_I;
-using System.Threading.Tasks;
-using Discord;
 using Ucu.Poo.DiscordBot.Domain;
 
-
-
-namespace Ucu.Poo.DiscordBot.Commands
+namespace Library.Bot.Comandos
 {
     public class BattleCommands : ModuleBase<SocketCommandContext>
     {
