@@ -85,6 +85,7 @@ public class Pokemon
             }
             else    // Si el tipo del ataque no pertenece a los tipos a los que es inmune, resistente, ni débil, Daño x1
             {
+                mensaje += $"{this.nombre} recibió daño normal\n";
                 dañoTotal = ataqueRecibido.GetDaño();
             }
             
@@ -125,6 +126,11 @@ public class Pokemon
         else
         {
             mensaje += "¡El ataque fue impreciso, no impactó!\n";
+        }
+
+        if (mensaje == "")
+        {
+            mensaje = "este metodo no esta funcionando bien";
         }
         return mensaje;
     }

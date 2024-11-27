@@ -14,10 +14,10 @@ namespace Ucu.Poo.DiscordBot.Commands
        
         [Command("Atacar")]
         public async Task atacar([Remainder] [Summary("Si no es null, usa dicho ataque. De lo contrario muesta la lista de ataques.")]
-            string? attackName = null)
+            string? attackNumber = null)
         {
             ulong usuarioId = Context.User.Id;
-            Fachada.Instance.Atacar(usuarioId,attackName);
+            Fachada.Instance.Atacar(usuarioId,attackNumber);
         }
         
         [Command("CambiarPokemon")]
