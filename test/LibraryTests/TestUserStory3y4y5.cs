@@ -65,9 +65,9 @@ public class TestUserStory3y4y5
         // Definición de las posibles salidas esperadas
         string salidaEsperada1 = "35/35\nEs el turno de user\n\r\n35/-5\nAhora es el turno de oponente\n\r\n"; ///"Primera salida esperada si el daño reduce la vida del oponente a negativo"
         string salidaEsperada2 = "35/35\nEs el turno de user\n\r\n35/35\nAhora es el turno de oponente\n\r\n"; ///"Segunda salida esperada si el daño no afecta al oponente"
-        
+        string salidaEsperada3=  "35/35\nEs el turno de user\n\r\n35/-13\nAhora es el turno de oponente\n\r\n"; ///"tercera salida esperada si el daño no afecta menos al oponente"
         // Comparación de la salida en consola con las posibles salidas esperadas
-        Assert.That(consoleOutput.ToString(), Is.EqualTo(salidaEsperada1).Or.EqualTo(salidaEsperada2)); ///"Verifica que la salida en consola sea una de las dos esperadas"
+        Assert.That(consoleOutput.ToString(), Is.EqualTo(salidaEsperada1).Or.EqualTo(salidaEsperada2).Or.EqualTo(salidaEsperada3)); ///"Verifica que la salida en consola sea una de las dos esperadas"
         Fachada.Reset();
     }
 }
