@@ -199,6 +199,14 @@
             Muestra el estado actual de todos tus pokemones
             </summary>
         </member>
+        <member name="M:Library.Bot.Dominio.Fachada.ProcesarEntrada(System.String)">
+            <summary>
+            Función interna para subdividir strings que van
+            con los comandos en dos datos diferentes.
+            </summary>
+            <param name="entrada"></param>
+            <returns></returns>
+        </member>
         <member name="T:Library.Bot.Dominio.WaitingList">
             <summary>
             Esta clase representa la lista de jugadores esperando para jugar.
