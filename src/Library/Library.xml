@@ -98,7 +98,7 @@
             <param name="userId">El ID del usuario.</param>
             <returns>El entrenador si se encuentra, o null si no se encuentra.</returns>
         </member>
-        <member name="M:Library.Bot.Dominio.Battle.HayGanador(Library.Contenido_Parte_II.Entrenador)">
+        <member name="M:Library.Bot.Dominio.Battle.CambiarTurno">
             <summary>
             Asigna un ganador a la batalla.
             </summary>

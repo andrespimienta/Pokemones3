@@ -191,9 +191,9 @@ public class Entrenador
         }
     }
     
-    public void AceptarVisitorPorTurno(VisitorPorTurno visitor)
+    public async Task AceptarVisitorPorTurno(VisitorPorTurno visitor)
     {
-        visitor.VisitarEntrenador(this);
+        await visitor.VisitarEntrenador(this);
     }
 }
 

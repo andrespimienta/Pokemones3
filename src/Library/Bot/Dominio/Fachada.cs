@@ -566,7 +566,7 @@ namespace Library.Bot.Dominio
             await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
 
             // Calcula todos los efectos y muestra el estado de los pokemones
-            jugador.AceptarVisitorPorTurno(this.visitor);
+            await jugador.AceptarVisitorPorTurno(this.visitor);
             await ShowPokemonStatus(jugador);
 
             await MostrarOpciones(jugador.GetSocketGuildUser());
@@ -833,7 +833,7 @@ namespace Library.Bot.Dominio
                                 // Si encontró al Pokemon y todavía está vivo, realiza el cambio exitosamente
                                 atacante.UsarPokemon(pokemon); // Usar Pokemon ya borra el pokemon que tienes usado.
                                 mensaje = "Ahora tu Pokemon en uso es " + pokemon.GetNombre();
-                                this.EnviarAUsuario(user, mensaje);
+                                await this.EnviarAUsuario(user, mensaje);
                                 PokemonEncontrado = true;
                                 PokemonCambiado = true;
                             }
@@ -841,7 +841,7 @@ namespace Library.Bot.Dominio
                             {
                                 // Si encontró al Pokemon, pero está muerto, cancela el cambio
                                 mensaje = "Ese Pokemon está muerto, no puedes elegirlo";
-                                this.EnviarAUsuario(user, mensaje);
+                                await this.EnviarAUsuario(user, mensaje);
                                 PokemonEncontrado = true;
                             }
                         }
@@ -851,7 +851,7 @@ namespace Library.Bot.Dominio
                     {
                         // Si no encontró el Pokemon en la selección del jugador.
                         mensaje = "No se encontró ese Pokemon en tu selección";
-                        this.EnviarAUsuario(user, mensaje);
+                        await this.EnviarAUsuario(user, mensaje);
                     }
                     else if (PokemonEncontrado == true && PokemonCambiado == true) // si encontró el pokemon y lo cambió
                     {
