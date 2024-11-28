@@ -62,7 +62,7 @@ namespace Library.Bot.Dominio
 
         public async Task EnviarAUsuario(IGuildUser usuario, string mensaje)
         {
-            await usuario.SendMessageAsync(mensaje);
+           // await usuario.SendMessageAsync(mensaje);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Library.Bot.Dominio
                 mensaje = $"{displayName} ya está en la lista de espera";
             }
 
-            this.EnviarACanal(canal, mensaje);
+          //  this.EnviarACanal(canal, mensaje);
         }
 
         /// <summary>
@@ -191,13 +191,13 @@ namespace Library.Bot.Dominio
                 if (opponent != null && opponent.GetNombre() != playerDisplayName)
                 {
                     mensaje = $"Comienza el enfrentamiento: **{playerDisplayName}** vs **{opponentDisplayName}**.";
-                    this.EnviarACanal(canal, mensaje);
+                   // this.EnviarACanal(canal, mensaje);
                     this.CreateBattle(playerDisplayName, opponentDisplayName);
                 }
                 else
                 {
                     mensaje = $"{opponentDisplayName} no está esperando";
-                    this.EnviarACanal(canal, mensaje);
+                   // this.EnviarACanal(canal, mensaje);
                 }
             }
 
@@ -461,7 +461,7 @@ namespace Library.Bot.Dominio
             entrenador.EstaListo = true;
 
             mensaje = $"{entrenador.GetNombre()} está listo para la batalla.";
-            await EnviarAUsuario(user, mensaje);
+            //await EnviarAUsuario(user, mensaje);
 
 
 
@@ -487,8 +487,8 @@ namespace Library.Bot.Dominio
             var user2 = batalla.Player2.GetSocketGuildUser();
 
             string mensajeDeComienzo = "¡Ambos jugadores están listos! Comenzando la batalla...";
-            await EnviarAUsuario(user1, mensajeDeComienzo);
-            await EnviarAUsuario(user2, mensajeDeComienzo);
+            //await EnviarAUsuario(user1, mensajeDeComienzo);
+            //await EnviarAUsuario(user2, mensajeDeComienzo);
 
             Pokemon pokemonJugador1 = batalla.Player1.GetPokemonEnUso();
             Pokemon pokemonJugador2 = batalla.Player2.GetPokemonEnUso();
@@ -525,17 +525,21 @@ namespace Library.Bot.Dominio
             // Notificar a ambos jugadores sobre quién empieza
             if (turnoJugador == batalla.Player1.GetNombre())
             {
+                
                 string mensaje2 =
                     $"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.\n" +
                     "Esperando a que tu oponente decida que hacer...";
                 await EnviarAUsuario(user2, mensaje2);
-
+                
+                //Ya le pasa toda la info del mensaje uno y le pasa a ambos jugadores la probabilidad de ganar.
+                await ComienzoDeTurno(batalla);
+               /*
                 string mensaje1 =
                     $"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.";
-                await EnviarAUsuario(user1, mensaje1);
+               // await EnviarAUsuario(user1, mensaje1);
 
                 // Mostrar opciones solo al jugador que tiene el turno
-                await MostrarOpciones(user1);
+                await MostrarOpciones(user1);*/
             }
             else
             {
@@ -543,13 +547,16 @@ namespace Library.Bot.Dominio
                     $"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.\n" +
                     "Esperando a que tu oponente decida que hacer...";
                 await EnviarAUsuario(user1, mensaje1);
-
+                
+                //Ya le pasa toda la info del mensaje uno y le pasa a ambos jugadores la probabilidad de ganar.
+                await ComienzoDeTurno(batalla);
+/*
                 string mensaje2 =
                     $"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.";
                 await EnviarAUsuario(user2, mensaje2);
 
                 // Mostrar opciones solo al jugador que tiene el turno
-                await MostrarOpciones(user2);
+                await MostrarOpciones(user2);*/
             }
         }
 
@@ -567,8 +574,8 @@ namespace Library.Bot.Dominio
 
             // Calcula todos los efectos y muestra el estado de los pokemones
             await jugador.AceptarVisitorPorTurno(this.visitor);
-            await ShowPokemonStatus(jugador);
-
+            //await ShowPokemonStatus(jugador);
+            await CalculaProbabilidadVictoria(batalla);
             await MostrarOpciones(jugador.GetSocketGuildUser());
         }
 
@@ -626,8 +633,8 @@ namespace Library.Bot.Dominio
 
             }
 
-            await this.EnviarACanal(CanalConsola.Instance, mensaje);
-            await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+            // await this.EnviarACanal(CanalConsola.Instance, mensaje);
+            // await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
         }
 
         public async Task MostrarOpciones(SocketGuildUser jugador)
@@ -938,9 +945,9 @@ namespace Library.Bot.Dominio
 
                                     mensaje = $"Le diste una **Súper Poción** a **{pokemonReceptor.GetNombre()}** y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()}\n";
-                                    Console.WriteLine(mensaje);
+                                   // Console.WriteLine(mensaje);
                                     await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
-                                    await this.EnviarACanal(CanalConsola.Instance, mensaje);
+                                   // await this.EnviarACanal(CanalConsola.Instance, mensaje);
                                     
                                     mensaje = $"**¡Tu oponente decidió darle una Súper Poción a {pokemonReceptor.GetNombre()} y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()} !**\n";
@@ -949,7 +956,7 @@ namespace Library.Bot.Dominio
                                     CambiarTurno(userID);
                                     mensaje = $"Concluíste tu turno.\n" +
                                               $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
-                                    Console.WriteLine(mensaje);
+                                   // Console.WriteLine(mensaje);
                                     await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     
                                     await ComienzoDeTurno(batalla);
@@ -1174,7 +1181,115 @@ namespace Library.Bot.Dominio
             }
             return result;
         }
+        public async Task CalculaProbabilidadVictoria(Battle batalla)
+        {
+            string mensaje = "";
+
+            ulong idUsuario = batalla.EntrenadorConTurno.Id;
+            
+            //Traigo los entrenadores para ver su status
+            Entrenador usuario = batalla.GetEntrenadorConTurno();
+            Entrenador oponente = batalla.GetEntrenadorOponente(idUsuario);
+            
+            //** INICIO CALCULO DE PROBABILIDAD PARA EL USUARIO**
+            
+            //pokemones vivos
+            List<Pokemon> listaPokemones =usuario.GetSeleccion();
+            int cantidadVivo = 0;
+            foreach (var pokemon in usuario.GetSeleccion())
+            {
+                if (pokemon.GetVida() >= pokemon.GetVidaMax() / 2)
+                {
+                    cantidadVivo++; // si tienen mas de la mitadad de la vida original, lo considero como bueno
+                }
+            }
+            
+            double probabilidad1 = cantidadVivo * 10;
+            
+            //Items posee
+            int cantidadItems = usuario.GetListaItems().Count;
+            // 7 items son 30 puntos 
+            // regla de 3 para ver cuantos puntos le asigno en funcion de la cantidad de items
+            probabilidad1 += (cantidadItems * 30)/7;
+            
+            //Pokemones afectados
+           
+            bool  result = true;
+            foreach (Pokemon pokemon in listaPokemones)
+            {
+                if (pokemon.EfectoActivo != null)
+                {
+                    result = false;
+                    break;
+                }
+            }
+            // NO encontro ningun Pokemon que este afectado
+            if (result)
+            {
+                probabilidad1 += 10;
+            }
+            //**FIN CALCULO DE PROBABILIDAD PARA EL USUARIO**
+            
+            //** INICIO CALCULO DE PROBABILIDAD PARA EL OPONENTE**
+
+            //Pokemones vivos
+            listaPokemones =usuario.GetSeleccion();
+            cantidadVivo = 0; //seteo en 0 de nuevo
+            foreach (var pokemon in oponente.GetSeleccion())
+            {
+                if (pokemon.GetVida() >= pokemon.GetVidaMax() / 2)
+                {
+                    cantidadVivo++; // si tienen mas de la mitadad de la vida original, lo considero como bueno
+                }
+            }
+            int probabilidad2 = cantidadVivo * 10;
+            
+            //Items que posee
+            cantidadItems = oponente.GetListaItems().Count;
+            // 7 items son 30 puntos 
+            // regla de 3 para ver cuantos puntos le asigno en funcion de la cantidad de items
+            probabilidad2 += (cantidadItems * 30)/7; 
+            
+            //Pokemones afectados
+            listaPokemones =oponente.GetSeleccion();
+            result = true;
+            foreach (Pokemon pokemon in listaPokemones)
+            {
+                if (pokemon.EfectoActivo != null)
+                {
+                    result = false;
+                    break;
+                }
+            }
+            // NO encontro ningun Pokemon que este afectado
+            if (result)
+            {
+                probabilidad2 += 10;
+            }
+            //** FIN CALCULO DE PROBABILIDAD PARA EL OPONENTE**
+            
+
+            if (probabilidad2 > probabilidad1)
+            {
+                mensaje += $"El jugador {oponente.GetNombre()} tiene mas probabilidad de ganar el combate\n";
+            }else if (probabilidad1 > probabilidad2)
+            {
+                mensaje += $"El jugador {usuario.GetNombre()} tiene mas probabilidad de ganar el combate\n";
+            }
+            else
+            {
+                mensaje += "Ambos jugadores tienen la misma probabilidad de ganar el combate";
+            }
+          
+            //  await EnviarAUsuario(usuario.GetSocketGuildUser(), mensaje);
+            //  await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje); asi lo haria para que se viera en discord
+            // para poder rectificar esto en los test, y envia este mensaje a consola
+            
+            await EnviarACanal(CanalConsola.Instance, mensaje);
+        }
     }
+    
+   
 }
 
 
