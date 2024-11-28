@@ -1104,9 +1104,12 @@ namespace Library.Bot.Dominio
 
         }
         
-        public void CambiarTurno(ulong userId)
+        public async Task CambiarTurno(ulong userID)
         {
-            Battle batalla = BattlesList.GetBattle(userId);
+            Battle batalla = BattlesList.GetBattle(userID);
+            Entrenador entrenadorActual = batalla.GetEntrenadorActual(userID);
+            Entrenador entrenadorOponente = batalla.GetEntrenadorOponente(userID);
+            await this.ShowChanceToWin(entrenadorActual, entrenadorOponente);
             batalla.CambiarTurno();
         }
 
@@ -1173,6 +1176,59 @@ namespace Library.Bot.Dominio
                 result = true;
             }
             return result;
+        }
+
+        // ==================================================
+        // *** MÉTODO NUEVO DE LA DEFENSA (ESTEBAN DURÁN) ***
+        // ==================================================
+        public async Task ShowChanceToWin(Entrenador jugador, Entrenador oponente)
+        {
+            // (Los "await EnviarAUsuario" están comentados por ahora, para que los test no se queden 
+            // esperando un SocketGuildUser inexistente, al ser jugadores inventados sin usuario de discord)
+            
+            string mensaje;
+            
+            // Calcula y envía las chances de ganar del jugador que recibió
+            mensaje = $"¡Tus chances de ganar la batalla son: {ChanceToWin.CalcularChanceToWin(jugador)}";
+            /*await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);*/
+            
+            // Calcula y envía las chances de ganar del oponente que recibió
+            mensaje = $"¡Tus chances de ganar la batalla son: {ChanceToWin.CalcularChanceToWin(oponente)}";
+            /*await this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);*/
+            
+            // Guarda  ChancesJugador - ChancesOponente, y evalúa:
+            int difChances = ChanceToWin.CalcularChanceToWin(jugador) - ChanceToWin.CalcularChanceToWin(oponente);
+            
+            // Si dio positivo, Jugador tiene más chances
+            if (difChances > 0)
+            {
+                mensaje = $"**¡{jugador.GetNombre()} es el entrenador con más chances de ganar, por una diferencia de un {difChances}% !**";
+                await this.EnviarACanal(CanalConsola.Instance, mensaje);
+                /*await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);*/
+                /*await this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);*/
+            }
+            // Si dio cero, tienen las mismas chances
+            else if (difChances == 0)
+            {
+                mensaje = $"**¡Ambos tienen exactamente la misma probabilidad de ganar!**";
+                await this.EnviarACanal(CanalConsola.Instance, mensaje);
+                /*await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);*/
+                /*await this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);*/
+            }
+            // Sinó (dio negativo), Oponente tiene más chances
+            else
+            {
+                mensaje = $"**¡{oponente.GetNombre()} es el entrenador con más chances de ganar, por una diferencia de un {difChances * -1}% !**";
+                await this.EnviarACanal(CanalConsola.Instance, mensaje);
+                /*await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);*/
+                /*await this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);*/
+            }
+            
+            // =================================================================
+            // QUEDÓ INCORPORADO EN EL MÉTODO CAMBIAR TURNO. EL BOT ENVÍA ESTOS
+            // MENSAJES AUTOMÁTICAMENTE ANTES DE OTORGARLE EL TURNO AL OPONENTE.
+            // [Chequear "public void CambiarTurno(ulong userID)"]
+            // =================================================================
         }
     }
 }
