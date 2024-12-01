@@ -513,7 +513,7 @@ namespace Library.Bot.Dominio
             if (pokemonJugador1.GetVelocidadAtaque() > pokemonJugador2.GetVelocidadAtaque())
             {
                 string mensajeMasRapido = "**---------------------------------------------------------------------------------------------------**\n" +
-                                          $"{batalla.Player1.GetNombre()} eligió al pokemon con mayor  ⌛  **Velocidad de ataque**\n";
+                                          $"**{batalla.Player1.GetNombre()}** eligió al pokemon con mayor  ⌛  **Velocidad de ataque**\n";
                 await EnviarAUsuario(user1, mensajeMasRapido);
                 await EnviarAUsuario(user2, mensajeMasRapido);
                 await EnviarACanal(CanalConsola.Instance, mensajeMasRapido);
@@ -522,7 +522,7 @@ namespace Library.Bot.Dominio
             else if (pokemonJugador2.GetVelocidadAtaque() > pokemonJugador1.GetVelocidadAtaque())
             {
                 string mensajeMasRapido = "**---------------------------------------------------------------------------------------------------**\n" +
-                                          $"{batalla.Player2.GetNombre()} eligió al pokemon con mayor  ⌛  **Velocidad de ataque**\n";
+                                          $"**{batalla.Player2.GetNombre()}** eligió al pokemon con mayor  ⌛  **Velocidad de ataque**\n";
                 await EnviarAUsuario(user1, mensajeMasRapido);
                 await EnviarAUsuario(user2, mensajeMasRapido);
                 await EnviarACanal(CanalConsola.Instance, mensajeMasRapido);
