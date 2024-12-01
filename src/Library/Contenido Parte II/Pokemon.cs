@@ -72,21 +72,27 @@ public class Pokemon
             if (listaInmunidades.Contains(ataqueRecibido.GetTipo()))    // Si el tipo del ataque está en los tipos a los que es inmune, Daño x0
             {
                 dañoTotal = ataqueRecibido.GetDaño() * 0;
-                mensaje += $"{this.nombre} es inmune a los ataques de tipo {ataqueRecibido.GetTipo()}, no recibió daño\n";
+                mensaje += $"**{this.nombre}** es inmune a los ataques de tipo  " +
+                           $"{DiccionarioTipos.GetEmoji(ataqueRecibido.GetTipo())}  " +
+                           $"**{ataqueRecibido.GetTipo()}**, no recibió daño\n";
             }
             else if (listaResistencias.Contains(ataqueRecibido.GetTipo()))  // Si el tipo del ataque está en los tipos a los que es resistente, Daño x0.5
             {
                 dañoTotal = ataqueRecibido.GetDaño() * 0.5;
-                mensaje += $"{this.nombre} es resistente a los ataques de tipo {ataqueRecibido.GetTipo()}, recibió la mitad del daño\n";
+                mensaje += $"**{this.nombre}** es resistente a los ataques de tipo  " +
+                           $"{DiccionarioTipos.GetEmoji(ataqueRecibido.GetTipo())}  " +
+                           $"**{ataqueRecibido.GetTipo()}**, recibió la mitad del daño\n";
             }
             else if (listaDebilidades.Contains(ataqueRecibido.GetTipo()))   // Si el tipo del ataque está en los tipos a los que es débil, Daño x2
             {
                 dañoTotal = ataqueRecibido.GetDaño() * 2;
-                mensaje += $"{this.nombre} es débil a los ataques de tipo {ataqueRecibido.GetTipo()}, recibió el doble del daño\n";
+                mensaje += $"**{this.nombre}** es débil a los ataques de tipo  " +
+                           $"{DiccionarioTipos.GetEmoji(ataqueRecibido.GetTipo())}  " +
+                           $"**{ataqueRecibido.GetTipo()}**, recibió el doble del daño\n";
             }
             else    // Si el tipo del ataque no pertenece a los tipos a los que es inmune, resistente, ni débil, Daño x1
             {
-                mensaje += $"{this.nombre} recibió daño normal\n";
+                mensaje += $"**{this.nombre}** recibió daño común\n";
                 dañoTotal = ataqueRecibido.GetDaño();
             }
             
@@ -95,7 +101,7 @@ public class Pokemon
             if (ProbabilityUtils.Probabilometro(10) && !listaInmunidades.Contains(ataqueRecibido.GetTipo()))
             {
                 dañoTotal = dañoTotal * 1.20;
-                mensaje += $"¡El ataque fue crítico, {this.nombre} recibió daño extra!\n";
+                mensaje += $"¡El ataque fue crítico, **{this.nombre}** recibió daño extra!\n";
             }
             
             this.vida -= dañoTotal; // Cuando se calculó finalmente el daño, se lo resta a la vida
@@ -109,7 +115,7 @@ public class Pokemon
                 {
                     EfectoActivo = efectoAtaque.Substring(0,efectoAtaque.Length - 1) + "DO";
                     // Aclaración: "Dormi" + "do" | "Paraliza" + "do" | "Envenena" + "do" | "Quema" + "do"
-                    mensaje += $"{this.nombre} ahora está {EfectoActivo}\n";
+                    mensaje += $"**{this.nombre}** ahora está  {DiccionarioTipos.GetEmoji(efectoAtaque)}  **{EfectoActivo}**\n";
                     
                     // Si el efecto era Dormir, genera una duración de efecto de entre 1 y 4 turnos
                     if (ataqueRecibido.GetEfecto() == "DORMIR")
@@ -119,7 +125,8 @@ public class Pokemon
                 }
                 else
                 {
-                    mensaje += $"El pokemon ya está {EfectoActivo}, por lo que no se le aplicó el efecto {efectoAtaque}\n";
+                    mensaje += $"El pokemon ya está  {DiccionarioTipos.GetEmoji(EfectoActivo)}  **{EfectoActivo}**, " +
+                               $"por lo que no se le aplicó el efecto  {DiccionarioTipos.GetEmoji(efectoAtaque)}  **{efectoAtaque}**\n";
                 }
             }
         }

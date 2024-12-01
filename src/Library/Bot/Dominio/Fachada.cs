@@ -402,41 +402,49 @@ namespace Library.Bot.Dominio
             string mensaje;
 
             // Exception si el usuario escribe algo que no es un número después de !usar
-            try
+            if (entrenador.GetCantidadPokemonesVivos() < 6)
             {
-                int numElegido = int.Parse(numEleccion);
-
-                // Validar que el número ingresado se válido
-                if (numElegido < 1 || numElegido > seleccionPokemones.Count)
-                {
-                    mensaje = $"Por favor, ingresa un número válido entre 1 y {seleccionPokemones.Count}.";
-                    this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
-                }
-                else
-                {
-                    // Seleccionar el Pokémon basado en el número ingresado
-                    Pokemon pokemonSeleccionado = seleccionPokemones[numElegido - 1];
-
-                    // Usar el Pokémon seleccionado
-                    entrenador.UsarPokemon(pokemonSeleccionado);
-
-                    mensaje = $"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!\n" +
-                              "**Indica que estás listo para la batalla:** Usa el comando `!startBattle` " +
-                              "para confirmar que estás listo para luchar.";
-                    this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
-                }
-            }
-            catch (FormatException)
-            {
-                mensaje = "Error: Has ingresado carácteres no numéricos.";
+                mensaje = $"¡Debes completar tu selección de 6 pokemon antes de elegir cuál usarás primero!";
                 this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
-                this.EnviarACanal(CanalConsola.Instance, mensaje);
             }
-            catch (OverflowException)
+            else
             {
-                mensaje = "Error: El número ingresado está fuera del rango permitido para un entero.";
-                this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
-                this.EnviarACanal(CanalConsola.Instance, mensaje);
+                try
+                {
+                    int numElegido = int.Parse(numEleccion);
+
+                    // Validar que el número ingresado se válido
+                    if (numElegido < 1 || numElegido > seleccionPokemones.Count)
+                    {
+                        mensaje = $"Por favor, ingresa un número válido entre 1 y {seleccionPokemones.Count}.";
+                        this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+                    }
+                    else
+                    {
+                        // Seleccionar el Pokémon basado en el número ingresado
+                        Pokemon pokemonSeleccionado = seleccionPokemones[numElegido - 1];
+
+                        // Usar el Pokémon seleccionado
+                        entrenador.UsarPokemon(pokemonSeleccionado);
+
+                        mensaje = $"¡Has elegido a {pokemonSeleccionado.GetNombre()} para la batalla!\n" +
+                                  "**Indica que estás listo para la batalla:** Usa el comando `!startBattle` " +
+                                  "para confirmar que estás listo para luchar.";
+                        this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+                    }
+                }
+                catch (FormatException)
+                {
+                    mensaje = "Error: Has ingresado carácteres no numéricos.";
+                    this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+                    this.EnviarACanal(CanalConsola.Instance, mensaje);
+                }
+                catch (OverflowException)
+                {
+                    mensaje = "Error: El número ingresado está fuera del rango permitido para un entero.";
+                    this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+                    this.EnviarACanal(CanalConsola.Instance, mensaje);
+                }
             }
         }
 
@@ -447,37 +455,45 @@ namespace Library.Bot.Dominio
             Entrenador? entrenador = batalla.GetEntrenadorActual(usuarioId);
 
             SocketGuildUser user = entrenador.GetSocketGuildUser();
-
-
-            // Si el jugador ya está marcado como listo, no se incrementa el contador ni se hace nada más
+            
             string mensaje;
-            if (entrenador.EstaListo)
+
+            // Chequear el comando previo (!usar)
+            if (entrenador.GetPokemonEnUso() == null)
             {
-                mensaje = "Ya estás marcado como listo para la batalla.";
+                mensaje = "¡Debes elegir el pokemon con el que empezarás la batalla primero!";
                 await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
-            }
-
-            // Marcar al entrenador como listo y aumentar el contador
-            entrenador.EstaListo = true;
-
-            mensaje = $"{entrenador.GetNombre()} está listo para la batalla.";
-            await EnviarAUsuario(user, mensaje);
-
-
-
-            // Comprobar si ambos jugadores están listos
-            if (batalla.EstanListos() == true)
-            {
-                await ChequearQuienEmpieza(usuarioId);
-                //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
             }
             else
             {
-                // Si solo uno está listo, esperar al oponente
-                mensaje = "Esperando a que tu oponente esté listo...";
-                await EnviarAUsuario(user, mensaje);
-            }
+                // Si el jugador ya está marcado como listo, no se incrementa el contador ni se hace nada más
+                if (entrenador.EstaListo)
+                {
+                    mensaje = "Ya estás marcado como listo para la batalla.";
+                    await this.EnviarAUsuario(entrenador.GetSocketGuildUser(), mensaje);
+                }
 
+                // Marcar al entrenador como listo y aumentar el contador
+                entrenador.EstaListo = true;
+
+                mensaje = $"{entrenador.GetNombre()} está listo para la batalla.";
+                await EnviarAUsuario(user, mensaje);
+
+
+
+                // Comprobar si ambos jugadores están listos
+                if (batalla.EstanListos() == true)
+                {
+                    await ChequearQuienEmpieza(usuarioId);
+                    //entrenadoresListos = 0; // Resetear el contador de listos después de iniciar la batalla
+                }
+                else
+                {
+                    // Si solo uno está listo, esperar al oponente
+                    mensaje = "Esperando a que tu oponente esté listo...";
+                    await EnviarAUsuario(user, mensaje);
+                }
+            }
         }
 
         public async Task ChequearQuienEmpieza(ulong userId)
@@ -493,26 +509,37 @@ namespace Library.Bot.Dominio
             Pokemon pokemonJugador1 = batalla.Player1.GetPokemonEnUso();
             Pokemon pokemonJugador2 = batalla.Player2.GetPokemonEnUso();
 
-            string turnoJugador;
-
             // Comparar la velocidad de los Pokémon para determinar quién empieza
             if (pokemonJugador1.GetVelocidadAtaque() > pokemonJugador2.GetVelocidadAtaque())
             {
-                turnoJugador = batalla.Player1.GetNombre();
+                string mensajeMasRapido = "**---------------------------------------------------------------------------------------------------**\n" +
+                                          $"{batalla.Player1.GetNombre()} eligió al pokemon con mayor  ⌛  **Velocidad de ataque**\n";
+                await EnviarAUsuario(user1, mensajeMasRapido);
+                await EnviarAUsuario(user2, mensajeMasRapido);
+                await EnviarACanal(CanalConsola.Instance, mensajeMasRapido);
                 batalla.EntrenadorConTurno = batalla.Player1;
             }
             else if (pokemonJugador2.GetVelocidadAtaque() > pokemonJugador1.GetVelocidadAtaque())
             {
-                turnoJugador = batalla.Player2.GetNombre();
+                string mensajeMasRapido = "**---------------------------------------------------------------------------------------------------**\n" +
+                                          $"{batalla.Player2.GetNombre()} eligió al pokemon con mayor  ⌛  **Velocidad de ataque**\n";
+                await EnviarAUsuario(user1, mensajeMasRapido);
+                await EnviarAUsuario(user2, mensajeMasRapido);
+                await EnviarACanal(CanalConsola.Instance, mensajeMasRapido);
                 batalla.EntrenadorConTurno = batalla.Player2;
             }
             else
             {
+                
                 // Si la velocidad es igual, se elige al azar
-                turnoJugador = new System.Random().Next(2) == 0
-                    ? batalla.Player1.GetNombre()
-                    : batalla.Player2.GetNombre();
-                if (turnoJugador == batalla.Player1.GetNombre())
+                string mensajeMasRapido = "**---------------------------------------------------------------------------------------------------**\n" +
+                                          $"Los pokemon de ambos entrenadores tienen la misma  ⌛  **Velocidad de ataque**.\n " +
+                                          $"🍀  **¡La suerte decidirá quién empieza!**  🍀\n";
+                await EnviarAUsuario(user1, mensajeMasRapido);
+                await EnviarAUsuario(user2, mensajeMasRapido);
+                await EnviarACanal(CanalConsola.Instance, mensajeMasRapido);
+                
+                if (ProbabilityUtils.Probabilometro(50))
                 {
                     batalla.EntrenadorConTurno = batalla.Player1;
                 }
@@ -523,15 +550,17 @@ namespace Library.Bot.Dominio
             }
 
             // Notificar a ambos jugadores sobre quién empieza
-            if (turnoJugador == batalla.Player1.GetNombre())
+            if (batalla.EntrenadorConTurno == batalla.Player1)
             {
                 string mensaje2 =
-                    $"{batalla.Player2.GetNombre()}, tu oponente {batalla.Player1.GetNombre()} ha elegido {pokemonJugador1.GetNombre()} y comenzará con el turno.\n" +
-                    "Esperando a que tu oponente decida que hacer...";
+                    $"**{batalla.Player2.GetNombre()}**, tu oponente **{batalla.Player1.GetNombre()}** ha elegido a **{pokemonJugador1.GetNombre()}** y comenzará con el turno.\n" +
+                    "Esperando a que tu oponente elija una acción...\n" +
+                    "**---------------------------------------------------------------------------------------------------**\n";
                 await EnviarAUsuario(user2, mensaje2);
 
                 string mensaje1 =
-                    $"{batalla.Player1.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador2.GetNombre()}.";
+                    $"**{batalla.Player1.GetNombre()}**, es tu turno.\nTu oponente está usando a **{pokemonJugador2.GetNombre()}**.\n" +
+                    "**---------------------------------------------------------------------------------------------------**\n";
                 await EnviarAUsuario(user1, mensaje1);
 
                 // Mostrar opciones solo al jugador que tiene el turno
@@ -540,12 +569,14 @@ namespace Library.Bot.Dominio
             else
             {
                 string mensaje1 =
-                    $"{batalla.Player1.GetNombre()}, tu oponente {batalla.Player2.GetNombre()} ha elegido {pokemonJugador2.GetNombre()} y comenzará con el turno.\n" +
-                    "Esperando a que tu oponente decida que hacer...";
+                    $"**{batalla.Player1.GetNombre()}**, tu oponente **{batalla.Player2.GetNombre()}** ha elegido a **{pokemonJugador2.GetNombre()}** y comenzará con el turno.\n" +
+                    "Esperando a que tu oponente elija una acción...\n" +
+                    "**---------------------------------------------------------------------------------------------------**\n";
                 await EnviarAUsuario(user1, mensaje1);
 
                 string mensaje2 =
-                    $"{batalla.Player2.GetNombre()}, es tu turno.\nTu oponente está usando {pokemonJugador1.GetNombre()}.";
+                    $"**{batalla.Player2.GetNombre()}**, es tu turno.\nTu oponente está usando a **{pokemonJugador1.GetNombre()}**.\n" +
+                    "**---------------------------------------------------------------------------------------------------**\n";
                 await EnviarAUsuario(user2, mensaje2);
 
                 // Mostrar opciones solo al jugador que tiene el turno
@@ -559,14 +590,19 @@ namespace Library.Bot.Dominio
             Entrenador oponente = batalla.GetEntrenadorOponente(jugador.Id);
             Pokemon pokeOponente = oponente.GetPokemonEnUso();
 
-            string mensaje = "\n__**ES TU TURNO**__\n" +
-                             $"Tu oponente está usando a {pokeOponente.GetNombre()} " +
-                             $"( {DiccionarioTipos.GetEmoji(pokeOponente.GetTipo())} , " +
-                             $"❤️ {pokeOponente.GetVida()} )\n\n";
+            string mensaje = "**---------------------------------------------------------------------------------------------------**\n" +
+                             "__**ES TU TURNO**__\n" +
+                             $"Tu oponente está usando a **{pokeOponente.GetNombre()}** " +
+                             $" {DiccionarioTipos.GetEmoji(pokeOponente.GetTipo())}  **|**  " +
+                             $"❤️ {pokeOponente.GetVida()} \n\n";
             await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
 
             // Calcula todos los efectos y muestra el estado de los pokemones
             await jugador.AceptarVisitorPorTurno(this.visitor);
+            
+            mensaje = "**---------------------------------------------------------------------------------------------------**\n";
+            await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
+            
             await ShowPokemonStatus(jugador);
 
             await MostrarOpciones(jugador.GetSocketGuildUser());
@@ -597,10 +633,10 @@ namespace Library.Bot.Dominio
 
                 if (pokemon == jugador.GetPokemonEnUso())
                 {
-                    mensaje += $"_**{pokemon.GetNombre()}**," +
+                    mensaje += $"_**{pokemon.GetNombre()}," +
                                $"  {DiccionarioTipos.GetEmoji(pokemon.GetTipo())}," +
                                $"  {condición}," +
-                               $"  ❤️ {pokemon.GetVida()} (seleccionado)_\n";
+                               $"  ❤️ {pokemon.GetVida()}** (seleccionado)_\n";
                 }
                 else
                 {
@@ -625,7 +661,8 @@ namespace Library.Bot.Dominio
                 }
 
             }
-
+            mensaje += "**---------------------------------------------------------------------------------------------------**\n";
+            
             await this.EnviarACanal(CanalConsola.Instance, mensaje);
             await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
         }
@@ -680,6 +717,21 @@ namespace Library.Bot.Dominio
                         return;
                     }
 
+                    if (nAtaque == 4)
+                    {
+                        if (atacante.TurnosRecargaAtkEspecial > 0)
+                        {
+                            string mensajeError = "¡Tus ataques especiales no están disponibles aún!";
+                            await EnviarAUsuario(atacante.GetSocketGuildUser(), mensajeError);
+                            return;
+                        }
+                        else
+                        {
+                            atacante.TurnosRecargaAtkEspecial = 3;
+                        }
+                    }
+                    
+
                     // Encuentra el ataque correspondiente al número
                     Ataque ataque = ataques[nAtaque - 1];
                     EncontroAtaque = true;
@@ -702,14 +754,14 @@ namespace Library.Bot.Dominio
                         {
                             pokemonVictima.PuedeAtacar = false;
                             oponente.AgregarAListaMuertos(pokemonVictima);
-                            mensaje = $"{pokemonVictima.GetNombre()} ha sido vencido\n";
+                            mensaje = $"**{pokemonVictima.GetNombre()}** ha sido vencido\n";
                             await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                             await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
                         }
                         else
                         {
                             mensaje =
-                                $"{pokemonVictima.GetNombre()} ha sufrido daño, su vida es {pokemonVictima.GetVida()}\n";
+                                $"**{pokemonVictima.GetNombre()}** ha sufrido daño, ahora tiene  ❤️ {pokemonVictima.GetVida()}\n";
                             await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                             await EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
                         }
@@ -726,6 +778,7 @@ namespace Library.Bot.Dominio
                     {
                         CambiarTurno(userId);
                         mensaje = $"Concluíste tu turno.\n" +
+                                  "**---------------------------------------------------------------------------------------------------**\n" +
                                   $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
                         await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
                         await ComienzoDeTurno(batalla);
@@ -740,7 +793,8 @@ namespace Library.Bot.Dominio
             }
             else if (atacante.GetPokemonEnUso().PuedeAtacar == false)
             {
-                string mensje = $"Tu pokemón está {atacante.GetPokemonEnUso().EfectoActivo}, **no puede atacar**\n" +
+                string mensje = $"Tu pokemón está  {DiccionarioTipos.GetEmoji(atacante.GetPokemonEnUso().EfectoActivo)}  " +
+                                $"{atacante.GetPokemonEnUso().EfectoActivo}, **no puede atacar**\n" +
                                 "Debes cambiar tu pokemón.\n";
                 await EnviarAUsuario(atacante.GetSocketGuildUser(), mensje);
             }
@@ -761,22 +815,40 @@ namespace Library.Bot.Dominio
                 "Estos son los ataques disponibles, elige el ataque con el comando `!Atacar <numero del ataque>`:\n\n";
 
             // Separa los ataques normales y el ataque especial
-            var ataques = entrenador.GetPokemonEnUso().GetAtaques();
-            var ataquesNormales = ataques.Take(3).ToList(); // Los primeros 3 son normales
-            var ataqueEspecial = ataques.Skip(3).FirstOrDefault(); // El cuarto es el especial
+            List<Ataque> ataques = entrenador.GetPokemonEnUso().GetAtaques();
+            List<Ataque> ataquesNormales = ataques.Take(3).ToList(); // Los primeros 3 son normales
+            Ataque ataqueEspecial = ataques.Skip(3).FirstOrDefault(); // El cuarto es el especial
 
             // Agregar ataques normales
-            mensaje += "Ataques normales:\n";
+            mensaje += "**Ataques normales:**\n";
             for (int i = 0; i < ataquesNormales.Count; i++)
             {
-                mensaje += $"{i + 1}) {ataquesNormales[i].GetNombre()}\n";
+                mensaje += $"**{i + 1})** {ataquesNormales[i].GetNombre()}  " +
+                           $"{DiccionarioTipos.GetEmoji(ataquesNormales[i].GetTipo())}  **|**  " +
+                           $"⚔️ {ataquesNormales[i].GetDaño()}\n";
             }
 
             // Agregar ataque especial
             if (ataqueEspecial != null)
             {
-                mensaje += "\nAtaque especial:\n";
-                mensaje += $"4) {ataqueEspecial.GetNombre()}\n";
+                if (entrenador.TurnosRecargaAtkEspecial <= 0)
+                {
+                    mensaje += "\n**Ataque especial:**\n";
+                    mensaje += $"**4)** {ataqueEspecial.GetNombre()}  " +
+                               $"{DiccionarioTipos.GetEmoji(ataqueEspecial.GetTipo())}  **|**  " +
+                               $"⚔️ {ataqueEspecial.GetDaño()}  **|**  " +
+                               $"{DiccionarioTipos.GetEmoji(ataqueEspecial.GetEfecto())}  " +
+                               $"{ataqueEspecial.GetEfecto()}\n";
+                }
+                else
+                {
+                    mensaje += $"\n**Ataque especial:** _(No disponible en este turno. Turnos restantes: {entrenador.TurnosRecargaAtkEspecial})_\n";
+                    mensaje += $"**4)** ~~_{ataqueEspecial.GetNombre()}_~~  " +
+                               $"{DiccionarioTipos.GetEmoji(ataqueEspecial.GetTipo())}  **|**  " +
+                               $"⚔️ ~~_{ataqueEspecial.GetDaño()}_~~  **|**  " +
+                               $"{DiccionarioTipos.GetEmoji(ataqueEspecial.GetEfecto())}  " +
+                               $"~~_{ataqueEspecial.GetEfecto()}_~~  ❌\n";
+                }
             }
 
             // Envía el mensaje al usuario y lo imprime en la consola
@@ -858,11 +930,12 @@ namespace Library.Bot.Dominio
                         CambiarTurno(userId);
                         Entrenador oponente = batalla.GetEntrenadorOponente(userId);
                         mensaje = $"Concluíste tu turno.\n" +
+                                  "**---------------------------------------------------------------------------------------------------**\n" +
                                   $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
                         await EnviarAUsuario(atacante.GetSocketGuildUser(), mensaje);
 
                         string mensajeOponente =
-                            $"Tu oponente {atacante.GetNombre()} ha decidido cambiar su pokemon por {nombrePokemon}";
+                            $"Tu oponente {atacante.GetNombre()} ha decidido cambiar su pokemon por **{nombrePokemon}**";
                         await EnviarAUsuario(oponente.GetSocketGuildUser(), mensajeOponente);
                         await ComienzoDeTurno(batalla);
                     }
@@ -945,6 +1018,7 @@ namespace Library.Bot.Dominio
                                     
                                     CambiarTurno(userID);
                                     mensaje = $"Concluíste tu turno.\n" +
+                                              "**---------------------------------------------------------------------------------------------------**\n" +
                                               $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
                                     await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     await ComienzoDeTurno(batalla);
@@ -971,7 +1045,7 @@ namespace Library.Bot.Dominio
                                     pokemonReceptor.AceptarItem(pocion);
                                     
                                     mensaje = $"Le diste una poción '**Cura Total**' a **{pokemonReceptor.GetNombre()}** y " +
-                                              $"ahora está 👍🏻 SALUDABLE\n";
+                                              $"ahora está 👍🏻 **SALUDABLE**\n";
                                     await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     
                                     mensaje = $"**¡Tu oponente decidió darle una poción 'Cura Total' a {pokemonReceptor.GetNombre()} y " +
@@ -980,6 +1054,7 @@ namespace Library.Bot.Dominio
                                     
                                     CambiarTurno(userID);
                                     mensaje = $"Concluíste tu turno.\n" +
+                                              "**---------------------------------------------------------------------------------------------------**\n" +
                                               $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
                                     await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     await ComienzoDeTurno(batalla);
@@ -1009,12 +1084,13 @@ namespace Library.Bot.Dominio
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()}\n";
                                     await this.EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     
-                                    mensaje = $"**¡Tu oponente decidió darle una poción 'Cura Total' a {pokemonReceptor.GetNombre()} y " +
+                                    mensaje = $"**¡Tu oponente decidió darle una poción 'Revivir' a {pokemonReceptor.GetNombre()} y " +
                                               $"ahora tiene ❤️ {pokemonReceptor.GetVida()} !**\n";
                                     await this.EnviarAUsuario(oponente.GetSocketGuildUser(), mensaje);
                                     
                                     CambiarTurno(userID);
                                     mensaje = $"Concluíste tu turno.\n" +
+                                              "**---------------------------------------------------------------------------------------------------**\n" +
                                               $"__**ES EL TURNO DE {oponente.GetNombre()}**__";
                                     await EnviarAUsuario(jugador.GetSocketGuildUser(), mensaje);
                                     await ComienzoDeTurno(batalla);

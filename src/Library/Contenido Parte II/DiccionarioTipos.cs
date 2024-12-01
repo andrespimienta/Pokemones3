@@ -97,6 +97,10 @@ public static class DiccionarioTipos // Clase estática que contiene los datos s
         diccEmojis.Add("TIERRA", "⛰️");
         diccEmojis.Add("VENENO", "💀");
         diccEmojis.Add("VOLADOR", "🪽");
+        diccEmojis.Add("DORMIR", "💤");
+        diccEmojis.Add("PARALIZAR", "✨");
+        diccEmojis.Add("ENVENENAR", "🫧");
+        diccEmojis.Add("QUEMAR", "♨️");
         diccEmojis.Add("DORMIDO", "💤");
         diccEmojis.Add("PARALIZADO", "✨");
         diccEmojis.Add("ENVENENADO", "🫧");

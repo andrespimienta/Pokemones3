@@ -46,8 +46,8 @@ public class VisitorPorTurno
                         else
                         {
                             pokemon.PuedeAtacar = false;
-                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance, $"El Pokemon **{pokemon.GetNombre()}** seguirá  💤  dormido {pokemon.TurnosDuracionEfecto} turnos más\n");
-                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}** seguirá  💤  dormido {pokemon.TurnosDuracionEfecto} turnos más\n");
+                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance, $"El Pokemon **{pokemon.GetNombre()}** sigue  💤 **dormido**. Turnos restantes: {pokemon.TurnosDuracionEfecto}\n");
+                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}** sigue  💤 **dormido**. Turnos restantes: {pokemon.TurnosDuracionEfecto}\n");
                         }
                         break;
                     }
@@ -58,13 +58,13 @@ public class VisitorPorTurno
                         if (ProbabilityUtils.Probabilometro(33))    
                         {
                             pokemon.PuedeAtacar = true;
-                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}**, a pesar de estar  ✨  paralizado, podrá atacar en este turno\n");
-                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}**, a pesar de estar  ✨  paralizado, podrá atacar en este turno\n");
+                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}**, a pesar de estar  ✨ **paralizado**, podrá atacar en este turno\n");
+                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}**, a pesar de estar  ✨ **paralizado**, podrá atacar en este turno\n");
                         }
                         else
                         {
-                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** está  ✨  paralizado, no podrá atacar en este turno\n");
-                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** está  ✨  paralizado, no podrá atacar en este turno\n");
+                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** está  ✨ **paralizado**, no podrá atacar en este turno\n");
+                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** está  ✨ **paralizado**, no podrá atacar en este turno\n");
                         }
                         break;
                     }
@@ -72,13 +72,13 @@ public class VisitorPorTurno
                     {
                         // Si está quemado, le resta el 10% de la vida en cada turno
                         pokemon.AlterarVida(-pokemon.GetVidaMax() * 0.1);
-                        await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.1} por  ♨️  quemadura\n");
-                        await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.1} por  ♨️  quemadura\n");
+                        await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.1} por  ♨️ **quemadura**\n");
+                        await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.1} por  ♨️ **quemadura**\n");
                         if (pokemon.GetVida() <= 0)
                         {
                             muertosPorEfecto.Add(pokemon);
-                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** ha sido vencido por  ♨️  quemadura\n");
-                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** ha sido vencido por  ♨️  quemadura\n");
+                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** ha sido vencido por  ♨️ **quemadura**\n");
+                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** ha sido vencido por  ♨️ **quemadura**\n");
                         }
 
                         break;
@@ -87,13 +87,13 @@ public class VisitorPorTurno
                     {
                         // Si está envenenado, le resta el 5% de la vida en cada turno
                         pokemon.AlterarVida(-pokemon.GetVidaMax() * 0.05);
-                        await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.05} por  🫧  envenenamiento\n");
-                        await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.05} por  🫧  envenenamiento\n");
+                        await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.05} por  🫧 **envenenamiento**\n");
+                        await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(), $"El Pokemon **{pokemon.GetNombre()}** perdió  ❤️ {pokemon.GetVidaMax() * 0.05} por  🫧 **envenenamiento**\n");
                         if (pokemon.GetVida() <= 0)
                         {
                             muertosPorEfecto.Add(pokemon);
-                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** ha sido vencido por  🫧  envenenamiento\n");
-                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** ha sido vencido por  🫧  envenenamiento\n");
+                            await Fachada.Instance.EnviarACanal(CanalConsola.Instance,$"El Pokemon **{pokemon.GetNombre()}** ha sido vencido por  🫧 **envenenamiento**\n");
+                            await Fachada.Instance.EnviarAUsuario(entrenadorVisitado.GetSocketGuildUser(),$"El Pokemon **{pokemon.GetNombre()}** ha sido vencido por  🫧 **envenenamiento**\n");
                         }
                         
                         break;
