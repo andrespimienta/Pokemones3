@@ -1,4 +1,6 @@
-namespace Library.Contenido_Parte_II;
+using Library.Contenido_Parte_II;
+
+namespace Library.Bot.Dominio;
 
 public class ProbabilityUtils
 {
